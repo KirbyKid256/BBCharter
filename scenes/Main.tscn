@@ -6,10 +6,10 @@
 [ext_resource type="Script" path="res://src/cl_notecontroller.gd" id="3_t55vn"]
 [ext_resource type="Script" path="res://src/cl_menubar_add.gd" id="5_2p0vi"]
 [ext_resource type="Script" path="res://src/cl_menubar_project.gd" id="5_577ur"]
-[ext_resource type="Texture2D" uid="uid://b84des7awlnu5" path="res://scenes/Gradient.tres" id="5_dqdvp"]
+[ext_resource type="Texture2D" uid="uid://cphy78u8w4epy" path="res://scenes/Gradient.tres" id="5_dqdvp"]
 [ext_resource type="Script" path="res://src/cl_character.gd" id="5_in5ur"]
 [ext_resource type="Script" path="res://src/cl_filedialog.gd" id="5_qvt2c"]
-[ext_resource type="Texture2D" uid="uid://cod8x65epafno" path="res://assets/Pattern.png" id="5_v7o4k"]
+[ext_resource type="Texture2D" path="res://assets/Pattern.png" id="5_v7o4k"]
 [ext_resource type="Texture2D" uid="uid://cfg72q00eldnt" path="res://assets/Checker.png" id="6_bp6ey"]
 [ext_resource type="Script" path="res://src/cl_music.gd" id="6_f3wwk"]
 [ext_resource type="Script" path="res://src/cl_menubar_clear.gd" id="6_pgban"]
@@ -19,16 +19,16 @@
 [ext_resource type="PackedScene" uid="uid://c3m8f3aiheycv" path="res://prefabs/Notification.tscn" id="8_vyifj"]
 [ext_resource type="Script" path="res://src/cl_tools.gd" id="8_waaxy"]
 [ext_resource type="Script" path="res://src/cl_menubar_edit.gd" id="8_yungy"]
-[ext_resource type="Texture2D" uid="uid://crfo7mgcdp00n" path="res://assets/tool_select.png" id="9_j5sdo"]
-[ext_resource type="Texture2D" uid="uid://cmfihxdtx36aa" path="res://assets/tool_marquee.png" id="9_lohrd"]
+[ext_resource type="Texture2D" path="res://assets/tool_select.png" id="9_j5sdo"]
+[ext_resource type="Texture2D" path="res://assets/tool_marquee.png" id="9_lohrd"]
 [ext_resource type="Script" path="res://src/cl_menubar_file.gd" id="9_qoohm"]
 [ext_resource type="Script" path="res://src/cl_menubar_help.gd" id="10_p48ck"]
 [ext_resource type="Script" path="res://src/cl_timecode.gd" id="11_ycej5"]
 [ext_resource type="Texture2D" uid="uid://j7ypji0xwic6" path="res://assets/tool_audio.png" id="12_a3q0d"]
 [ext_resource type="Script" path="res://src/cl_sfx.gd" id="13_i7gdi"]
 [ext_resource type="Script" path="res://src/cl_snapping.gd" id="13_oym2h"]
-[ext_resource type="Texture2D" uid="uid://duompl3dtsgg1" path="res://assets/tool_horny.png" id="13_vb1uc"]
-[ext_resource type="Texture2D" uid="uid://betuc1m0gxohi" path="res://assets/tool_modify.png" id="14_11yw1"]
+[ext_resource type="Texture2D" path="res://assets/tool_horny.png" id="13_vb1uc"]
+[ext_resource type="Texture2D" path="res://assets/tool_modify.png" id="14_11yw1"]
 [ext_resource type="Script" path="res://src/cl_asset_manager.gd" id="14_eesym"]
 [ext_resource type="Script" path="res://src/cl_shutters.gd" id="15_kn5dq"]
 [ext_resource type="Script" path="res://src/cl_popup_new_difficulty.gd" id="18_iev55"]
@@ -44,12 +44,12 @@
 [ext_resource type="Script" path="res://src/cl_menu_audio.gd" id="34_8buew"]
 [ext_resource type="Script" path="res://src/cl_popup_clear.gd" id="34_pacga"]
 [ext_resource type="Script" path="res://src/cl_popup_icon_difficulty.gd" id="36_j4s2r"]
-[ext_resource type="Texture2D" uid="uid://f5ooa0gle4sk" path="res://assets/icon_difficulty.png" id="37_8v42t"]
+[ext_resource type="Texture2D" path="res://assets/icon_difficulty.png" id="37_8v42t"]
 [ext_resource type="Script" path="res://src/cl_popup_animation.gd" id="42_u4042"]
 [ext_resource type="Script" path="res://src/cl_popup_voicebank.gd" id="44_earsn"]
 [ext_resource type="Script" path="res://src/cl_popup_background.gd" id="44_tvfc5"]
 [ext_resource type="Script" path="res://prefabs/VoiceBankNode.gd" id="45_gd3qt"]
-[ext_resource type="Texture2D" uid="uid://bt6ryhnpjv6yf" path="res://assets/icon-delete.png" id="45_lslcg"]
+[ext_resource type="Texture2D" path="res://assets/icon-delete.png" id="45_lslcg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x5vw1"]
 bg_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
@@ -1044,7 +1044,19 @@ theme_override_constants/separation = 0
 metadata/_edit_lock_ = true
 
 [node name="ColorRect" type="ColorRect" parent="Timeline/NoteTimeline/NoteScroller/Map"]
+custom_minimum_size = Vector2(900, 100)
 layout_mode = 2
+color = Color(0.576471, 1, 0.054902, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Timeline/NoteTimeline/NoteScroller/Map"]
+custom_minimum_size = Vector2(900, 100)
+layout_mode = 2
+color = Color(0.701961, 0, 0.447059, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Timeline/NoteTimeline/NoteScroller/Map"]
+custom_minimum_size = Vector2(900, 100)
+layout_mode = 2
+color = Color(0.976471, 0.537255, 0.298039, 1)
 
 [node name="HScrollBar" type="HScrollBar" parent="Timeline/NoteTimeline/NoteScroller"]
 layout_mode = 1

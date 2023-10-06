@@ -170,7 +170,8 @@ func update_visuals():
 	
 
 func update_map():
-	var map_size: float = Global.song_length * Global.note_speed
+	var dummy_map_size: float = 0.0
+	var map_size: float = Global.song_length * 1000
 	var ref_arr: Array = Timeline.animations_track.get_children()
 	var note_arr: Array = Timeline.note_container.get_children()
 	
@@ -180,40 +181,46 @@ func update_map():
 	if Timeline.note_scroller_map.get_children().size() > 0:
 		Global.clear_children(Timeline.note_scroller_map)
 	
-	var offset_start = Global.offset * Global.note_speed
-	var offset_end = map_size - (note_arr.back().data['timestamp'] * Global.note_speed)
+	var _offset_start = Global.offset * Global.note_speed
+	var _offset_end = map_size - (note_arr.back().data['timestamp'] * Global.note_speed)
 	
 	for x in ref_arr.size():
 		#print(ref_arr[x].get_node("Background").size.x)
-		map_size += ref_arr[x].get_node("Background").size.x
-	print(map_size)
+		dummy_map_size += ref_arr[x].get_node("Background").size.x
+	print("Map Sizes Song: %s (%s * 1000) Dummy: %s" % [map_size, Global.song_length, dummy_map_size])
 	
-	var offset_end_cell = ColorRect.new()
-	offset_end_cell.color = Color.TRANSPARENT
-	offset_end_cell.size_flags_horizontal = Control.SIZE_EXPAND
-	offset_end_cell.custom_minimum_size.x = 0
-	Timeline.note_scroller_map.add_child(offset_end_cell)
 	
 	for x in range(ref_arr.size()-1, -1, -1):
 		var cell = ColorRect.new()
-		print(x)
 		cell.color = ref_arr[x].get_node("Background").color
 		cell.color.a = 1.0
 		cell.size_flags_horizontal = Control.SIZE_EXPAND
 		
 		# Cell size
-		print(ref_arr[x].get_node("Background").size.x)
-		cell.custom_minimum_size.x = ((ref_arr[x].get_node("Background").size.x) / map_size) * Timeline.note_scroller.size.x
-		print("Cell Color: ", ref_arr[x].get_node("Background").color, cell.custom_minimum_size.x)
+		cell.custom_minimum_size.x = ceil(((ref_arr[x].get_node("Background").size.x) / dummy_map_size) * Timeline.note_scroller.size.x)
+		print("Cell %s - RibSize: %s Color: %s SizeX: %s PosX: %s" % [x, ref_arr[x].get_node("Background").size.x, ref_arr[x].get_node("Background").color, cell.custom_minimum_size.x, cell.position.x])
 		Timeline.note_scroller_map.add_child(cell)
 	
-	var offset_start_cell = ColorRect.new()
-	offset_start_cell.color = Color.TRANSPARENT
-	offset_start_cell.size_flags_horizontal = Control.SIZE_EXPAND
-	offset_start_cell.custom_minimum_size.x = 0
-	Timeline.note_scroller_map.add_child(offset_start_cell)
 	
-	print(Timeline.note_scroller_map.get_children())
+	var offset_end_cell = ColorRect.new()
+	offset_end_cell.name = 'end_cell'
+	offset_end_cell.color = Color.BLACK
+	offset_end_cell.size_flags_horizontal = Control.SIZE_EXPAND
+	offset_end_cell.custom_minimum_size.x = (dummy_map_size - map_size) / Global.note_speed
+
+
+	var offset_start_cell = ColorRect.new()
+	offset_start_cell.name = 'start_cell'
+	offset_start_cell.color = Color.BLACK
+	offset_start_cell.size_flags_horizontal = Control.SIZE_EXPAND
+	offset_start_cell.custom_minimum_size.x = (Global.offset * 1000) / Global.note_speed
+
+	Timeline.note_scroller_map.add_child(offset_end_cell)
+	Timeline.note_scroller_map.add_child(offset_start_cell)
+
+	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('end_cell'), 0 )
+	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('start_cell'), Timeline.note_scroller_map.get_children().size()-1)
+	print("Map children size = %s" % [Timeline.note_scroller_map.get_children().size() - 1])
 	
 
 func _input(event):

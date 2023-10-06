@@ -111,7 +111,9 @@ func get_current_bpm() -> float:
 func clear_children(parent: Node):
 	print("Cleaning %s's children" % parent.name)
 	for child in parent.get_children():
+		parent.remove_child(child)
 		child.queue_free()
+		continue
 
 func reload_bpm():
 	var cumulativeBeats = 0.0
@@ -150,7 +152,7 @@ func scratch_playback(ev, ref:AudioStreamPlayer):
 		if ev is InputEventMouseMotion:
 			pitch_scratch = ev.velocity.x / 10000
 			if sign(pitch_scratch) < 0:
-				print("exception check ", ref.pitch_scale)
+				#print("exception check ", ref.pitch_scale)
 				if ref.pitch_scale < 0.1 : return # Exception check
 				ref.pitch_scale += pitch_scratch
 			ref.pitch_scale = clampf(ref.pitch_scale, 0.0001, 1.0)
