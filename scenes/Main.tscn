@@ -717,9 +717,10 @@ mouse_force_pass_scroll_events = false
 
 [node name="KeyTimeline" type="ScrollContainer" parent="Timeline"]
 modulate = Color(0.817521, 0.817521, 0.817521, 1)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.490197
+anchor_bottom = 0.463236
 mouse_filter = 0
 horizontal_scroll_mode = 0
 metadata/_edit_use_anchors_ = true
@@ -865,9 +866,9 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_awqg8")
 [node name="Label" type="Label" parent="Timeline/KeyTimeline/KeyContainer/SoundLoops"]
 z_index = 1
 layout_mode = 0
-offset_left = 15.0
+offset_left = 16.0
 offset_top = 8.0
-offset_right = 188.0
+offset_right = 189.0
 offset_bottom = 37.0
 theme_override_colors/font_color = Color(1, 1, 1, 0.737255)
 theme_override_font_sizes/font_size = 18
@@ -921,9 +922,9 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_awqg8")
 [node name="Label" type="Label" parent="Timeline/KeyTimeline/KeyContainer/VoiceBanks"]
 z_index = 1
 layout_mode = 0
-offset_left = 15.0
+offset_left = 16.0
 offset_top = 8.0
-offset_right = 188.0
+offset_right = 189.0
 offset_bottom = 37.0
 theme_override_colors/font_color = Color(1, 1, 1, 0.737255)
 theme_override_font_sizes/font_size = 18
@@ -1011,7 +1012,7 @@ text = "NOTES"
 
 [node name="LineCenter" type="Line2D" parent="Timeline/NoteTimeline/NoteLine"]
 z_index = 1
-position = Vector2(0, 1)
+position = Vector2(0, 11)
 points = PackedVector2Array(0, 104, 0, -304)
 width = 5.0
 default_color = Color(0.619608, 0.027451, 0.266667, 1)

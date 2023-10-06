@@ -35,6 +35,7 @@ func _ready():
 	Timeline.timeline_ui = [
 		Timeline.note_timeline, 
 		Timeline.key_timeline, 
+		Timeline.shutter_timeline, 
 		Timeline.animations_timeline, 
 		Timeline.backgrounds_timeline,
 		Timeline.modifier_timeline,

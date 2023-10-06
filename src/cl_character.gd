@@ -46,6 +46,7 @@ func _on_song_loaded():
 		bg_type = Save.settings['background_type']
 		pattern.visible = bg_type == 0; sprite.visible = bg_type == 1
 	else:
+		bg_type = 0
 		pattern.show(); sprite.hide()
 	change_background(0)
 
@@ -269,7 +270,10 @@ func run_loop():
 
 func change_background(idx: int):
 	if idx < 0: idx = 0
-	if Save.keyframes['background'].size() <= 0: return
+	if Save.keyframes['background'].is_empty():
+		pattern.scale = Vector2(0.278, 0.281)
+		return
+	
 	var bg = Save.keyframes['background'][idx]
 	
 	# Change Texture

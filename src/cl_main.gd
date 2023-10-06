@@ -69,17 +69,17 @@ func _on_note_timeline_gui_input(event):
 func check_drag(event):
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
-				for x in Timeline.timeline_ui:
-					if Timeline.check_gui_mouse(x):
-						x.mouse_default_cursor_shape = CURSOR_DRAG
-				Timeline.note_timeline.mouse_default_cursor_shape = CURSOR_DRAG
-				Timeline.scroll = true
+			for x in Timeline.timeline_ui:
+				if Timeline.check_gui_mouse(x):
+					x.mouse_default_cursor_shape = CURSOR_DRAG
+			Timeline.note_timeline.mouse_default_cursor_shape = CURSOR_DRAG
+			Timeline.scroll = true
 		elif (!event.pressed):
-				for x in Timeline.timeline_ui: ## For stubborn multinested KeyContainer
-					if Timeline.check_gui_mouse(x):
-						x.mouse_default_cursor_shape = CURSOR_ARROW
-				Timeline.note_timeline.mouse_default_cursor_shape = CURSOR_ARROW
-				Timeline.scroll = false
+			for x in Timeline.timeline_ui: ## For stubborn multinested KeyContainer
+				if Timeline.check_gui_mouse(x):
+					x.mouse_default_cursor_shape = CURSOR_ARROW
+			Timeline.note_timeline.mouse_default_cursor_shape = CURSOR_ARROW
+			Timeline.scroll = false
 	if event is InputEventMouseMotion:
 		if Timeline.scroll:
 			Timeline.clamp_seek(event.relative.x * 0.005)
