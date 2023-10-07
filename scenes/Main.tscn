@@ -1036,27 +1036,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -76.0
-offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
-metadata/_edit_lock_ = true
-
-[node name="ColorRect" type="ColorRect" parent="Timeline/NoteTimeline/NoteScroller/Map"]
-custom_minimum_size = Vector2(900, 100)
-layout_mode = 2
-color = Color(0.576471, 1, 0.054902, 1)
-
-[node name="ColorRect2" type="ColorRect" parent="Timeline/NoteTimeline/NoteScroller/Map"]
-custom_minimum_size = Vector2(900, 100)
-layout_mode = 2
-color = Color(0.701961, 0, 0.447059, 1)
-
-[node name="ColorRect3" type="ColorRect" parent="Timeline/NoteTimeline/NoteScroller/Map"]
-custom_minimum_size = Vector2(900, 100)
-layout_mode = 2
-color = Color(0.976471, 0.537255, 0.298039, 1)
 
 [node name="HScrollBar" type="HScrollBar" parent="Timeline/NoteTimeline/NoteScroller"]
 layout_mode = 1

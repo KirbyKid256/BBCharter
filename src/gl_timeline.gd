@@ -31,6 +31,7 @@ var note_scroller: Control
 
 var inc_scale: float
 var scroll: bool = false
+var zoom_scale_range: Array = [100, 1000]
 
 var note_timeline: Panel
 var note_scroller_map: HBoxContainer
@@ -144,6 +145,7 @@ func update_visuals():
 	ref_arr.sort_custom(func(a, b): return a['data']['timestamp'] < b['data']['timestamp'])
 	for x in ref_arr.size():
 		ref = ref_arr[x]
+		print("ref %s debug %s " % [x,ref.position.x])
 		ref_bg = ref_arr[x].get_node("Background")
 		ref_thumb = ref_arr[x].get_node("Thumb")
 		
@@ -161,9 +163,8 @@ func update_visuals():
 
 		
 		ref_bg.size = ref_thumb.get_rect().size
-		print("Color: ", ref_bg.color)
-		ref_bg.position = Vector2(-ref_bg.size.x, -ref_bg.size.y / 2) ## Reset size and pos
 		
+		ref_bg.position = Vector2(-ref_bg.size.x, -ref_bg.size.y / 2) ## Reset size and pos
 		ref_bg.size.x = abs(ref_next.position.x - ref.position.x) / ref.scale.x
 		ref_bg.position.x += ref_thumb.get_rect().size.x
 		ref_bg.position.y = ref_bg.size.y / 2
@@ -171,7 +172,7 @@ func update_visuals():
 
 func update_map():
 	var dummy_map_size: float = 0.0
-	var map_size: float = Global.song_length * 1000
+	var map_size: float = (Global.song_length - Global.offset) * 1000
 	var ref_arr: Array = Timeline.animations_track.get_children()
 	var note_arr: Array = Timeline.note_container.get_children()
 	
@@ -181,47 +182,82 @@ func update_map():
 	if Timeline.note_scroller_map.get_children().size() > 0:
 		Global.clear_children(Timeline.note_scroller_map)
 	
-	var _offset_start = Global.offset * Global.note_speed
-	var _offset_end = map_size - (note_arr.back().data['timestamp'] * Global.note_speed)
+	var grabber_size = Global.note_speed * Global.zoom_factor
+	#print("Grabber: ", grabber_size)
+	#Timeline.note_scroller.get_theme_stylebox("grabber").content_margin_left = (zoom_scale_range[1] - grabber_size) / Global.note_speed
+	#Timeline.note_scroller.get_theme_stylebox("grabber").content_margin_right = (zoom_scale_range[1] - grabber_size) / Global.note_speed
+	#print("Grabber: %s %s " % [Global.note_speed, Timeline.note_scroller.get_theme_stylebox("grabber").content_margin_right])
+	#var _offset_start = Global.offset * Global.note_speed
+	#var _offset_end = map_size - (note_arr.back().data['timestamp'] * Global.note_speed)
 	
 	for x in ref_arr.size():
-		#print(ref_arr[x].get_node("Background").size.x)
-		dummy_map_size += ref_arr[x].get_node("Background").size.x
+		
+		#print("Background Ribbon size %s : %s, Thumb size : %s, Scale : %s, Pos: %s" % 
+			#[
+				#x, ref_arr[x].get_node("Background").size.x, 
+				#ref_arr[x].get_node("Thumb").get_rect().size.x, 
+				#ref_arr[x].scale.x,
+				#ref_arr[x].position.x
+			#])
+			
+		dummy_map_size += (ref_arr[x].get_node("Background").size.x) * Global.zoom_factor
+		#print("Calc: ", (ref_arr[x].get_node("Background").size.x + (ref_arr[x].get_node("Thumb").get_rect().size.x)) * Global.zoom_factor) 
+	
+	var offset_end_cell = ColorRect.new()
+	var offset_end_size = ((map_size - (note_arr.back().data['timestamp'] * 1000)) / dummy_map_size) * Global.zoom_factor
+	var offset_start_cell = ColorRect.new()
+	var offset_start_size = ((Global.offset * 1000) / dummy_map_size) * Global.zoom_factor
+	
+	dummy_map_size += offset_end_size + offset_start_size
+	
+	offset_end_cell.name = 'end_cell'
+	offset_end_cell.color = Color.BLACK
+	offset_end_cell.size_flags_horizontal = Control.SIZE_EXPAND
+	#offset_end_cell.custom_minimum_size.x = (((note_arr.back().data['timestamp'] * 1000)) / map_size) * Timeline.note_scroller.size.x * Global.zoom_factor
+	offset_end_cell.custom_minimum_size.x = offset_end_size * Timeline.note_scroller.size.x
+	#print("Last Note %s at %s" % [map_size ,note_arr.back().data['timestamp']])
+	#print(map_size - (note_arr.back().data['timestamp'] * 1000))
+
+
+	offset_start_cell.name = 'start_cell'
+	offset_start_cell.color = Color.BLACK
+	offset_start_cell.size_flags_horizontal = Control.SIZE_EXPAND
+	#offset_start_cell.custom_minimum_size.x = ((Global.offset * 1000) / map_size) * Timeline.note_scroller.size.x * Global.zoom_factor
+	offset_start_cell.custom_minimum_size.x = offset_start_size * Timeline.note_scroller.size.x
+	
+	
+	#offset_start_cell.custom_minimum_size.x = ((Global.offset * 1000) / dummy_map_size) * Timeline.note_scroller.size.x * Global.zoom_factor
+	#offset_end_cell.custom_minimum_size.x = ((map_size - (note_arr.back().data['timestamp'] * 1000)) / dummy_map_size) * Timeline.note_scroller.size.x * Global.zoom_factor
+	#print("Offset Cell og sizes %s %s" % [((Global.offset * 1000) / map_size) * Global.zoom_factor, ((map_size - (note_arr.back().data['timestamp'] * 1000)) / dummy_map_size) * Global.zoom_factor])
 	print("Map Sizes Song: %s (%s * 1000) Dummy: %s" % [map_size, Global.song_length, dummy_map_size])
+	#print(Global.zoom_factor)
 	
-	
-	for x in range(ref_arr.size()-1, -1, -1):
+	for x in range(ref_arr.size()-1, -1, -1): # Adding Cells
 		var cell = ColorRect.new()
 		cell.color = ref_arr[x].get_node("Background").color
 		cell.color.a = 1.0
 		cell.size_flags_horizontal = Control.SIZE_EXPAND
 		
 		# Cell size
-		cell.custom_minimum_size.x = ceil(((ref_arr[x].get_node("Background").size.x) / dummy_map_size) * Timeline.note_scroller.size.x)
-		print("Cell %s - RibSize: %s Color: %s SizeX: %s PosX: %s" % [x, ref_arr[x].get_node("Background").size.x, ref_arr[x].get_node("Background").color, cell.custom_minimum_size.x, cell.position.x])
+		cell.custom_minimum_size.x = (ref_arr[x].get_node("Background").size.x / dummy_map_size) * Timeline.note_scroller.size.x * Global.zoom_factor
+		print("Cell %s - RibSize: %s Color: %s SizeX: %s OG Size: %s" % [x, ref_arr[x].get_node("Background").size.x, cell.color, cell.custom_minimum_size.x, (ref_arr[x].get_node("Background").size.x / dummy_map_size)])
 		Timeline.note_scroller_map.add_child(cell)
 	
 	
-	var offset_end_cell = ColorRect.new()
-	offset_end_cell.name = 'end_cell'
-	offset_end_cell.color = Color.BLACK
-	offset_end_cell.size_flags_horizontal = Control.SIZE_EXPAND
-	offset_end_cell.custom_minimum_size.x = (dummy_map_size - map_size) / Global.note_speed
-
-
-	var offset_start_cell = ColorRect.new()
-	offset_start_cell.name = 'start_cell'
-	offset_start_cell.color = Color.BLACK
-	offset_start_cell.size_flags_horizontal = Control.SIZE_EXPAND
-	offset_start_cell.custom_minimum_size.x = (Global.offset * 1000) / Global.note_speed
-
 	Timeline.note_scroller_map.add_child(offset_end_cell)
 	Timeline.note_scroller_map.add_child(offset_start_cell)
 
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('end_cell'), 0 )
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('start_cell'), Timeline.note_scroller_map.get_children().size()-1)
-	print("Starting cell size = %s" % offset_start_cell.custom_minimum_size.x)
+	
+	Timeline.note_scroller_map.queue_sort()
+	
+	print("Starting cell size = %s | Ending cell size = %s" % [offset_start_cell.custom_minimum_size.x, offset_end_cell.custom_minimum_size.x])
 	print("Map children size = %s" % [Timeline.note_scroller_map.get_children().size() - 1])
+	
+	#print(Timeline.note_scroller_map.size)
+	#for x in Timeline.note_scroller_map.get_children():
+		#print(x.size)
 	
 
 func _input(event):
@@ -254,12 +290,14 @@ func _input(event):
 			#print("Marquee Drag")
 		if check_gui_mouse(timeline_root):
 			# Zooming
+			Timeline.key_timeline.mouse_filter = Control.MOUSE_FILTER_STOP
 			if event.get('button_index') != null:
 				if event.is_command_or_control_pressed():
+					Timeline.key_timeline.mouse_filter = Control.MOUSE_FILTER_IGNORE
 					if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-						Global.note_speed = clampf(Global.note_speed + 10, 100, 1000 )
+						Global.note_speed = clampf(Global.note_speed + 10, zoom_scale_range[0], zoom_scale_range[1] )
 					if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-						Global.note_speed = clampf(Global.note_speed - 10, 100, 1000 )
+						Global.note_speed = clampf(Global.note_speed - 10, zoom_scale_range[0], zoom_scale_range[1] )
 					Events.emit_signal('update_notespeed')
 					update_visuals()
 					update_map()
@@ -286,7 +324,7 @@ func _input(event):
 		if check_gui_mouse(timeline_root):
 			# Zooming
 			if event.is_command_or_control_pressed():
-				Global.note_speed = clampf(Global.note_speed + (10 * event.delta.y), 100, 1000)
+				Global.note_speed = clampf(Global.note_speed + (10 * event.delta.y), zoom_scale_range[0], zoom_scale_range[1] )
 				Events.emit_signal('update_notespeed')
 			else:
 				# Seeking
