@@ -220,6 +220,7 @@ func update_map():
 
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('end_cell'), 0 )
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('start_cell'), Timeline.note_scroller_map.get_children().size()-1)
+	print("Starting cell size = %s" % offset_start_cell.custom_minimum_size.x)
 	print("Map children size = %s" % [Timeline.note_scroller_map.get_children().size() - 1])
 	
 

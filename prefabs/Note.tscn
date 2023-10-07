@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://prefabs/Note.gd" id="1_8rwjc"]
 [ext_resource type="Texture2D" uid="uid://cgxj5tkk8aryt" path="res://assets/note_circle.png" id="2_52dds"]
 [ext_resource type="Texture2D" uid="uid://dsf8qvbqau8rm" path="res://assets/icon_audio.png" id="3_qxxje"]
-[ext_resource type="Texture2D" path="res://assets/note_glow.png" id="3_uoa5b"]
+[ext_resource type="Texture2D" uid="uid://b2f7qllc7x2g0" path="res://assets/note_glow.png" id="3_uoa5b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3qm5d"]
 size = Vector2(52, 52)

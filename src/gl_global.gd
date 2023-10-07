@@ -149,12 +149,12 @@ func get_beat_at_time(time: float) -> float:
 func scratch_playback(ev, ref:AudioStreamPlayer):
 	var pitch_scratch : float
 	if Timeline.scroll:
-		if ev is InputEventMouseMotion:
+		if ev is InputEventMouseMotion and Global.song_playing:
 			pitch_scratch = ev.velocity.x / 10000
 			if sign(pitch_scratch) < 0:
 				#print("exception check ", ref.pitch_scale)
 				if ref.pitch_scale < 0.1 : return # Exception check
-				ref.pitch_scale += pitch_scratch
+			ref.pitch_scale += pitch_scratch
 			ref.pitch_scale = clampf(ref.pitch_scale, 0.0001, 1.0)
 		else:
 			ref.pitch_scale = 1.0
