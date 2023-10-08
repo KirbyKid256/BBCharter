@@ -40,7 +40,7 @@ var project_loaded = false
 var project_saved = false
 
 var current_tool = Enums.TOOL.SELECT
-var replacing_allowed = true
+var replacing_allowed: bool
 
 var lock_timeline = false
 var reloading_bpm = false
@@ -78,7 +78,9 @@ func load_texture(path) -> ImageTexture:
 	return tex
 
 func get_timestamp_snapped(pos: float = song_pos) -> float:
-	return get_time_at_beat(snappedf(get_beat_at_time(pos), 1.0/snapping_factor))
+	var time = get_time_at_beat(snappedf(get_beat_at_time(pos), 1.0/snapping_factor))
+	if time > Global.song_length - Global.offset: return Global.song_length - Global.offset
+	return time
 
 func get_mouse_timestamp() -> float:
 	var time = ((song_pos * note_speed) - mouse_pos)/note_speed

@@ -50,15 +50,9 @@ func setup(keyframe_data):
 	$Background.position = Vector2(-$Background.get_rect().size.x, -$Background.get_rect().size.y / 2)
 	$Background.color = Color(randf(), randf(), randf(), 0.4)
 
-
 func update_position():
-	print("%s %s" % [data['timestamp'], Timeline.note_container.get_children().back().data['timestamp']])
-	if data['timestamp'] >= Timeline.note_container.get_children().back().data['timestamp']:
-		beat = Global.get_beat_at_time(Timeline.note_container.get_children().back().data['timestamp'])
 	data['timestamp'] = Global.get_time_at_beat(beat)
 	position.x = -((data['timestamp'] - Global.offset) * Global.note_speed)
-	Timeline.update_visuals()
-	Timeline.update_map()
 
 func update_beat_and_position(time: float):
 	beat = Global.get_beat_at_time(time)

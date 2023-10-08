@@ -53,7 +53,6 @@ var marquee_point_a: Vector2 = Vector2(0,0)
 var marquee_point_b: Vector2 = Vector2(0,0)
 var marquee_visible: ColorRect
 
-
 var timeline_ui: Array
 
 func create_note(key: int):
@@ -79,6 +78,8 @@ func create_note(key: int):
 	Global.current_chart.sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
 	Events.emit_signal("note_created", new_note_data)
 	print('Added note ' + str(key) + ' at %s' % [snappedf(time, 0.001)])
+	update_visuals()
+	update_map()
 
 func delete_note(note: Node2D, idx: int):
 	Global.project_saved = false
@@ -86,6 +87,8 @@ func delete_note(note: Node2D, idx: int):
 	print("Deleting note %s at %s (index %s)" % [note, note.data['timestamp'],idx])
 	Global.current_chart.remove_at(idx)
 	note.queue_free()
+	update_visuals()
+	update_map()
 
 func delete_keyframe(section: String, node: Node2D, idx: int):
 	if Save.keyframes[section].size() > 0:
@@ -142,13 +145,15 @@ func update_visuals():
 	var note_arr: Array = Timeline.note_container.get_children()
 	
 	ref_arr.sort_custom(func(a, b): return a['data']['timestamp'] < b['data']['timestamp'])
+	note_arr.sort_custom(func(a, b): return a['data']['timestamp'] < b['data']['timestamp'])
+	
 	for x in ref_arr.size():
 		ref = ref_arr[x]
 		#print("ref %s debug %s " % [x,ref.position.x])
 		ref_bg = ref_arr[x].get_node("Background")
 		ref_thumb = ref_arr[x].get_node("Thumb")
 		
-		if note_arr == null or note_arr.is_empty() : return
+		if note_arr == null or note_arr.is_empty(): return
 		
 		if x+1 == ref_arr.size():
 			ref_bg.size = ref_thumb.get_rect().size
@@ -173,7 +178,9 @@ func update_map():
 	var note_arr: Array = Timeline.note_container.get_children()
 	
 	if note_arr == null or note_arr.is_empty(): return
+	
 	ref_arr.sort_custom(func(a, b): return a['data']['timestamp'] < b['data']['timestamp'])
+	note_arr.sort_custom(func(a, b): return a['data']['timestamp'] < b['data']['timestamp'])
 	
 	if Timeline.note_scroller_map.get_children().size() > 0:
 		Global.clear_children(Timeline.note_scroller_map)
@@ -181,8 +188,8 @@ func update_map():
 	for x in ref_arr.size():
 		if x+1 == ref_arr.size(): map_size += abs(ref_arr[x].data['timestamp'] - note_arr.back().data['timestamp']) / Global.song_length
 		else: map_size += abs(ref_arr[x].data['timestamp'] - ref_arr[x+1].data['timestamp']) / Global.song_length
-	map_size *= 1920
-	#print("Map Size: %s / 1920" % map_size)
+	map_size *= timeline_root.size.x
+	print("Map Size: %s / %s" % [map_size, timeline_root.size.x])
 	
 	for x in ref_arr.size():
 		var cell = ColorRect.new()
@@ -192,13 +199,13 @@ func update_map():
 		# Cell size
 		if x+1 == ref_arr.size(): cell.custom_minimum_size.x = abs(ref_arr[x].data['timestamp'] - note_arr.back().data['timestamp']) / Global.song_length
 		else: cell.custom_minimum_size.x = abs(ref_arr[x].data['timestamp'] - ref_arr[x+1].data['timestamp']) / Global.song_length
-		cell.custom_minimum_size.x *= 1920
-		#print("Cell %s - RibSize: %s Color: %s SizeX: %s" % [x, ref_arr[x].get_node("Background").size.x, ref_arr[x].get_node("Background").color, cell.custom_minimum_size.x])
+		cell.custom_minimum_size.x *= timeline_root.size.x
+		print("Cell %s - SizeX: %s" % [x, cell.custom_minimum_size.x])
 		Timeline.note_scroller_map.add_child(cell)
 	
-	var offset_start: float = (Global.offset / Global.song_length) * 1920
-	var offset_end: float = 1920 - map_size - offset_start
-	#print(map_size)
+	var offset_start: float = (Global.offset / Global.song_length) * timeline_root.size.x
+	var offset_end: float = timeline_root.size.x - map_size - offset_start
+	print(map_size)
 	
 	var offset_end_cell = ColorRect.new()
 	offset_end_cell.name = 'end_cell'
@@ -213,7 +220,7 @@ func update_map():
 	var total_map_size: float = 0.0
 	for ribbon in Timeline.note_scroller_map.get_children():
 		total_map_size += ribbon.custom_minimum_size.x
-	#print(total_map_size)
+	print(total_map_size + offset_end)
 	
 	Timeline.note_scroller_map.add_child(offset_end_cell)
 	Timeline.note_scroller_map.add_child(offset_start_cell)

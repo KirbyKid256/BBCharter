@@ -33,7 +33,9 @@ func update_beat_and_position(time: float):
 	#print("pos and beat update")
 	beat = Global.get_beat_at_time(time)
 	data['timestamp'] = time
-	position.x = -((data['timestamp'] - Global.offset) * Global.note_speed)
+	position.x = -((time - Global.offset) * Global.note_speed)
+	Timeline.update_visuals()
+	Timeline.update_map()
 
 func _process(_delta):
 	visible = global_position.x >= Global.note_culling_bounds.x and global_position.x < Global.note_culling_bounds.y

@@ -115,6 +115,7 @@ func create_ui():
 		$Eighth.add_child(new_beat_indicator)
 		new_beat_indicator.setup(i, Enums.UI_INDICATOR_TYPE.EIGHTH_BEAT)
 	
+	remove_indicators()
 	Events.emit_signal('update_snapping', Global.snapping_ratios.find(Global.snapping_factor))
 
 func reset_indicators():
@@ -174,7 +175,47 @@ func reset_indicators():
 			else:
 				$Eighth.remove_child($Eighth.get_child($Eighth.get_child_count()-1))
 	
+	remove_indicators()
 	Events.emit_signal('update_snapping', Global.snapping_ratios.find(Global.snapping_factor))
+
+func remove_indicators():
+	var song_end = -(Global.song_length - Global.offset * 2) * Global.note_speed
+	
+	for i in range($Beat.get_child_count()-1, -1, -1):
+		var beat = $Beat.get_child(i)
+		print("Beat Position: ", beat.position.x, " | Song Length Position: ", song_end)
+		if beat.position.x < song_end: $Beat.remove_child(beat)
+		else: break
+	
+	for i in range($Half.get_child_count()-1, -1, -1):
+		var half = $Half.get_child(i)
+		print("Half Position: ", half.position.x, " | Song Length Position: ", song_end)
+		if half.position.x < song_end: $Half.remove_child(half)
+		else: break
+	
+	for i in range($Third.get_child_count()-1, -1, -1):
+		var third = $Third.get_child(i)
+		print("Third Position: ", third.position.x, " | Song Length Position: ", song_end)
+		if third.position.x < song_end: $Third.remove_child(third)
+		else: break
+	
+	for i in range($Quarter.get_child_count()-1, -1, -1):
+		var quarter = $Quarter.get_child(i)
+		print("Quarter Position: ", quarter.position.x, " | Song Length Position: ", song_end)
+		if quarter.position.x < song_end: $Quarter.remove_child(quarter)
+		else: break
+	
+	for i in range($Sixth.get_child_count()-1, -1, -1):
+		var sixth = $Sixth.get_child(i)
+		print("Sixth Position: ", sixth.position.x, " | Song Length Position: ", song_end)
+		if sixth.position.x < song_end: $Sixth.remove_child(sixth)
+		else: break
+	
+	for i in range($Eighth.get_child_count()-1, -1, -1):
+		var eighth = $Eighth.get_child(i)
+		print("Eighth Position: ", eighth.position.x, " | Song Length Position: ", song_end)
+		if eighth.position.x < song_end: $Eighth.remove_child(eighth)
+		else: break
 
 func _process(_delta):
 	note_pos = Global.song_pos * Global.note_speed
