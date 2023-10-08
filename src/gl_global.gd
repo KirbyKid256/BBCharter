@@ -113,8 +113,7 @@ func get_current_bpm() -> float:
 func clear_children(parent: Node):
 	print("Cleaning %s's children" % parent.name)
 	for child in parent.get_children():
-		parent.remove_child(child)
-		child.queue_free()
+		parent.remove_child(child); child.queue_free()
 		continue
 
 func reload_bpm():

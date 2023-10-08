@@ -84,19 +84,18 @@ func create_note(key: int):
 func delete_note(note: Node2D, idx: int):
 	Global.project_saved = false
 	Events.emit_signal("note_deleted")
-	print("Deleting note %s at %s (index %s)" % [note, note.data['timestamp'],idx])
+	print("Deleting note %s at %s (index %s)" % [note, note.data['timestamp'], idx])
 	Global.current_chart.remove_at(idx)
-	note.queue_free()
+	note.get_parent().remove_child(note); note.queue_free()
 	update_visuals()
 	update_map()
 
 func delete_keyframe(section: String, node: Node2D, idx: int):
 	if Save.keyframes[section].size() > 0:
 		Global.project_saved = false
-		print("Deleting %s %s at %s (index %s)" % [section, node, node.data['timestamp'],idx])
+		print("Deleting %s %s at %s (index %s)" % [section, node, node.data['timestamp'], idx])
 		Save.keyframes[section].remove_at(idx)
-		node.queue_free()
-	await get_tree().process_frame
+		node.get_parent().remove_child(node); node.queue_free()
 	update_visuals()
 	update_map()
 
@@ -133,7 +132,7 @@ func clear_timeline():
 func clear_notes_only():
 	print('Cleaning Notes Only')
 	Global.current_chart.clear()
-	for note in note_container.get_children(): note.queue_free()
+	Global.clear_children(note_container)
 
 func update_visuals():
 	print("Update Visuals!")
