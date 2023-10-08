@@ -199,12 +199,11 @@ func update_map():
 		if x+1 == ref_arr.size(): cell.custom_minimum_size.x = abs(ref_arr[x].data['timestamp'] - note_arr.back().data['timestamp']) / Global.song_length
 		else: cell.custom_minimum_size.x = abs(ref_arr[x].data['timestamp'] - ref_arr[x+1].data['timestamp']) / Global.song_length
 		cell.custom_minimum_size.x *= timeline_root.size.x
-		print("Cell %s - SizeX: %s" % [x, cell.custom_minimum_size.x])
+		print("Cell %s | Timestamp: %s - SizeX: %s" % [x, ref_arr[x].data['timestamp'], cell.custom_minimum_size.x])
 		Timeline.note_scroller_map.add_child(cell)
 	
 	var offset_start: float = (Global.offset / Global.song_length) * timeline_root.size.x
 	var offset_end: float = timeline_root.size.x - map_size - offset_start
-	print(map_size)
 	
 	var offset_end_cell = ColorRect.new()
 	offset_end_cell.name = 'end_cell'
@@ -216,17 +215,11 @@ func update_map():
 	offset_start_cell.color = Color.BLACK
 	offset_start_cell.custom_minimum_size.x = offset_start
 	
-	var total_map_size: float = 0.0
-	for ribbon in Timeline.note_scroller_map.get_children():
-		total_map_size += ribbon.custom_minimum_size.x
-	print(total_map_size + offset_end)
-	
 	Timeline.note_scroller_map.add_child(offset_end_cell)
 	Timeline.note_scroller_map.add_child(offset_start_cell)
 	
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('start_cell'), 0)
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('end_cell'), Timeline.note_scroller_map.get_children().size()-1)
-	#print("Map children size = %s" % Timeline.note_scroller_map.get_children().size())
 
 func _input(event):
 	if Popups.open or Global.lock_timeline: return

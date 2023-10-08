@@ -64,7 +64,7 @@ func _process(_delta):
 				move_pos = false
 
 func update_visual():
-	print("update visual!")
+	# print("update visual!")
 	$Voice.visible = data.has('trigger_voice')
 	$Visual.self_modulate = Global.note_colors[data['input_type']]
 	$Glow.self_modulate = Global.note_colors[data['input_type']]
