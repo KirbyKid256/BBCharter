@@ -36,7 +36,7 @@ func _input(event):
 		Save.save_project()
 	if event.is_action_pressed("fullscreen"):
 		if get_window().mode == get_window().MODE_WINDOWED:
-			get_window().mode = get_window().MODE_FULLSCREEN
+			get_window().mode = get_window().MODE_EXCLUSIVE_FULLSCREEN
 		else:
 			get_window().mode = get_window().MODE_WINDOWED
 	if event.is_action_pressed("open_project_dir"):
