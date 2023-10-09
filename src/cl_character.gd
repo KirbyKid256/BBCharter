@@ -149,7 +149,7 @@ func set_animation(idx: int):
 
 func change_animation(idx: int):
 	set_animation(idx)
-	if Save.keyframes.has('loops') and Save.keyframes['loops'].size() > 0 and loop_index > 1: run_loop()
+	if Save.keyframes.has('loops') and Save.keyframes['loops'].size() > 0 and loop_index > 0: run_loop()
 
 func _on_hit_note(data):
 	await get_tree().process_frame

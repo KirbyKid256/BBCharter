@@ -44,7 +44,6 @@ func _ready():
 		Timeline.voice_bank_timeline
 	]
 	
-	
 	Events.chart_loaded.connect(_on_chart_loaded)
 	Events.song_loaded.connect(_on_song_loaded)
 	Events.note_created.connect(_on_note_created)
@@ -72,6 +71,7 @@ func _on_song_loaded():
 	
 	Timeline.note_timeline.position.y = 168
 	Timeline.key_timeline.size.y = 168
+	$"../LineCenter".points[1].y = -272
 
 func on_area_enter(area):
 	if area.owner.selected_note != null: return
