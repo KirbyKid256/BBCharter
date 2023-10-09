@@ -69,6 +69,9 @@ func _on_song_loaded():
 	Global.clear_children(Timeline.sixth_container)
 	Global.clear_children(Timeline.eighth_container)
 	create_ui()
+	
+	Timeline.note_timeline.position.y = 168
+	Timeline.key_timeline.size.y = 168
 
 func on_area_enter(area):
 	if area.owner.selected_note != null: return

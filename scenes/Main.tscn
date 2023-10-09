@@ -958,8 +958,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.490197
 anchor_right = 1.0
-anchor_bottom = 1.0049
-offset_bottom = -2.0
+anchor_bottom = 1.078
+offset_bottom = 0.176392
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fxxnx")
@@ -1019,18 +1019,20 @@ points = PackedVector2Array(0, 104, 0, -304)
 width = 5.0
 default_color = Color(0.619608, 0.027451, 0.266667, 1)
 
-[node name="NoteScroller" type="Control" parent="Timeline/NoteTimeline"]
+[node name="NoteScroller" type="ColorRect" parent="Timeline/NoteTimeline"]
 visible = false
 z_index = 1
 clip_contents = true
 layout_mode = 1
-anchor_top = 0.846
+anchors_preset = -1
+anchor_top = 0.866833
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 0.0320282
-offset_bottom = 3.05176e-05
+anchor_bottom = 1.02083
+offset_top = -0.0400238
+offset_bottom = -5.00003
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.0627451, 0.0627451, 0.0627451, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Map" type="HBoxContainer" parent="Timeline/NoteTimeline/NoteScroller"]
