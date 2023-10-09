@@ -57,8 +57,8 @@ func _process(_delta):
 		var idx = loop_index-1; if idx < 0: idx = 0
 		var loop = Save.keyframes['loops'][idx]
 		if horny:
-			if visual.texture != Assets.get_asset(loop['animations']['horny']):
-				visual.texture = Assets.get_asset(loop['animations']['horny'])
+			if visual.texture != Assets.get_asset(loop['animations'].get('horny', loop['animations']['normal'])):
+				visual.texture = Assets.get_asset(loop['animations'].get('horny', loop['animations']['normal']))
 				run_loop()
 		else:
 			if visual.texture != Assets.get_asset(loop['animations']['normal']):
@@ -128,7 +128,7 @@ func set_animation(idx: int):
 	visual.hframes = loop['sheet_data'].h
 	visual.vframes = loop['sheet_data'].v
 	total_sprite_frames = loop['sheet_data'].total
-	if horny: visual.texture = Assets.get_asset(loop['animations']['horny'])
+	if horny and loop['animations'].has('horny'): visual.texture = Assets.get_asset(loop['animations']['horny'])
 	else: visual.texture = Assets.get_asset(loop['animations']['normal'])
 	
 	if loop.has('manual_speed_multiplier'):

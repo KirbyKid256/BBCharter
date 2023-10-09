@@ -29,14 +29,19 @@ func setup(keyframe_data):
 	move_pos = false
 	data = keyframe_data
 	beat = Global.get_beat_at_time(data['timestamp'])
-	if data['animations']['normal'] == data['animations']['horny']:
-		$InputHandler.tooltip_text = data['animations']['horny']
+	
+	if data['animations'].has('horny'):
+		if data['animations']['normal'] == data['animations']['horny']:
+			$InputHandler.tooltip_text = data['animations']['horny']
+		else:
+			$InputHandler.tooltip_text = data['animations']['normal'] + '\n' + data['animations']['horny']
 	else:
-		$InputHandler.tooltip_text = data['animations']['normal'] + '\n' + data['animations']['horny']
+		$InputHandler.tooltip_text = data['animations']['normal']
+	
 	$Thumb.texture = Assets.get_asset(data['animations']['normal'])
 	if $Thumb.texture:
-		$Thumb.hframes = data['sheet_data']["h"] # Get hframes from preset
-		$Thumb.vframes = data['sheet_data']["v"] # Get vframes from preset
+		$Thumb.hframes = data['sheet_data'].h # Get hframes from preset
+		$Thumb.vframes = data['sheet_data'].v # Get vframes from preset
 		$Thumb.texture_filter = TEXTURE_FILTER_LINEAR
 		frame_size = $Thumb.texture.get_size() / Vector2($Thumb.hframes, $Thumb.vframes)
 		scale = Vector2(ratio * 1.777,ratio)/frame_size
