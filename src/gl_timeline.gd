@@ -172,7 +172,6 @@ func update_visuals():
 		ref_bg.position.y = ref_bg.size.y / 2
 
 func update_map():
-	var map_size: float = 0.0
 	var ref_arr: Array = Timeline.animations_track.get_children()
 	var note_arr: Array = Timeline.note_container.get_children()
 	
@@ -185,15 +184,8 @@ func update_map():
 		Global.clear_children(Timeline.note_scroller_map)
 	
 	for x in ref_arr.size():
-		if x+1 == ref_arr.size(): map_size += abs(ref_arr[x].data['timestamp'] - note_arr.back().data['timestamp']) / Global.song_length
-		else: map_size += abs(ref_arr[x].data['timestamp'] - ref_arr[x+1].data['timestamp']) / Global.song_length
-	map_size *= timeline_root.size.x
-	print("Map Size: %s / %s" % [map_size, timeline_root.size.x])
-	
-	for x in ref_arr.size():
 		var cell = ColorRect.new()
-		cell.color = ref_arr[x].get_node("Background").color
-		cell.color.a = 1.0
+		cell.color = ref_arr[x].get_node("Background").color; cell.color.a = 1.0
 		
 		# Cell size
 		if x+1 == ref_arr.size(): cell.custom_minimum_size.x = abs(ref_arr[x].data['timestamp'] - note_arr.back().data['timestamp']) / Global.song_length
@@ -203,7 +195,7 @@ func update_map():
 		Timeline.note_scroller_map.add_child(cell)
 	
 	var offset_start: float = (Global.offset / Global.song_length) * timeline_root.size.x
-	var offset_end: float = timeline_root.size.x - map_size - offset_start
+	var offset_end: float = timeline_root.size.x - offset_start
 	
 	var offset_end_cell = ColorRect.new()
 	offset_end_cell.name = 'end_cell'
@@ -219,7 +211,6 @@ func update_map():
 	Timeline.note_scroller_map.add_child(offset_start_cell)
 	
 	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('start_cell'), 0)
-	Timeline.note_scroller_map.move_child(Timeline.note_scroller_map.get_node('end_cell'), Timeline.note_scroller_map.get_children().size()-1)
 
 func _input(event):
 	if Popups.open or Global.lock_timeline: return
