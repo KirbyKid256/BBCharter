@@ -194,7 +194,7 @@ func update_map():
 		print("Cell %s | Timestamp: %s - SizeX: %s" % [x, ref_arr[x].data['timestamp'], cell.custom_minimum_size.x])
 		Timeline.note_scroller_map.add_child(cell)
 	
-	var offset_start: float = (Global.offset / Global.song_length) * timeline_root.size.x
+	var offset_start: float = ((Global.offset + ref_arr.front().data['timestamp']) / Global.song_length) * timeline_root.size.x
 	var offset_end: float = timeline_root.size.x - offset_start
 	
 	var offset_end_cell = ColorRect.new()
