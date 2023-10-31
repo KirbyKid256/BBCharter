@@ -57,9 +57,7 @@ func _on_create_button_up():
 		}
 	
 	for child in VBankContainer.get_children():
-		if child.get_class() == 'LineEdit':
-			if !child.text.ends_with('.mp3') and child.text.length() > 0: child.text += '.mp3'
-			new_voice_key['voice_paths'].append(child.text)
+		if child.get_class() == 'LineEdit': new_voice_key['voice_paths'].append(child.text)
 	
 	if Popups.id > 0 or Global.replacing_allowed:
 		if Popups.id > 0:

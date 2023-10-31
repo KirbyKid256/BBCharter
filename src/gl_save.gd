@@ -100,7 +100,11 @@ func load_cfg(file_name: String) -> Dictionary:
 
 func load_song():
 	var path = project_dir + "/audio/" + asset.get('song_path', "")
-	Global.music.stream = Global.load_mp3(path)
+	if path.get_extension() == "ogg":
+		Global.music.stream = AudioStreamOggVorbis.load_from_file(path)
+	else:
+		Global.music.stream = Global.load_mp3(path)
+	
 	Global.song_length = Global.music.stream.get_length()
 	Global.reload_bpm()
 	Global.zoom_factor = 60.0/keyframes.get('modifiers', modifier_default)[0]['bpm']

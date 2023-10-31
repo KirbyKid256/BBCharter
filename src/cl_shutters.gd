@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 var shutter_index: int
 var last_shutter_index: int

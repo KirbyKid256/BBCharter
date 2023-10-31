@@ -20,8 +20,7 @@ func setup_asset_note(asset_name):
 	if Assets.lib[asset_name] is ImageTexture:
 		icon.texture = Assets.lib[asset_name]
 		asset_type = Enums.ASSET.IMAGE
-	
-	elif Assets.lib[asset_name] is AudioStreamMP3:
+	elif Assets.lib[asset_name] is AudioStreamOggVorbis or Assets.lib[asset_name] is AudioStreamMP3:
 		icon.texture = Prefabs.audio_icon
 		asset_type = Enums.ASSET.AUDIO
 		music_preview.stream = Assets.lib[asset_name]

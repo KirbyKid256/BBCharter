@@ -22,11 +22,10 @@ func get_file_list(path: String) -> Array:
 func get_file_list_of_type(path: String, type:String) -> Array:
 	var files = DirAccess.get_files_at(path)
 	
-	for i in files.size():
-		if i < files.size():
-			var file = files[i]
-			if file.get_extension() != type:
-				files.remove_at(i)
+	for i in range(files.size()-1, -1, -1):
+		var file = files[i]
+		if file.get_extension() != type:
+			files.remove_at(i)
 	
 	return files
 
@@ -38,6 +37,9 @@ func load_images():
 		Assets.lib[image] = Global.load_texture(Save.project_dir + "/images/" + image)
 
 func load_audio():
+	for audio in get_file_list_of_type(Save.project_dir + "/audio", "ogg"):
+		if audio == Save.asset['song_path']: continue
+		Assets.lib[audio] = AudioStreamOggVorbis.load_from_file(Save.project_dir + "/audio/" + audio)
 	for audio in get_file_list_of_type(Save.project_dir + "/audio", "mp3"):
 		if audio == Save.asset['song_path']: continue
 		Assets.lib[audio] = Global.load_mp3(Save.project_dir + "/audio/" + audio)

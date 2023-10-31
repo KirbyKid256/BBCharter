@@ -2,6 +2,7 @@ extends Node
 
 var file_types = {
 	"mp3": "/audio/",
+	"ogg": "/audio/",
 	"png": "/images/",
 	"gif": "/images/",
 	"mp4": "/images/",
