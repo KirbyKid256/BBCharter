@@ -35,6 +35,10 @@ func load_single_image(filename: String):
 func load_images():
 	for image in get_file_list_of_type(Save.project_dir + "/images", "png"):
 		Assets.lib[image] = Global.load_texture(Save.project_dir + "/images/" + image)
+	for image in get_file_list_of_type(Save.project_dir + "/images", "jpg"):
+		Assets.lib[image] = Global.load_texture(Save.project_dir + "/images/" + image)
+	for image in get_file_list_of_type(Save.project_dir + "/images", "jpeg"):
+		Assets.lib[image] = Global.load_texture(Save.project_dir + "/images/" + image)
 
 func load_audio():
 	for audio in get_file_list_of_type(Save.project_dir + "/audio", "ogg"):
