@@ -9,7 +9,7 @@ var mouse_pos_start: float
 var mouse_pos_end: float
 var selected_key: Node2D
 
-var frame_size : Vector2
+var frame_size: Vector2
 var ratio = 104
 
 func _ready():
@@ -43,8 +43,10 @@ func setup(keyframe_data):
 		$Thumb.hframes = data['sheet_data'].h # Get hframes from preset
 		$Thumb.vframes = data['sheet_data'].v # Get vframes from preset
 		$Thumb.texture_filter = TEXTURE_FILTER_LINEAR
+		
 		frame_size = $Thumb.texture.get_size() / Vector2($Thumb.hframes, $Thumb.vframes)
-		scale = Vector2(ratio * 1.777,ratio)/frame_size
+		var ratioed = frame_size.y / ratio; scale = Vector2(1,1)/Vector2(ratioed,ratioed)
+		
 		$InputHandler.size = frame_size
 		$InputHandler.position = -$InputHandler.size/2
 		update_position()

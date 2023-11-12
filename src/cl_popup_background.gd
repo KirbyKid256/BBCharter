@@ -4,7 +4,7 @@ var path:String
 var timestamp:float
 
 # default/prev values
-var Scale:float = 1.0
+var Scale: float = 1.0
 
 func _ready():
 	Events.popups_opened.connect(_on_popups_opened)
@@ -18,7 +18,10 @@ func _on_popups_opened(_index):
 		reset()
 
 func _on_create_button_up():
-	var time:float = 0
+	var time:float
+	if Global.snapping_allowed: time = Global.get_timestamp_snapped()
+	else: time = Global.song_pos
+	if time < 0: time = 0
 	
 	var new_background_key = {
 		"timestamp":time,
@@ -58,7 +61,10 @@ func _on_add_background_to_timeline(asset_path):
 		else:
 			$Scale/CheckBox.button_pressed = false
 	else:
-		var time:float = 0
+		var time:float
+		if Global.snapping_allowed: time = Global.get_timestamp_snapped()
+		else: time = Global.song_pos
+		if time < 0: time = 0
 		
 		for background in Timeline.backgrounds_track.get_children():
 			if snappedf(background['data']['timestamp'], 0.001) == snappedf(time, 0.001) and !Global.replacing_allowed:

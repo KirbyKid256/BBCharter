@@ -1,5 +1,7 @@
 extends Node2D
 
+#TODO Overhaul Horny Note System
+
 @onready var pattern = $Panel/Pattern
 @onready var sprite = $Panel/Sprite
 @onready var visual = $Panel/Visual
@@ -125,6 +127,7 @@ func set_animation(idx: int):
 	var loop = Save.keyframes['loops'][idx]
 	
 	# Change Texture
+	visual.scale = Vector2(loop.get('scale_multiplier', 1), loop.get('scale_multiplier', 1))
 	visual.hframes = loop['sheet_data'].h
 	visual.vframes = loop['sheet_data'].v
 	total_sprite_frames = loop['sheet_data'].total
@@ -135,11 +138,6 @@ func set_animation(idx: int):
 		manual_speed_multiplier = loop['manual_speed_multiplier']
 	else:
 		if idx == 0: manual_speed_multiplier = 1
-	
-	if loop.has('scale_multiplier'):
-		visual.scale = Vector2(loop['scale_multiplier'], loop['scale_multiplier'])
-	else:
-		if idx == 0: visual.scale = Vector2(1, 1)
 	
 	if loop.has('position_offset'):
 		visual.offset.x = loop['position_offset'].x / 1.5
@@ -170,19 +168,10 @@ func _on_hit_note(data):
 		Events.emit_signal('horny_mode')
 	
 	current_note_timestamp = Global.current_chart[index]['timestamp']
-	if index < Global.current_chart.size()-1:
-		var next_note_distance = 1
-		if Global.current_chart[index + 1]['note_modifier'] == 2:
-			next_note_distance += 1
-		
-		next_note_timestamp = Global.current_chart[index + next_note_distance]['timestamp']
-	if !next_note_timestamp: return
-	
-	# To be re-added once fixed in-game
-	#for n in range(1, Global.current_chart.size() - index):
-		#if Global.current_chart[index + n]['note_modifier'] != 2:
-			#next_note_timestamp = Global.current_chart[index + n]['timestamp']
-			#break
+	for n in range(1, Global.current_chart.size() - index):
+		if Global.current_chart[index + n]['note_modifier'] != 2:
+			next_note_timestamp = Global.current_chart[index + n]['timestamp']
+			break
 	
 	animation_time = (next_note_timestamp - current_note_timestamp) / manual_speed_multiplier
 	

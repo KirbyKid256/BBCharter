@@ -46,8 +46,10 @@ func _on_song_loaded():
 # Add sprites of the animation keyframes to timeline
 func spawn_keyframes(section_name: String, prefab: PackedScene, parent: Node):
 	# Spawn Corresponding Keyframe Prefab
-	if Save.keyframes.has(section_name):
-		if Save.keyframes[section_name].size() > 0: for keyframe_data in Save.keyframes[section_name]:
+	if Save.keyframes.has(section_name) and Save.keyframes[section_name].size() > 0:
+		for keyframe_data in Save.keyframes[section_name]:
+			if section_name == "loops" and Assets.get_asset(keyframe_data.animations['normal']) == null: continue
+			if section_name == "background" and Assets.get_asset(keyframe_data.path) == null: continue
 			spawn_single_keyframe(keyframe_data, prefab, parent)
 	else:
 		Save.keyframes[section_name] = []

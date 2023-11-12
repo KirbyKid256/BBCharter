@@ -3,6 +3,7 @@ extends Node2D
 var hit: bool
 var data: Dictionary
 var beat: float
+var horny: bool
 
 var move_pos: bool
 var mouse_pos: float
@@ -16,8 +17,9 @@ func _ready():
 	Events.update_bpm.connect(update_position)
 	Events.update_position.connect(update_position)
 
-func setup(note_data):
+func setup(note_data, is_horny = false):
 	data = note_data
+	horny = is_horny
 	move_pos = false
 	clear_clipboard = false
 	beat = Global.get_beat_at_time(data['timestamp'])
@@ -69,6 +71,7 @@ func update_visual():
 	$Visual.self_modulate = Global.note_colors[data['input_type']]
 	$Glow.self_modulate = Global.note_colors[data['input_type']]
 	$Label.add_theme_constant_override('outline_size', 8)
+	
 	if data['note_modifier'] == 1:
 		$Handsfree.show()
 		$Handsfree/Handsfreeinner.self_modulate = Global.note_colors[data['input_type']]
@@ -77,16 +80,12 @@ func update_visual():
 	else:
 		$Handsfree.hide()
 		$Voice.self_modulate = Color.ANTIQUE_WHITE
-	if data['note_modifier'] == 2:
-		$Visual.modulate = Color(1,1,1,0.7)
-		$Glow.modulate = Color(1,1,1,0.7)
-	else:
-		$Visual.modulate = Color.WHITE
-		$Glow.modulate = Color.WHITE
+	$Ghost.visible = data['note_modifier'] == 2
+	
 	if data.has('horny') and data['horny'].has('required') and data['horny']['required'] >= 0:
-		$Glow.show()
+		horny = true
 		$Label.text = str(data['horny']['required'])
-		$Voice.scale = Vector2(0.666,0.666)
+		$Voice.scale = Vector2(0.667,0.667)
 		$Handsfree/Handsfreeinner.scale = Vector2(0.5,0.5)
 		if data.has('trigger_voice'):
 			if data['note_modifier'] != 1:
@@ -99,10 +98,12 @@ func update_visual():
 			$Label.remove_theme_color_override('font_color')
 			$Label.add_theme_color_override('font_outline_color', $Visual.self_modulate)
 	else:
-		$Glow.hide()
 		$Label.text = ''
 		$Voice.scale = Vector2(0.444,0.444)
 		$Handsfree/Handsfreeinner.scale = Vector2(0.2,0.2)
+	
+	$Glow.visible = horny
+
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
@@ -162,29 +163,49 @@ func _on_gui_input(event):
 
 func horny_add():
 	Events.emit_signal('tool_used_before', data)
+	
 	if !data.has('horny') or !data['horny'].has('required'):
+		horny = true
 		data['horny'] = {'required': 0}
 	else:
+		if Global.current_chart.find(data) + data['horny']['required'] + 1 > Timeline.note_container.get_child_count(): return
+		
 		data['horny']['required'] += 1
+		var notes: Array = Timeline.note_container.get_children().filter(func(x): return x.data['timestamp'] > data['timestamp'])
+		if data['horny']['required'] > 1:
+			for i in data['horny']['required']:
+				var index = clampi(i - 1, 0, data['horny']['required'])
+				notes[index].horny = true
+				notes[index].update_visual()
+	
 	update_visual()
 	Events.emit_signal('tool_used_after', data)
 
 func horny_remove():
 	Events.emit_signal('tool_used_before', data)
+	
 	if data.has('horny') and data['horny'].has('required'):
 		if data['horny']['required'] == 0:
+			horny = false
 			data.erase('horny')
 		else:
 			data['horny']['required'] -= 1
+			var notes: Array = Timeline.note_container.get_children().filter(func(x): return x.data['timestamp'] > data['timestamp'])
+			var index = data['horny']['required'] - 1
+			notes[index].horny = false
+			notes[index].update_visual()
+	
 	update_visual()
 	Events.emit_signal('tool_used_after', data)
 
 func toggle_voice_trigger():
 	Events.emit_signal('tool_used_before', data)
+	
 	if data.has('trigger_voice'):
 		data.erase('trigger_voice')
 	else:
 		data['trigger_voice'] = true
+	
 	update_visual()
 	Events.emit_signal('tool_used_after', data)
 

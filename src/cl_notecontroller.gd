@@ -52,9 +52,14 @@ func _ready():
 
 func _on_chart_loaded():
 	print('Spawning Notes')
+	var horny_notes: int = -1
 	for note in Global.current_chart:
+		if note.has('horny') and note['horny'].has('required') and note['horny']['required'] >= 0:
+			horny_notes = note['horny']['required']
+		
 		var new_note = Prefabs.note.instantiate()
-		new_note.setup(note)
+		if horny_notes >= 0: horny_notes -= 1
+		new_note.setup(note, horny_notes >= 0)
 		$Notes.add_child(new_note)
 	Timeline.update_visuals()
 	Timeline.update_map()

@@ -175,6 +175,7 @@ func update_map():
 	var ref_arr: Array = Timeline.animations_track.get_children()
 	var note_arr: Array = Timeline.note_container.get_children()
 	
+	if ref_arr == null or ref_arr.is_empty(): return
 	if note_arr == null or note_arr.is_empty(): return
 	
 	ref_arr.sort_custom(func(a, b): return a['data']['timestamp'] < b['data']['timestamp'])

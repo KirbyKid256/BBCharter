@@ -41,6 +41,8 @@ func save_cfg(file_name: String, new_data) -> int:
 	else: return FAILED
 
 func valid_project():
+	if load_cfg('asset.cfg') == {}:
+		return false
 	if load_cfg('keyframes.cfg') == {}:
 		return false
 	if load_cfg('meta.cfg') == {}:

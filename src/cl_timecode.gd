@@ -12,9 +12,9 @@ var offset_time_msec: float
 var offset_time_sec: float
 var offset_time_min: float
 
-var timecode_label : Label
-var playback_speed_label : Label
-var playback_str : String
+var timecode_label: Label
+var playback_speed_label: Label
+var playback_str: String
 
 func _ready():
 	timecode_label = $TimeCode

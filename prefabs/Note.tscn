@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bw2uxbxethprn"]
+[gd_scene load_steps=7 format=3 uid="uid://bw2uxbxethprn"]
 
 [ext_resource type="Script" path="res://prefabs/Note.gd" id="1_8rwjc"]
 [ext_resource type="Texture2D" uid="uid://cgxj5tkk8aryt" path="res://assets/note_circle.png" id="2_52dds"]
 [ext_resource type="Texture2D" uid="uid://dsf8qvbqau8rm" path="res://assets/icon_audio.png" id="3_qxxje"]
 [ext_resource type="Texture2D" uid="uid://b2f7qllc7x2g0" path="res://assets/note_glow.png" id="3_uoa5b"]
+[ext_resource type="Texture2D" uid="uid://dt7lc86gc343v" path="res://assets/note_outline_ghost.png" id="4_tpq5v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3qm5d"]
 size = Vector2(52, 52)
@@ -26,6 +27,11 @@ texture = ExtResource("3_uoa5b")
 self_modulate = Color(0.462745, 0.462745, 0.462745, 1)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_52dds")
+
+[node name="Ghost" type="Sprite2D" parent="."]
+position = Vector2(0, -5.96046e-08)
+scale = Vector2(0.215, 0.215)
+texture = ExtResource("4_tpq5v")
 
 [node name="Handsfree" type="Sprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
