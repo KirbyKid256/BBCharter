@@ -27,6 +27,13 @@ func _process(_delta):
 	current_time_sec = int(fmod(Global.song_pos, 60))
 	current_time_min = int(fmod(Global.song_pos, 60 * 60) / 60)
 	
+	if current_time_msec == -1000:
+		current_time_msec += 1000
+		current_time_sec -= 1
+	elif current_time_msec == 1000:
+		current_time_msec -= 1000
+		current_time_sec += 1
+	
 	total_time_msec = snappedi(fmod(Global.song_length, 1) * 1000, 1)
 	total_time_sec = int(fmod(Global.song_length, 60))
 	total_time_min = int(fmod(Global.song_length, 60 * 60) / 60)
