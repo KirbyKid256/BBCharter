@@ -38,6 +38,7 @@ func _on_create_button_up():
 			else:
 				Events.emit_signal('notify', 'Background Already Exists', 'Timestamp: ' + str(snappedf(time, 0.001)))
 				return
+	Global.project_saved = false
 	Save.keyframes['background'].append(new_background_key)
 	Save.keyframes['background'].sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
 	Timeline.key_controller.spawn_single_keyframe(new_background_key, Prefabs.background_keyframe, Timeline.backgrounds_track)
@@ -71,7 +72,7 @@ func _on_add_background_to_timeline(asset_path):
 				Events.emit_signal('notify', 'Background Already Exists', 'Timestamp: ' + str(snappedf(time, 0.001)))
 				return
 		path = asset_path
-	
+		
 		$Scale/CheckBox.button_pressed = false
 	
 	_on_check_box_button_up()

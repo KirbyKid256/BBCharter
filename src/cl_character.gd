@@ -61,11 +61,11 @@ func _process(_delta):
 		if horny:
 			if visual.texture != Assets.get_asset(loop['animations'].get('horny', loop['animations']['normal'])):
 				visual.texture = Assets.get_asset(loop['animations'].get('horny', loop['animations']['normal']))
-				run_loop()
+				change_animation(idx)
 		else:
 			if visual.texture != Assets.get_asset(loop['animations']['normal']):
 				visual.texture = Assets.get_asset(loop['animations']['normal'])
-				run_loop()
+				change_animation(idx)
 	
 	if Save.keyframes.has('background') and Save.keyframes['background'].size() > 0 and Timeline.backgrounds_track.get_child_count() > 0:
 		var idx = bg_index-1; if idx < 0: idx = 0
@@ -74,7 +74,7 @@ func _process(_delta):
 			if pattern.texture != Assets.get_asset(bg['path']):
 				pattern.texture = Assets.get_asset(bg['path'])
 				change_background(idx)
-		elif bg_type == 1:
+		else:
 			if sprite.texture != Assets.get_asset(bg['path']):
 				sprite.texture = Assets.get_asset(bg['path'])
 				change_background(idx)
@@ -87,19 +87,19 @@ func _physics_process(_delta):
 		loop_index = arr.size()
 		
 		if loop_index != last_loop_index:
-			if last_loop_index > 0:
-				if loop_index - last_loop_index > 0 and horny:
-					horny = false
-					horny_notes['deactivators'].append(last_loop_index)
+			if last_loop_index > 0: if loop_index - last_loop_index > 0 and horny:
+				horny = false
+				horny_notes['deactivators'].append(last_loop_index)
 			last_loop_index = loop_index
 			if horny_notes['deactivators'].has(loop_index):
 				horny = true
 				horny_notes['deactivators'].remove_at(horny_notes['deactivators'].find(loop_index))
 			change_animation(loop_index-1)
 		
-		if Global.song_pos < Save.keyframes['loops'][0]['timestamp']:
+		if Global.song_pos < Save.keyframes['loops'][0]['timestamp'] and loop_index > 0:
+			loop_index = 0; last_loop_index = 0
 			horny_notes['deactivators'] = []
-			change_animation(loop_index-1)
+			change_animation(0)
 	else:
 		visual.texture = null
 		visual.hframes = 1
@@ -108,7 +108,7 @@ func _physics_process(_delta):
 	
 	$Panel.mouse_default_cursor_shape = 2 if visual.texture != null else 0
 	
-	if Save.keyframes.has('background') and Save.keyframes['background'].size() > 0:
+	if Save.keyframes.has('background') and Save.keyframes['background'].size() > 0 and Timeline.backgrounds_track.get_child_count() > 0:
 		var arr = Save.keyframes['background'].filter(func(bg): return Global.song_pos >= bg['timestamp'])
 		bg_index = arr.size()
 		
@@ -116,14 +116,19 @@ func _physics_process(_delta):
 			last_bg_index = bg_index
 			change_background(bg_index-1)
 		
-		if Global.song_pos < Save.keyframes['background'][0]['timestamp']:
-			change_background(bg_index-1)
+		if Global.song_pos < Save.keyframes['background'][0]['timestamp'] and bg_index > 0:
+			bg_index = 0; last_bg_index = 0
+			change_background(0)
 	else:
+		pattern.scale = Vector2(0.278, 0.281)
 		pattern.texture = preload("res://assets/Pattern.png")
+		sprite.scale = Vector2(2.0/3.0, 2.0/3.0)
+		sprite.texture = null
 
 func set_animation(idx: int):
-	if idx < 0: idx = 0
 	if !Save.keyframes.has('loops') or Save.keyframes['loops'].is_empty(): return
+	
+	if idx < 0: idx = 0
 	var loop = Save.keyframes['loops'][idx]
 	
 	# Change Texture
@@ -131,6 +136,7 @@ func set_animation(idx: int):
 	visual.hframes = loop['sheet_data'].h
 	visual.vframes = loop['sheet_data'].v
 	total_sprite_frames = loop['sheet_data'].total
+	visual.frame = total_sprite_frames-1
 	if horny and loop['animations'].has('horny'): visual.texture = Assets.get_asset(loop['animations']['horny'])
 	else: visual.texture = Assets.get_asset(loop['animations']['normal'])
 	
@@ -147,7 +153,7 @@ func set_animation(idx: int):
 
 func change_animation(idx: int):
 	set_animation(idx)
-	if Save.keyframes.has('loops') and Save.keyframes['loops'].size() > 0 and loop_index > 0: run_loop()
+	if Save.keyframes.has('loops') and Save.keyframes['loops'].size() > 0: run_loop()
 
 func _on_hit_note(data):
 	await get_tree().process_frame
@@ -258,11 +264,11 @@ func run_loop():
 	loop_tween.play()
 
 func change_background(idx: int):
-	if idx < 0: idx = 0
 	if Save.keyframes['background'].is_empty():
 		pattern.scale = Vector2(0.278, 0.281)
 		return
 	
+	if idx < 0: idx = 0
 	var bg = Save.keyframes['background'][idx]
 	
 	# Change Texture
