@@ -149,6 +149,11 @@ func set_animation(idx: int):
 		visual.offset.x = loop['position_offset'].x / 1.5
 		visual.offset.y = loop['position_offset'].y / 1.5
 	else:
+		for i in range(idx, -1, -1):
+			if Save.keyframes['loops'][i].has('position_offset'):
+				visual.offset.x = Save.keyframes['loops'][i]['position_offset'].x / 1.5
+				visual.offset.y = Save.keyframes['loops'][i]['position_offset'].y / 1.5
+				return
 		if idx == 0: visual.offset = Vector2(0, 0)
 
 func change_animation(idx: int):

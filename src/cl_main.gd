@@ -3,14 +3,6 @@ extends Control
 @onready var file_drop_parser = preload("res://src/rf_drag_and_drop.gd").new()
 
 func _ready():
-	get_window().min_size = Vector2i(228, 128)
-	
-	print(DisplayServer.screen_get_size())
-	if DisplayServer.screen_get_size() > Vector2i(1920, 1080):
-		get_window().size = Vector2i(1920, 1080)
-		get_window().position.x -= 320
-		get_window().position.y -= 180
-	
 	get_viewport().files_dropped.connect(on_files_dropped)
 	
 	Timeline.note_timeline.gui_input.connect(input_test)
