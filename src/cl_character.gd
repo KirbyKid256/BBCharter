@@ -5,12 +5,14 @@ extends Node2D
 @onready var pattern = $Panel/Pattern
 @onready var sprite = $Panel/Sprite
 @onready var visual = $Panel/Visual
+@onready var effect = $Panel/Effect
 
 var loop_data: Dictionary
-var init_scale: Vector2
 var total_sprite_frames: int
 var animation_time: float
 var manual_speed_multiplier: float
+
+var effect_data: Dictionary
 
 var horny: bool
 var notes_left: int
@@ -19,6 +21,9 @@ var required_old = 0
 
 var loop_index: int
 var last_loop_index: int
+
+var effect_index: int
+var last_effect_index: int
 
 var bg_index: int
 var last_bg_index: int
@@ -29,6 +34,7 @@ var next_note_timestamp
 var last_note_timestamp
 
 var loop_tween
+var effect_tween
 
 func _ready():
 	Events.song_loaded.connect(_on_song_loaded)
@@ -81,6 +87,14 @@ func _process(_delta):
 
 func _physics_process(_delta):
 	if not Global.project_loaded: return
+	
+	if Save.keyframes.has('effects') and Save.keyframes['effects'].size() > 0 and Timeline.effects_track.get_child_count() > 0:
+		var arr = Save.keyframes['effects'].filter(func(fx): return Global.song_pos >= fx['timestamp'])
+		effect_index = arr.size()
+		
+		if effect_index != last_effect_index:
+			if effect_index > last_effect_index: run_effect(effect_index-1)
+			last_effect_index = effect_index
 	
 	if Save.keyframes.has('loops') and Save.keyframes['loops'].size() > 0 and Timeline.animations_track.get_child_count() > 0:
 		var arr = Save.keyframes['loops'].filter(func(loop): return Global.song_pos >= loop['timestamp'])
@@ -267,6 +281,22 @@ func run_loop():
 	visual.set_frame(0)
 	loop_tween.tween_property(visual, "frame", total_sprite_frames-1, animation_time / Global.music.pitch_scale)
 	loop_tween.play()
+
+func run_effect(idx):
+	if idx < 0: return
+	effect_data = Save.keyframes['effects'][idx]
+	
+	effect.hframes = effect_data['sheet_data']['h']
+	effect.vframes = effect_data['sheet_data']['v']
+	effect.texture = Assets.get_asset(effect_data['path'])
+	
+	if effect_tween: effect_tween.kill()
+	effect_tween = create_tween()
+	effect.set_frame(0)
+	effect_tween.tween_property(effect, "frame", effect_data['sheet_data']['total']-1, effect_data['duration'])
+	
+	await effect_tween.finished
+	effect.texture = null
 
 func change_background(idx: int):
 	if Save.keyframes['background'].is_empty():

@@ -16,6 +16,7 @@ func _ready():
 	
 	Timeline.shutter_track = $Shutter/Track
 	Timeline.animations_track = $Animations/Track
+	Timeline.effects_track = $Effects/Track
 	Timeline.backgrounds_track = $Backgrounds/Track
 	Timeline.modifier_track = $Modifier/Track
 	Timeline.sfx_track = $SoundLoops/Track
@@ -28,6 +29,7 @@ func _ready():
 func _on_song_loaded():
 	spawn_keyframes('shutter', Prefabs.shutter_keyframe, Timeline.shutter_track)
 	spawn_keyframes('loops', Prefabs.animation_keyframe, Timeline.animations_track)
+	spawn_keyframes('effects', Prefabs.effect_keyframe, Timeline.effects_track)
 	spawn_keyframes('background', Prefabs.background_keyframe, Timeline.backgrounds_track)
 	spawn_keyframes('modifiers', Prefabs.modifier_keyframe, Timeline.modifier_track)
 	spawn_keyframes('sound_loop', Prefabs.sfx_keyframe, Timeline.sfx_track)

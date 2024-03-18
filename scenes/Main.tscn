@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://bo2pso1k2xik8"]
+[gd_scene load_steps=86 format=3 uid="uid://bo2pso1k2xik8"]
 
 [ext_resource type="Theme" uid="uid://cehpee20dikgi" path="res://themes/main_theme.tres" id="1_71y40"]
 [ext_resource type="Script" path="res://src/cl_main.gd" id="2_ca1lw"]
@@ -48,6 +48,7 @@
 [ext_resource type="Script" path="res://src/cl_popup_animation.gd" id="42_u4042"]
 [ext_resource type="Script" path="res://src/cl_popup_voicebank.gd" id="44_earsn"]
 [ext_resource type="Script" path="res://src/cl_popup_background.gd" id="44_tvfc5"]
+[ext_resource type="Script" path="res://src/cl_popup_effect.gd" id="45_43043"]
 [ext_resource type="Script" path="res://prefabs/VoiceBankNode.gd" id="45_gd3qt"]
 [ext_resource type="Texture2D" uid="uid://bt6ryhnpjv6yf" path="res://assets/icon-delete.png" id="45_lslcg"]
 
@@ -295,6 +296,9 @@ scale = Vector2(0.667, 0.667)
 texture = ExtResource("6_bp6ey")
 
 [node name="Visual" type="Sprite2D" parent="Character/Panel"]
+position = Vector2(640, 360)
+
+[node name="Effect" type="Sprite2D" parent="Character/Panel"]
 position = Vector2(640, 360)
 
 [node name="Shutters" type="Control" parent="Character"]
@@ -797,10 +801,40 @@ theme_override_fonts/font = ExtResource("7_yw7ih")
 theme_override_font_sizes/font_size = 18
 text = "ANIMATIONS"
 
-[node name="Backgrounds" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
+[node name="Effects" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_id34j")
+
+[node name="Track" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer/Effects"]
+z_index = 1
+position = Vector2(960, 52)
+
+[node name="Gradient" type="Panel" parent="Timeline/KeyTimeline/KeyContainer/Effects"]
+z_index = 1
+layout_mode = 0
+offset_right = 192.0
+offset_bottom = 104.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_x3vgy")
+
+[node name="Label" type="Label" parent="Timeline/KeyTimeline/KeyContainer/Effects"]
+z_index = 1
+layout_mode = 0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 93.0
+offset_bottom = 37.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.737255)
+theme_override_fonts/font = ExtResource("7_yw7ih")
+theme_override_font_sizes/font_size = 18
+text = "EFFECTS"
+
+[node name="Backgrounds" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ritwt")
 
 [node name="Track" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer/Backgrounds"]
 z_index = 1
@@ -829,7 +863,7 @@ text = "BACKGROUNDS"
 [node name="Modifier" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ritwt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4kvjm")
 
 [node name="Track" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer/Modifier"]
 z_index = 1
@@ -857,7 +891,7 @@ text = "MODIFIERS"
 [node name="SoundLoops" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4kvjm")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ritwt")
 
 [node name="Track" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer/SoundLoops"]
 z_index = 1
@@ -885,7 +919,7 @@ text = "SOUND LOOPS"
 [node name="OneshotSound" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ritwt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_id34j")
 
 [node name="Track" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer/OneshotSound"]
 z_index = 1
@@ -913,7 +947,7 @@ text = "ONESHOT SOUNDS"
 [node name="VoiceBanks" type="Panel" parent="Timeline/KeyTimeline/KeyContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_id34j")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ritwt")
 
 [node name="Track" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer/VoiceBanks"]
 z_index = 1
@@ -1113,19 +1147,21 @@ item_2/id = 2
 script = ExtResource("34_8buew")
 
 [node name="ImageMenu" type="PopupMenu" parent="."]
-size = Vector2i(164, 100)
+size = Vector2i(164, 120)
 unresizable = false
 allow_search = false
-item_count = 4
+item_count = 5
 item_0/text = "Add Animation"
 item_0/id = 0
-item_1/text = "Add Background"
+item_1/text = "Add Effect"
 item_1/id = 1
-item_2/text = ""
+item_2/text = "Add Background"
 item_2/id = 2
-item_2/separator = true
-item_3/text = "Set Difficulty Icon"
-item_3/id = 2
+item_3/text = ""
+item_3/id = 3
+item_3/separator = true
+item_4/text = "Set Difficulty Icon"
+item_4/id = 3
 script = ExtResource("22_btaqb")
 
 [node name="Popups" type="Panel" parent="."]
@@ -1644,6 +1680,153 @@ offset_bottom = 571.0
 theme_override_font_sizes/font_size = 18
 text = "Cancel"
 
+[node name="PlaceEffect" type="Panel" parent="Popups"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -295.0
+offset_right = 300.0
+offset_bottom = 295.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y543m")
+script = ExtResource("45_43043")
+
+[node name="Label" type="Label" parent="Popups/PlaceEffect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 58.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "Place New Effect"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Duration" type="SpinBox" parent="Popups/PlaceEffect"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 123.0
+offset_right = 507.0
+offset_bottom = 154.0
+step = 0.001
+value = 1.0
+allow_greater = true
+custom_arrow_step = 0.01
+
+[node name="Duration Label" type="Label" parent="Popups/PlaceEffect/Duration"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 317.0
+offset_top = 5.0
+offset_right = -21.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "Duration"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SheetH" type="SpinBox" parent="Popups/PlaceEffect"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 163.0
+offset_right = 235.0
+offset_bottom = 194.0
+min_value = 1.0
+value = 2.0
+rounded = true
+allow_greater = true
+
+[node name="SheetH Label" type="Label" parent="Popups/PlaceEffect/SheetH"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 33.0
+offset_top = 5.0
+offset_right = -21.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "Horizontal"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SheetV" type="SpinBox" parent="Popups/PlaceEffect"]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 163.0
+offset_right = 371.0
+offset_bottom = 194.0
+min_value = 1.0
+value = 3.0
+rounded = true
+allow_greater = true
+
+[node name="SheetV Label" type="Label" parent="Popups/PlaceEffect/SheetV"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 55.0
+offset_top = 5.0
+offset_right = -21.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "Vertical"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Total" type="SpinBox" parent="Popups/PlaceEffect"]
+layout_mode = 0
+offset_left = 372.0
+offset_top = 163.0
+offset_right = 507.0
+offset_bottom = 194.0
+min_value = 1.0
+value = 6.0
+rounded = true
+allow_greater = true
+
+[node name="Total Label" type="Label" parent="Popups/PlaceEffect/Total"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 75.0
+offset_top = 5.0
+offset_right = -21.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "Total"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Create" type="Button" parent="Popups/PlaceEffect"]
+layout_mode = 2
+offset_left = 196.0
+offset_top = 531.0
+offset_right = 292.0
+offset_bottom = 571.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 18
+text = "Create"
+
+[node name="Cancel" type="Button" parent="Popups/PlaceEffect"]
+layout_mode = 2
+offset_left = 308.0
+offset_top = 531.0
+offset_right = 394.0
+offset_bottom = 571.0
+theme_override_font_sizes/font_size = 18
+text = "Cancel"
+
 [node name="PlaceBackground" type="Panel" parent="Popups"]
 visible = false
 layout_mode = 1
@@ -1940,6 +2123,9 @@ text = "Cancel"
 [connection signal="button_up" from="Popups/PlaceAnimation/Create" to="Character" method="_on_create_button_up"]
 [connection signal="button_up" from="Popups/PlaceAnimation/Create" to="Popups/PlaceAnimation" method="_on_create_button_up"]
 [connection signal="button_up" from="Popups/PlaceAnimation/Cancel" to="Popups/PlaceAnimation" method="_on_cancel_button_up"]
+[connection signal="button_up" from="Popups/PlaceEffect/Create" to="Character" method="_on_create_button_up"]
+[connection signal="button_up" from="Popups/PlaceEffect/Create" to="Popups/PlaceEffect" method="_on_create_button_up"]
+[connection signal="button_up" from="Popups/PlaceEffect/Cancel" to="Popups/PlaceEffect" method="_on_cancel_button_up"]
 [connection signal="button_up" from="Popups/PlaceBackground/Scale/CheckBox" to="Popups/PlaceBackground" method="_on_check_box_button_up"]
 [connection signal="button_up" from="Popups/PlaceBackground/Create" to="Character" method="_on_create_button_up"]
 [connection signal="button_up" from="Popups/PlaceBackground/Create" to="Popups/PlaceBackground" method="_on_create_button_up"]
