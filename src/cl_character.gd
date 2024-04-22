@@ -160,15 +160,15 @@ func set_animation(idx: int):
 		if idx == 0: manual_speed_multiplier = 1
 	
 	if loop.has('position_offset'):
-		visual.offset.x = loop['position_offset'].x / 1.5
-		visual.offset.y = loop['position_offset'].y / 1.5
+		visual.position.x = 640 + loop['position_offset'].x / 1.5
+		visual.position.y = 360 + loop['position_offset'].y / 1.5
 	else:
 		for i in range(idx, -1, -1):
 			if Save.keyframes['loops'][i].has('position_offset'):
-				visual.offset.x = Save.keyframes['loops'][i]['position_offset'].x / 1.5
-				visual.offset.y = Save.keyframes['loops'][i]['position_offset'].y / 1.5
+				visual.position.x = 640 + Save.keyframes['loops'][i]['position_offset'].x / 1.5
+				visual.position.y = 360 + Save.keyframes['loops'][i]['position_offset'].y / 1.5
 				return
-		if idx == 0: visual.offset = Vector2(0, 0)
+		if idx == 0: visual.position = Vector2(0, 0)
 
 func change_animation(idx: int):
 	set_animation(idx)
