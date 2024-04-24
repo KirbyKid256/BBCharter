@@ -168,7 +168,7 @@ func set_animation(idx: int):
 				visual.position.x = 640 + Save.keyframes['loops'][i]['position_offset'].x / 1.5
 				visual.position.y = 360 + Save.keyframes['loops'][i]['position_offset'].y / 1.5
 				return
-		if idx == 0: visual.position = Vector2(0, 0)
+		if idx == 0: visual.position = Vector2(640, 360)
 
 func change_animation(idx: int):
 	set_animation(idx)
