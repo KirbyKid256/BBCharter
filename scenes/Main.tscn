@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://bo2pso1k2xik8"]
+[gd_scene load_steps=89 format=3 uid="uid://bo2pso1k2xik8"]
 
 [ext_resource type="Theme" uid="uid://cehpee20dikgi" path="res://themes/main_theme.tres" id="1_71y40"]
 [ext_resource type="Script" path="res://src/cl_main.gd" id="2_ca1lw"]
@@ -112,6 +112,16 @@ _data = {
 "RESET": SubResource("Animation_jfjoc"),
 "Shutters": SubResource("Animation_0h03h")
 }
+
+[sub_resource type="Gradient" id="Gradient_7tj5x"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_70ja8"]
+gradient = SubResource("Gradient_7tj5x")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hhnv2"]
+texture = SubResource("GradientTexture2D_70ja8")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxxnx"]
 bg_color = Color(0.0627451, 0.0627451, 0.0627451, 1)
@@ -329,15 +339,17 @@ libraries = {
 
 [node name="Hud" type="Node2D" parent="Character"]
 
-[node name="TopBlack" type="Polygon2D" parent="Character/Hud"]
+[node name="Top" type="Polygon2D" parent="Character/Hud"]
 color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-640, -360, 80, -360, -640, -210)
+polygon = PackedVector2Array(-640, -364, 16, -364, -640, -228)
 
-[node name="BottomBlack" type="Polygon2D" parent="Character/Hud"]
-position = Vector2(-1200, -450)
-scale = Vector2(1.25, 1.25)
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(1472, 648, 896, 648, 1472, 520)
+[node name="Gradient" type="Panel" parent="Character/Hud"]
+auto_translate_mode = 1
+offset_left = -640.0
+offset_top = 112.0
+offset_right = 640.0
+offset_bottom = 360.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_hhnv2")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -371,7 +383,6 @@ theme_override_fonts/font = ExtResource("8_ln5wy")
 theme_override_font_sizes/font_size = 20
 item_count = 3
 item_0/text = "New Project"
-item_0/id = 0
 item_1/text = "Open Project"
 item_1/id = 1
 item_2/text = "Save Project"
@@ -385,12 +396,10 @@ theme_override_fonts/font = ExtResource("8_ln5wy")
 theme_override_font_sizes/font_size = 20
 item_count = 4
 item_0/text = "Undo"
-item_0/id = 0
 item_0/disabled = true
 item_1/text = "Redo"
 item_1/id = 1
 item_1/disabled = true
-item_2/text = ""
 item_2/id = 2
 item_2/separator = true
 item_3/text = "Replace"
@@ -404,7 +413,6 @@ theme_override_fonts/font = ExtResource("8_ln5wy")
 theme_override_font_sizes/font_size = 20
 item_count = 4
 item_0/text = "Add Shutter"
-item_0/id = 0
 item_0/disabled = true
 item_1/text = "Add Modifier"
 item_1/id = 1
@@ -423,7 +431,6 @@ theme_override_fonts/font = ExtResource("8_ln5wy")
 theme_override_font_sizes/font_size = 20
 item_count = 8
 item_0/text = "Clear Chart"
-item_0/id = 0
 item_0/disabled = true
 item_1/text = "Clear Shutters"
 item_1/id = 1
@@ -454,9 +461,7 @@ theme_override_fonts/font = ExtResource("8_ln5wy")
 theme_override_font_sizes/font_size = 20
 item_count = 6
 item_0/text = "Reload Project"
-item_0/id = 0
 item_0/disabled = true
-item_1/text = ""
 item_1/id = 1
 item_1/separator = true
 item_2/text = "Create New Difficulty"
@@ -479,7 +484,6 @@ theme_override_fonts/font = ExtResource("8_ln5wy")
 theme_override_font_sizes/font_size = 20
 item_count = 2
 item_0/text = "Github Repo"
-item_0/id = 0
 item_1/text = "Discord Server"
 item_1/id = 1
 script = ExtResource("10_p48ck")
@@ -500,8 +504,8 @@ grow_vertical = 2
 tooltip_text = "Change Difficulty"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_disabled_color = Color(0.482353, 0.482353, 0.482353, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_styles/pressed = SubResource("StyleBoxFlat_w0hwe")
 item_count = 1
 popup/item_0/text = "None"
@@ -1139,7 +1143,6 @@ unresizable = false
 allow_search = false
 item_count = 3
 item_0/text = "Add Sound Loop"
-item_0/id = 0
 item_1/text = "Add Oneshot Sound"
 item_1/id = 1
 item_2/text = "Add Voice Bank"
@@ -1152,12 +1155,10 @@ unresizable = false
 allow_search = false
 item_count = 5
 item_0/text = "Add Animation"
-item_0/id = 0
 item_1/text = "Add Effect"
 item_1/id = 1
 item_2/text = "Add Background"
 item_2/id = 2
-item_3/text = ""
 item_3/id = 3
 item_3/separator = true
 item_4/text = "Set Difficulty Icon"

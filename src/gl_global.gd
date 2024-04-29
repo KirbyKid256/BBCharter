@@ -117,9 +117,10 @@ func clear_children(parent: Node):
 		continue
 
 func reload_bpm():
-	var cumulativeBeats = 0.0
-	var prevTimestamp = 0.0
-	var prevBpm = 0.0
+	var cumulativeBeats = NAN
+	var prevTimestamp = NAN
+	var prevBpm = NAN
+	
 	if !bpms.is_empty():
 		bpms.clear()
 		bpm_timestamps.clear()
@@ -127,7 +128,8 @@ func reload_bpm():
 	for mod in Save.keyframes.get('modifiers', Save.modifier_default):
 		bpms.append(mod['bpm'])
 		bpm_timestamps.append(mod['timestamp'])
-		cumulativeBeats += (mod['timestamp'] - prevTimestamp) * (prevBpm / 60.0)
+		if is_nan(cumulativeBeats): cumulativeBeats = mod['timestamp']
+		else: cumulativeBeats += (mod['timestamp'] - prevTimestamp) * (prevBpm / 60.0)
 		bpm_beatstamps.append(cumulativeBeats)
 		prevTimestamp = mod['timestamp']
 		prevBpm = mod['bpm']
