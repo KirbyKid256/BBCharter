@@ -977,22 +977,22 @@ theme_override_font_sizes/font_size = 18
 text = "VOICE BANKS"
 
 [node name="Beat" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer"]
-position = Vector2(960, 552)
+position = Vector2(960, 656)
 
 [node name="Half" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer"]
-position = Vector2(960, 552)
+position = Vector2(960, 656)
 
 [node name="Third" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer"]
-position = Vector2(960, 552)
+position = Vector2(960, 656)
 
 [node name="Quarter" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer"]
-position = Vector2(960, 552)
+position = Vector2(960, 656)
 
 [node name="Sixth" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer"]
-position = Vector2(960, 552)
+position = Vector2(960, 656)
 
 [node name="Eighth" type="Node2D" parent="Timeline/KeyTimeline/KeyContainer"]
-position = Vector2(960, 552)
+position = Vector2(960, 656)
 
 [node name="Timer" type="Timer" parent="Timeline/KeyTimeline"]
 
