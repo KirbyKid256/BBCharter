@@ -4,6 +4,8 @@ var file_types = {
 	"mp3": "/audio/",
 	"ogg": "/audio/",
 	"png": "/images/",
+	"jpg": "/images/",
+	"jpeg": "/images/",
 	"gif": "/images/",
 	"mp4": "/images/",
 	"webm": "/images/",
