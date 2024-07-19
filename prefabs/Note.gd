@@ -30,6 +30,7 @@ func update_position():
 	#print("pos update")
 	data['timestamp'] = Global.get_time_at_beat(beat)
 	position.x = -((data['timestamp'] - Global.offset) * Global.note_speed)
+	update_visual()
 
 func update_beat_and_position(time: float):
 	#print("pos and beat update")
@@ -71,6 +72,31 @@ func update_visual():
 	$Visual.self_modulate = Global.note_colors[data['input_type']]
 	$Glow.self_modulate = Global.note_colors[data['input_type']]
 	$Label.add_theme_constant_override('outline_size', 8)
+	
+	if data['note_modifier'] == 3:
+		if data['hold_end_timestamp'] != null:
+			$Line2D.visible = true
+			$Line2D.set_point_position(1, Vector2(-((data['hold_end_timestamp'] - data['timestamp'])*Global.note_speed), 0))
+			if data['input_type'] == 1:
+				$Line2D.default_color = Color(0.93,0.47,0.05,1)
+			elif data['input_type'] == 2:
+				$Line2D.default_color = Color(0.78,0.17,0.09,1)
+			elif data['input_type'] == 3:
+				$Line2D.default_color = Color(0.67,0.17,0.39,1)
+			else: 
+				$Line2D.default_color = Color(0.1,0.55,0.78,1)
+				#$Line2D.set_point_position(1, Vector2(self.position.x + ((data['hold_end_timestamp']-data['timestamp'])- Global.offset),0))   #pos + (differnce bettween timestamp and end of hold note)
+			#else: 
+				#$Line2D.set_point_position(1, Vector2(((data['hold_end_timestamp'] + Global.offset)/ Global.note_speed),0))
+			
+			#var ed = Global.get_beat_at_time(data['hold_end_timestamp'])
+			#var end_point = $Line2D.get_point_position(1)
+			#end_point.x -= data['hold_end_timestamp']
+			#$Line2D.set_point_position(1, end_point)
+	else:
+		$Line2D.visible = false
+		$Line2D.set_point_position(0, Vector2((data['timestamp'] - Global.offset), 0))
+		$Line2D.set_point_position(1, Vector2((data['timestamp'] - Global.offset), 0))
 	
 	if data['note_modifier'] == 1:
 		$Handsfree.show()

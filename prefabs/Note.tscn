@@ -1,51 +1,61 @@
-[gd_scene load_steps=7 format=3 uid="uid://bw2uxbxethprn"]
+[gd_scene load_steps=8 format=3 uid="uid://bw2uxbxethprn"]
 
 [ext_resource type="Script" path="res://prefabs/Note.gd" id="1_8rwjc"]
 [ext_resource type="Texture2D" uid="uid://cgxj5tkk8aryt" path="res://assets/note_circle.png" id="2_52dds"]
 [ext_resource type="Texture2D" uid="uid://dsf8qvbqau8rm" path="res://assets/icon_audio.png" id="3_qxxje"]
 [ext_resource type="Texture2D" uid="uid://b2f7qllc7x2g0" path="res://assets/note_glow.png" id="3_uoa5b"]
 [ext_resource type="Texture2D" uid="uid://dt7lc86gc343v" path="res://assets/note_outline_ghost.png" id="4_tpq5v"]
+[ext_resource type="Script" path="res://prefabs/line_2d.gd" id="6_61wq0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3qm5d"]
 size = Vector2(52, 52)
 
 [node name="Note" type="Node2D"]
+z_index = 3
 script = ExtResource("1_8rwjc")
 
 [node name="Selected" type="Sprite2D" parent="."]
 visible = false
+z_index = 1
 scale = Vector2(0.121094, 0.121094)
 texture = ExtResource("2_52dds")
 
 [node name="Glow" type="Sprite2D" parent="."]
 self_modulate = Color(0.462745, 0.462745, 0.462745, 1)
+z_index = 1
 position = Vector2(1, 0)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_uoa5b")
 
 [node name="Visual" type="Sprite2D" parent="."]
 self_modulate = Color(0.462745, 0.462745, 0.462745, 1)
+z_index = 1
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_52dds")
 
 [node name="Ghost" type="Sprite2D" parent="."]
+z_index = 1
 position = Vector2(0, -5.96046e-08)
 scale = Vector2(0.215, 0.215)
 texture = ExtResource("4_tpq5v")
 
 [node name="Handsfree" type="Sprite2D" parent="."]
+z_index = 1
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_52dds")
 
 [node name="Handsfreeinner" type="Sprite2D" parent="Handsfree"]
+z_index = 1
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_52dds")
 
 [node name="Voice" type="Sprite2D" parent="."]
+z_index = 1
 scale = Vector2(0.444444, 0.444444)
 texture = ExtResource("3_qxxje")
 
 [node name="Label" type="Label" parent="."]
+z_index = 1
 offset_left = -26.0
 offset_top = -26.0
 offset_right = 26.0
@@ -56,6 +66,7 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="InputHandler" type="Control" parent="."]
+z_index = 1
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -71,10 +82,18 @@ grow_vertical = 2
 mouse_default_cursor_shape = 2
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
+z_index = 1
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+z_index = 1
 shape = SubResource("RectangleShape2D_3qm5d")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(0, 0, 0, 1)
+script = ExtResource("6_61wq0")
 
 [connection signal="gui_input" from="InputHandler" to="." method="_on_gui_input"]
 [connection signal="mouse_exited" from="InputHandler" to="." method="_on_mouse_exited"]

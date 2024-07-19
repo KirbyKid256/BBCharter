@@ -73,7 +73,7 @@ func _on_song_loaded():
 	Global.clear_children(Timeline.sixth_container)
 	Global.clear_children(Timeline.eighth_container)
 	create_ui()
-	
+	# set timeline pos
 	Timeline.note_timeline.position.y = 168
 	Timeline.key_timeline.size.y = 168
 	$"../LineCenter".points[1].y = -272
