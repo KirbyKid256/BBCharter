@@ -509,7 +509,6 @@ theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_styles/pressed = SubResource("StyleBoxFlat_w0hwe")
 item_count = 1
 popup/item_0/text = "None"
-popup/item_0/id = 0
 popup/item_0/disabled = true
 script = ExtResource("7_alc5b")
 
@@ -589,6 +588,19 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_xvp3s")
 shortcut = SubResource("Shortcut_4noe4")
 icon = ExtResource("14_11yw1")
+icon_alignment = 1
+
+[node name="Hold" type="Button" parent="Toolbar/Tools"]
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+tooltip_text = "Modifier Tool"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_xvp3s")
+shortcut = SubResource("Shortcut_4noe4")
+text = "Hold"
 icon_alignment = 1
 
 [node name="Assets" type="Control" parent="."]
@@ -694,7 +706,6 @@ theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_styles/pressed = SubResource("StyleBoxFlat_41pyu")
 item_count = 6
 popup/item_0/text = "Beat"
-popup/item_0/id = 0
 popup/item_1/text = "1/2"
 popup/item_1/id = 1
 popup/item_2/text = "1/3"
