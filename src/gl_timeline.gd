@@ -47,6 +47,7 @@ var sound_loops_timeline: Panel
 var one_shot_sound_timeline: Panel
 var voice_bank_timeline: Panel
 
+
 var marquee_selection: Node2D
 var marquee_selection_area: Node2D
 var marquee_active: bool = false
