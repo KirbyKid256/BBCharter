@@ -197,8 +197,9 @@ func _on_hit_note(data):
 		if Global.current_chart[index + n]['note_modifier'] != 2:
 			next_note_timestamp = Global.current_chart[index + n]['timestamp']
 			break
+	if next_note_timestamp != null:
+		animation_time = (next_note_timestamp - current_note_timestamp) / manual_speed_multiplier
 	
-	animation_time = (next_note_timestamp - current_note_timestamp) / manual_speed_multiplier
 	
 	run_loop()
 

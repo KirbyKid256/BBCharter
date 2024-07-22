@@ -1,5 +1,6 @@
 extends Node2D
 
+
 var hit: bool
 var data: Dictionary
 var beat: float
