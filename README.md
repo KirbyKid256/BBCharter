@@ -39,7 +39,7 @@ Latest downloads are available [here!](https://mega.nz/folder/KHhDhB5I#OP6ufDzOs
 |C|Spawn A Red note|
 |V|Spawn A Purple note|
 |Delete or Backspace|Delete Selected notes|
-|alt + a| Spawns tail end of hold note| #note must be selected
+|Alt + A| Spawns tail end of hold note|note must be selected|
 ### Timeline Shortcuts
 | Hotkey | Function |
 | ------ | ------ |
