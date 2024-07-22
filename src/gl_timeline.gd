@@ -47,6 +47,7 @@ var sound_loops_timeline: Panel
 var one_shot_sound_timeline: Panel
 var voice_bank_timeline: Panel
 
+
 var marquee_selection: Node2D
 var marquee_selection_area: Node2D
 var marquee_active: bool = false
@@ -85,26 +86,23 @@ func create_note(key: int):
 func Add_hold(timesta: float):
 	print(timesta)
 	var target_note
-	var nearest_note = null
-	for note in Timeline.note_container.get_children():
-		if timesta > note.data['timestamp']:
-			target_note = note
-			continue
-		else:
-			var new_note_data = {'hold_end_timestamp':timesta, 'input_type':target_note.data['input_type'], "note_modifier":3, 'timestamp':target_note.data['timestamp'] }
-			delete_note(target_note, Save.notes['charts'][Global.difficulty_index]['notes'].find(target_note.data))
-			Global.current_chart.append(new_note_data)
-			Global.current_chart.sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
-			Events.emit_signal("note_created", new_note_data)
-			update_visuals()
-			update_map()
-			break
-			
-			
-		#if timesta > note.data["timestamp"] and (nearest_note == null or abs(timesta - note.data["timestamp"]) < abs(timesta - nearest_note.data["timestamp"])):
-			
+	if Clipboard.selected_notes[0] != null:
+		target_note = Clipboard.selected_notes[0]
+	var note_nume = 0
+	if target_note == null:
+		print("No note selected")
+	else:
+		var new_note_data = {'hold_end_timestamp':timesta, 'input_type':target_note.data['input_type'], "note_modifier":3, 'timestamp':target_note.data['timestamp'] }
+		delete_note(target_note, Save.notes['charts'][Global.difficulty_index]['notes'].find(target_note.data))
+		Global.current_chart.append(new_note_data)
+		Global.current_chart.sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
+		Events.emit_signal("note_created", new_note_data)
+		update_visuals()
+		update_map()
+		Clipboard.clear_clipboard()
+		new_note_data=null
+		target_note = null
 		
-	
 	
 func delete_note(note: Node2D, idx: int):
 	Global.project_saved = false
