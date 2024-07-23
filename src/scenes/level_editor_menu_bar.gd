@@ -10,6 +10,7 @@ enum EDIT {UNDO,REDO,CUT,COPY,PASTE}
 
 enum ADD {SHUTTER,MODIFIER}
 @onready var add_popup_menu: PopupMenu = $Add
+@onready var backgrounds: Node2D = $'../ScrollContainer/KeyframeAssetGrid/Backgrounds/Track'
 @onready var loopsounds: Node2D = $'../ScrollContainer/KeyframeAssetGrid/SoundLoops/Track'
 @onready var voices: Node2D = $'../ScrollContainer/KeyframeAssetGrid/VoiceBanks/Track'
 @onready var shutters: Node2D = $'../ScrollContainer/KeyframeAssetGrid/Shutters/Track'
@@ -56,7 +57,8 @@ func _on_edit_id_pressed(id):
 
 func _on_add_id_pressed(id):
 	match id:
-		ADD.SHUTTER: shutters.create_shutter()
-		ADD.MODIFIER: modifiers.create_modifier()
-		2: loopsounds.create_loopsound_audio({'audio_path': ""})
-		3: voices.create_voice_audio({'audio_path': []})
+		ADD.SHUTTER: shutters.create_keyframe()
+		ADD.MODIFIER: modifiers.create_keyframe()
+		2: backgrounds.create_keyframe({'sprite_sheet': ""})
+		3: loopsounds.create_keyframe({'audio_path': ""})
+		4: voices.create_keyframe({'audio_path': []})

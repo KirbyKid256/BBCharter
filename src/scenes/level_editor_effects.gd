@@ -1,17 +1,18 @@
 extends Sprite2D
 
-@onready var tsevent = TSEvent.new()
-
 var data: Dictionary
 var tween: Tween
 
 func _ready():
+	var tsevent = TSEvent.new()
 	tsevent.callback = play_effect
 	tsevent.config_key = "effects"
 	add_child(tsevent)
 
 func play_effect(idx: int):
 	if Config.keyframes['effects'].is_empty(): set_texture(null); return
+
+	idx = clampi(idx,0,Config.keyframes['effects'].size())
 	data = Config.keyframes['effects'][idx]
 	
 	set_hframes(data['sheet_data'].h)

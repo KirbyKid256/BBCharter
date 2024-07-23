@@ -534,16 +534,18 @@ item_5/id = 4
 
 [node name="Add" type="PopupMenu" parent="MenuBar"]
 size = Vector2i(125, 62)
-item_count = 5
+item_count = 6
 item_0/text = "Shutter"
 item_1/text = "BPM Change"
 item_1/id = 1
-item_2/id = 4
+item_2/id = 5
 item_2/separator = true
-item_3/text = "Empty Sound Loop"
+item_3/text = "Empty Background"
 item_3/id = 2
-item_4/text = "Empty Voice Bank"
+item_4/text = "Empty Sound Loop"
 item_4/id = 3
+item_5/text = "Empty Voice Bank"
+item_5/id = 4
 
 [node name="Preview" type="Control" parent="."]
 clip_contents = true
@@ -635,14 +637,14 @@ script = ExtResource("6_rwb47")
 
 [node name="Top" type="Polygon2D" parent="Preview/Shutters"]
 visible = false
-position = Vector2(0, -364)
+position = Vector2(0, -360)
 color = Color(0, 0, 0, 1)
 offset = Vector2(0, 364)
 polygon = PackedVector2Array(-640, -364, 640, -364, 640, 0, -640, 0)
 
 [node name="Bottom" type="Polygon2D" parent="Preview/Shutters"]
 visible = false
-position = Vector2(0, 356)
+position = Vector2(0, 360)
 color = Color(0, 0, 0, 1)
 offset = Vector2(0, -356)
 polygon = PackedVector2Array(-640, 0, 640, 0, 640, 356, -640, 356)
@@ -1550,7 +1552,7 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
-text = "Export mod"
+text = "Export Modpack"
 alignment = 0
 text_overrun_behavior = 3
 

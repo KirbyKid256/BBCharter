@@ -26,14 +26,11 @@ func _on_editor_level_loaded():
 	get_audio_assets()
 
 func get_image_assets(type: int = -1):
-	Util.clear_children(animations_grid)
-	Util.clear_children(effects_grid)
-	Util.clear_children(backgrounds_grid)
-	
 	Console.log({"message": "Getting Editor Image Cache..."})
 	var cache_assets = LevelEditor.get_asset_cache().filter(func(a): return a.has("sprite_sheet"))
 	
 	if type == LevelEditor.IMAGE.ANIMATION or type < 0:
+		Util.clear_children(animations_grid)
 		var animation_assets = cache_assets.filter(func(a): return a.has("sheet_data") and not a.has("duration"))
 		for animation in animation_assets:
 			var new_asset_node = editor_animation_asset_prefab.instantiate() as Control
@@ -41,6 +38,7 @@ func get_image_assets(type: int = -1):
 			new_asset_node.setup(animation)
 	
 	if type == LevelEditor.IMAGE.EFFECT or type < 0:
+		Util.clear_children(effects_grid)
 		var effect_assets = cache_assets.filter(func(a): return a.has("duration"))
 		for effect in effect_assets:
 			var new_asset_node = editor_effect_asset_prefab.instantiate() as Control
@@ -48,12 +46,14 @@ func get_image_assets(type: int = -1):
 			new_asset_node.setup(effect)
 	
 	if type == LevelEditor.IMAGE.BACKGROUND or type < 0:
+		Util.clear_children(backgrounds_grid)
 		var background_assets = cache_assets.filter(func(a): return not a.has("sheet_data"))
 		for background in background_assets:
 			var new_asset_node = editor_background_asset_prefab.instantiate() as Control
 			backgrounds_grid.add_child(new_asset_node) 
 			new_asset_node.setup(background)
 
+# There's only one set of audio cache right now
 func get_audio_assets():
 	Util.clear_children(voices_grid)
 	

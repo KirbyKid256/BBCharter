@@ -16,4 +16,4 @@ func _process(_delta):
 	index = items.size()
 	if index != last_index:
 		last_index = index
-		callback.call(clampi(index-1,0,index))
+		callback.call(index-1)
