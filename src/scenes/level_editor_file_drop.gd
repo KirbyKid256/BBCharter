@@ -1,12 +1,12 @@
 extends Control
 
 @export var voice_asset: PackedScene
-@export var voice_file: PackedScene
+
+@onready var file_selection: ScrollContainer = $'../MenuOverlays/CreateAudioMenu/FileSelection'
 
 @onready var create_audio_menu: Control = $'../MenuOverlays/CreateAudioMenu'
 @onready var create_audio_header: Label = $'../MenuOverlays/CreateAudioMenu/Header'
 @onready var create_audio_voice_paths: VBoxContainer = $'../MenuOverlays/CreateAudioMenu/Paths/AssetGrid'
-@onready var create_audio_voice_files: VBoxContainer = $'../MenuOverlays/CreateAudioMenu/Files/AssetGrid'
 
 @onready var create_image_menu: Control = $'../MenuOverlays/CreateImageMenu'
 @onready var create_image_header: Label = $'../MenuOverlays/CreateImageMenu/Header'
@@ -45,6 +45,7 @@ func _ready():
 	EventManager.editor_create_audio_keyframe.connect(create_audio_keyframe)
 	
 	get_viewport().files_dropped.connect(_on_files_dropped)
+	file_selection.button_up.connect(_on_file_button_up)
 
 func _on_files_dropped(files: PackedStringArray):
 	for file in files:
@@ -52,7 +53,7 @@ func _on_files_dropped(files: PackedStringArray):
 		if ['png','jpg','webp'].has(file.get_extension()): import_image(file); continue
 		if ['ogg','mp3'].has(file.get_extension()): import_audio(file); continue
 	
-	reload_file_list_audio()
+	file_selection.reload_list()
 
 func make_spritesheet(file):
 	var data = FFmpeg.create_sprite_sheet_from_gif(file)
@@ -189,7 +190,7 @@ func create_audio_keyframe(data: Dictionary, replace: bool = false):
 	pending_audio_data = data
 	
 	reload_path_list_audio()
-	reload_file_list_audio()
+	file_selection.reload_list()
 	
 	create_audio_menu.show()
 	LevelEditor.controls_enabled = false
@@ -202,14 +203,12 @@ func reload_path_list_audio():
 		create_audio_voice_paths.add_child(asset)
 		asset.setup(path)
 
-func reload_file_list_audio():
-	Util.clear_children(create_audio_voice_files)
+func _on_file_button_up(text):
+	pending_audio_data['audio_path'].append(text)
 	
-	for item in DirAccess.get_files_at(Editor.level_path + "audio"):
-		if Assets.lib.has(item.to_lower()) and (item.get_extension() == "ogg" or item.get_extension() == "mp3"):
-			var button = voice_file.instantiate() as Button
-			create_audio_voice_files.add_child(button)
-			button.text = item
+	var asset = voice_asset.instantiate() as Control
+	create_audio_voice_paths.add_child(asset)
+	asset.setup(text)
 
 func _on_audio_create_button_up():
 	if pending_audio_data.is_empty(): return

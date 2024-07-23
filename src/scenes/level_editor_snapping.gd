@@ -6,9 +6,9 @@ var snap_values: Array = [1,2,3,4,6,8]
 
 func _ready():
 	await get_tree().process_frame
-	_on_item_selected(LevelEditor.snapping_index)
 	# Set selected item in option box
-	selected = snap_values.find(LevelEditor.snapping_factor) 
+	selected = LevelEditor.snapping_index
+	_on_item_selected(selected)
 
 func _on_item_selected(index):
 	LevelEditor.snapping_index = index

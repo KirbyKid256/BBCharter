@@ -35,22 +35,22 @@ func _on_panel_gui_input(event):
 		Util.free_node(self)
 
 func _on_up_button_up():
-	var idx = file_drop.pending_audio_data['audio_path'].find(path)
-	var new_idx = clampi(idx-1,0,file_drop.pending_audio_data['audio_path'].size())
+	var idx = get_index()
+	var new_idx = clampi(idx-1,0,file_drop.pending_audio_data['audio_path'].size()-1)
 	
 	file_drop.pending_audio_data['audio_path'].remove_at(idx)
 	file_drop.pending_audio_data['audio_path'].insert(new_idx, path)
 	
-	file_drop.create_audio_voice_paths.move_child(file_drop.create_audio_voice_paths.get_child(idx), new_idx)
+	file_drop.create_audio_voice_paths.move_child(self, new_idx)
 
 func _on_down_button_up():
-	var idx = file_drop.pending_audio_data['audio_path'].find(path)
-	var new_idx = clampi(idx+1,0,file_drop.pending_audio_data['audio_path'].size())
+	var idx = get_index()
+	var new_idx = clampi(idx+1,0,file_drop.pending_audio_data['audio_path'].size()-1)
 	
 	file_drop.pending_audio_data['audio_path'].remove_at(idx)
 	file_drop.pending_audio_data['audio_path'].insert(clampi(idx+1,0,file_drop.pending_audio_data['audio_path'].size()), path)
 	
-	file_drop.create_audio_voice_paths.move_child(file_drop.create_audio_voice_paths.get_child(idx), new_idx)
+	file_drop.create_audio_voice_paths.move_child(self, new_idx)
 
 func _on_play_button_up():
 	if sound.stream: sound.play()

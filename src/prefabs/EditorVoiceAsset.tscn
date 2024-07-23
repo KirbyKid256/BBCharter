@@ -13,7 +13,6 @@ corner_radius_bottom_left = 8
 [sub_resource type="LabelSettings" id="LabelSettings_memg6"]
 
 [node name="EditorVoiceAsset" type="Control"]
-clip_contents = true
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 3
 anchors_preset = 0

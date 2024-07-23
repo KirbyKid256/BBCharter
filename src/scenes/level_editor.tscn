@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=90 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -55,7 +55,10 @@
 [ext_resource type="PackedScene" uid="uid://clwu0fc30p4d5" path="res://src/prefabs/ErrorNotification.tscn" id="41_cf854"]
 [ext_resource type="PackedScene" uid="uid://ipguruv1rs3e" path="res://src/prefabs/EditorVoiceAsset.tscn" id="42_7oqdf"]
 [ext_resource type="PackedScene" uid="uid://bffgl1iws8g42" path="res://src/prefabs/EditorVoiceButton.tscn" id="43_ck8x4"]
-[ext_resource type="PackedScene" uid="uid://b3vlxgp0bcq11" path="res://src/prefabs/EditorFileButton.tscn" id="43_juymu"]
+[ext_resource type="PackedScene" uid="uid://c6g2sw36auhm8" path="res://src/prefabs/EditorFileSelection.tscn" id="47_bq5k6"]
+[ext_resource type="Script" path="res://src/scenes/level_editor_difficulty_settings_menu.gd" id="49_jscfc"]
+[ext_resource type="PackedScene" uid="uid://p7hvuu50rbka" path="res://src/prefabs/EditorDifficultyAsset.tscn" id="50_f6xji"]
+[ext_resource type="Texture2D" uid="uid://dfu4wkrohcgqq" path="res://assets/ui/plus_add.png" id="51_ybvd3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gewp"]
 bg_color = Color(0, 0, 0, 1)
@@ -547,6 +550,15 @@ item_4/id = 3
 item_5/text = "Empty Voice Bank"
 item_5/id = 4
 
+[node name="Help" type="PopupMenu" parent="MenuBar"]
+system_menu_id = 4
+item_count = 3
+item_0/text = "Controls"
+item_1/text = "Documentation (Needs Rework)"
+item_1/id = 1
+item_2/text = "Discord"
+item_2/id = 2
+
 [node name="Preview" type="Control" parent="."]
 clip_contents = true
 layout_mode = 1
@@ -930,7 +942,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("17_q0adn")
 voice_asset = ExtResource("43_ck8x4")
-voice_file = ExtResource("43_juymu")
 metadata/_edit_lock_ = true
 
 [node name="MenuOverlays" type="Control" parent="."]
@@ -988,6 +999,14 @@ metadata/_edit_group_ = true
 [node name="AssetGrid" type="VBoxContainer" parent="MenuOverlays/CreateAudioMenu/Paths"]
 layout_mode = 2
 
+[node name="FileSelection" parent="MenuOverlays/CreateAudioMenu" instance=ExtResource("47_bq5k6")]
+layout_mode = 0
+offset_left = 896.0
+offset_top = 200.0
+offset_right = 1696.0
+offset_bottom = 864.0
+filter = ["ogg", "mp3"]
+
 [node name="Buttons" type="VBoxContainer" parent="MenuOverlays/CreateAudioMenu"]
 layout_mode = 1
 anchors_preset = 8
@@ -1024,17 +1043,6 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
 theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
 text = "Cancel
 "
-
-[node name="Files" type="ScrollContainer" parent="MenuOverlays/CreateAudioMenu"]
-layout_mode = 0
-offset_left = 896.0
-offset_top = 200.0
-offset_right = 1696.0
-offset_bottom = 864.0
-horizontal_scroll_mode = 0
-
-[node name="AssetGrid" type="VBoxContainer" parent="MenuOverlays/CreateAudioMenu/Files"]
-layout_mode = 2
 
 [node name="CreateImageMenu" type="Control" parent="MenuOverlays"]
 visible = false
@@ -1415,7 +1423,7 @@ theme_override_constants/separation = 12
 alignment = 1
 metadata/_edit_group_ = true
 
-[node name="SaveButton" type="Button" parent="MenuOverlays/LevelSettingsMenu/Buttons"]
+[node name="Save" type="Button" parent="MenuOverlays/LevelSettingsMenu/Buttons"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
@@ -1424,7 +1432,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
 theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
 text = "Save Settings"
 
-[node name="CancelButton" type="Button" parent="MenuOverlays/LevelSettingsMenu/Buttons"]
+[node name="Cancel" type="Button" parent="MenuOverlays/LevelSettingsMenu/Buttons"]
 modulate = Color(1, 0, 0, 1)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1443,6 +1451,137 @@ offset_right = 1696.0
 offset_bottom = 864.0
 expand_mode = 1
 stretch_mode = 5
+
+[node name="DifficultySettingsMenu" type="Control" parent="MenuOverlays"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("49_jscfc")
+difficulty_asset = ExtResource("50_f6xji")
+
+[node name="Dark" type="Panel" parent="MenuOverlays/DifficultySettingsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f32up")
+
+[node name="DragVisual" type="Sprite2D" parent="MenuOverlays/DifficultySettingsMenu"]
+modulate = Color(1, 1, 1, 0.384314)
+position = Vector2(960, 540)
+texture = ExtResource("17_30xl6")
+
+[node name="Header" type="Label" parent="MenuOverlays/DifficultySettingsMenu"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 200.0
+offset_right = 788.0
+offset_bottom = 250.0
+text = "Difficulty Settings"
+label_settings = SubResource("LabelSettings_g5hs2")
+vertical_alignment = 1
+
+[node name="SubHeader" type="Label" parent="MenuOverlays/DifficultySettingsMenu"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 256.0
+offset_right = 768.0
+offset_bottom = 306.0
+text = "Edit and Rearrange Difficulties here"
+label_settings = SubResource("LabelSettings_mgc4n")
+vertical_alignment = 1
+
+[node name="Difficulties" type="ScrollContainer" parent="MenuOverlays/DifficultySettingsMenu"]
+layout_mode = 2
+offset_left = 256.0
+offset_top = 320.0
+offset_right = 768.0
+offset_bottom = 658.0
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuOverlays/DifficultySettingsMenu/Difficulties"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddButton" type="Button" parent="MenuOverlays/DifficultySettingsMenu/Difficulties/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+text = "Add Difficulty"
+icon = ExtResource("51_ybvd3")
+
+[node name="Settings" type="VBoxContainer" parent="MenuOverlays/DifficultySettingsMenu"]
+layout_mode = 0
+offset_left = 896.0
+offset_top = 200.0
+offset_right = 1696.0
+offset_bottom = 864.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Name"
+label_settings = SubResource("LabelSettings_irclh")
+
+[node name="NameField" type="LineEdit" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Icon"
+label_settings = SubResource("LabelSettings_irclh")
+
+[node name="FileSelection" parent="MenuOverlays/DifficultySettingsMenu/Settings" instance=ExtResource("47_bq5k6")]
+layout_mode = 2
+size_flags_vertical = 3
+filter = ["png", "jpg", "jpeg"]
+
+[node name="Buttons" type="VBoxContainer" parent="MenuOverlays/DifficultySettingsMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -704.0
+offset_top = 156.0
+offset_right = -192.0
+offset_bottom = 321.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 1
+metadata/_edit_group_ = true
+
+[node name="Save" type="Button" parent="MenuOverlays/DifficultySettingsMenu/Buttons"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxFlat_fb576")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
+theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
+text = "Save Settings"
+
+[node name="Cancel" type="Button" parent="MenuOverlays/DifficultySettingsMenu/Buttons"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxFlat_fb576")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
+theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
+text = "Cancel
+"
 
 [node name="LevelEditorMenu" type="Control" parent="MenuOverlays"]
 visible = false
@@ -1522,12 +1661,11 @@ text = "Level Settings
 alignment = 0
 text_overrun_behavior = 3
 
-[node name="DifficultySettingsButton3" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
+[node name="DifficultySettingsButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
-disabled = true
 text = "Difficulty Settings
 "
 alignment = 0
@@ -1613,15 +1751,24 @@ script = ExtResource("40_x5fle")
 [connection signal="id_pressed" from="MenuBar/File" to="MenuBar" method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Edit" to="MenuBar" method="_on_edit_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Add" to="MenuBar" method="_on_add_id_pressed"]
+[connection signal="id_pressed" from="MenuBar/Help" to="MenuBar" method="_on_help_id_pressed"]
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Create" to="FileDrop" method="_on_audio_create_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Cancel" to="FileDrop" method="_on_audio_cancel_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateImageMenu/Buttons/Create" to="FileDrop" method="_on_image_import_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateImageMenu/Buttons/Cancel" to="FileDrop" method="_on_image_cancel_button_up"]
-[connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/SaveButton" to="MenuOverlays/LevelSettingsMenu" method="_on_save_button_button_up"]
-[connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/CancelButton" to="MenuOverlays/LevelSettingsMenu" method="_on_cancel_button_button_up"]
-[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelSettingsMenu" method="_on_level_settings_button_up"]
-[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelEditorMenu" method="_on_level_settings_button_up"]
+[connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Save" to="MenuOverlays/LevelSettingsMenu" method="_on_save_button_up"]
+[connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelSettingsMenu" method="hide"]
+[connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
+[connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Difficulties/VBoxContainer/AddButton" to="MenuOverlays/DifficultySettingsMenu" method="_on_add_button_up"]
+[connection signal="text_submitted" from="MenuOverlays/DifficultySettingsMenu/Settings/NameField" to="MenuOverlays/DifficultySettingsMenu" method="_on_name_field_text_submitted"]
+[connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Save" to="MenuOverlays/DifficultySettingsMenu" method="_on_save_button_up"]
+[connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/DifficultySettingsMenu" method="hide"]
+[connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelSettingsMenu" method="show"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelEditorMenu" method="open_submenu"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/DifficultySettingsButton" to="MenuOverlays/DifficultySettingsMenu" method="_on_difficulty_settings_button_up"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/DifficultySettingsButton" to="MenuOverlays/LevelEditorMenu" method="open_submenu"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer2/SaveLevelButton" to="MenuOverlays/LevelEditorMenu" method="_on_save_level_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer2/ExportModButton" to="." method="_on_export_mod_button_up"]
-[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer3/CloseMenuButton" to="MenuOverlays/LevelEditorMenu" method="_on_close_menu_button_up"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer3/CloseMenuButton" to="MenuOverlays/LevelEditorMenu" method="hide"]
 [connection signal="dir_selected" from="FileDialog" to="FileDialog" method="_on_dir_selected"]

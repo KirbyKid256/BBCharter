@@ -16,7 +16,7 @@ enum ADD {SHUTTER,MODIFIER}
 @onready var shutters: Node2D = $'../ScrollContainer/KeyframeAssetGrid/Shutters/Track'
 @onready var modifiers: Node2D = $'../ScrollContainer/KeyframeAssetGrid/Modifiers/Track'
 
-enum DIFFICULTY {ADD,RENAME,DELETE,REARRANGE}
+enum HELP {CONTROLS,WIKI,DISCORD}
 
 func _ready():
 	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
@@ -62,3 +62,10 @@ func _on_add_id_pressed(id):
 		2: backgrounds.create_keyframe({'sprite_sheet': ""})
 		3: loopsounds.create_keyframe({'audio_path': ""})
 		4: voices.create_keyframe({'audio_path': []})
+
+func _on_help_id_pressed(id):
+	#TODO: Make Help tab more fancy
+	match id:
+		HELP.CONTROLS: OS.shell_open("https://github.com/KirbyKid256/BBCharter?tab=readme-ov-file#bb-charter")
+		HELP.WIKI: OS.shell_open("https://github.com/KirbyKid256/BBCharter/wiki")
+		HELP.DISCORD: OS.shell_open("https://discord.gg/beatbanger")

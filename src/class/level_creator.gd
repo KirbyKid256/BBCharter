@@ -39,7 +39,7 @@ static var config_templates = [
 	{ # notes.cfg
 		"charts": [{
 			"name": "Normal",
-			"rating": 1,
+			"rating": 0,
 			"notes": [
 				{"input_type": 0, "note_modifier": 0, "timestamp": 0.0}, 
 				{"input_type": 0, "note_modifier": 0, "timestamp": 0.5}, 

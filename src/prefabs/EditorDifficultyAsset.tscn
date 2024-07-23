@@ -1,0 +1,131 @@
+[gd_scene load_steps=6 format=3 uid="uid://p7hvuu50rbka"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorDifficultyAsset.gd" id="1_a5gfc"]
+[ext_resource type="Texture2D" uid="uid://b34r47mcf4u31" path="res://assets/images/placeholder_difficulty.png" id="2_rh4dh"]
+[ext_resource type="Texture2D" uid="uid://dbsmygu8s8chd" path="res://assets/ui/arrow_left.png" id="3_fv00f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jptoj"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfxqa"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="EditorDifficultyAsset" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 240.0
+offset_bottom = 64.0
+tooltip_text = "Right-Click to Delete"
+script = ExtResource("1_a5gfc")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jptoj")
+
+[node name="Icon" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.5)
+position = Vector2(84, 48)
+texture = ExtResource("2_rh4dh")
+
+[node name="DifficultyName" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 132.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -43.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Normal"
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="NoteCount" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 132.0
+offset_top = 53.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 24
+text = "69 Notes"
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="UpButton" type="TextureButton" parent="."]
+modulate = Color(1, 1, 1, 0.3)
+offset_left = 7.99999
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 8.0
+rotation = 1.5708
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(0, 24)
+texture_normal = ExtResource("3_fv00f")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="DownButton" type="TextureButton" parent="."]
+modulate = Color(1, 1, 1, 0.3)
+offset_left = 7.99999
+offset_top = 28.0
+offset_right = 32.0
+offset_bottom = 52.0
+rotation = 1.5708
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(0, 24)
+texture_normal = ExtResource("3_fv00f")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
+
+[node name="Outline" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nfxqa")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="button_up" from="UpButton" to="." method="_on_up_button_up"]
+[connection signal="mouse_entered" from="UpButton" to="." method="_on_up_button_mouse_entered"]
+[connection signal="mouse_exited" from="UpButton" to="." method="_on_up_button_mouse_exited"]
+[connection signal="button_up" from="DownButton" to="." method="_on_down_button_up"]
+[connection signal="mouse_entered" from="DownButton" to="." method="_on_down_button_mouse_entered"]
+[connection signal="mouse_exited" from="DownButton" to="." method="_on_down_button_mouse_exited"]

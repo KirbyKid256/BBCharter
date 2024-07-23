@@ -2,8 +2,8 @@ extends Control
 
 enum {EDIT,DELETE}
 
-@onready var file_list: Label = $FileListPrev
 @onready var icon: Sprite2D = $Icon
+@onready var file_list: Label = $FileListPrev
 @onready var context_menu: PopupMenu = $ContextMenu
 
 var data: Dictionary

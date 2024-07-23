@@ -130,10 +130,11 @@ static func add_single_keyframe(data: Dictionary, root_note: Node2D, prefab: Pac
 	new_keyframe.setup(data)
 
 static func save_project() -> void:
-	if Difficulty.get_chart_notes().is_empty(): return Console.log({'message': 'No Chart To Save', 'type': 2})
 	Config.save_config_data("asset.cfg", Config.asset)
 	Config.save_config_data("keyframes.cfg", Config.keyframes)
 	Config.save_config_data("meta.cfg", Config.meta)
 	Config.save_config_data("notes.cfg", Config.notes)
 	Config.save_config_data("settings.cfg", Config.settings)
+	
 	Console.log({"message": "Saving Project"})
+	Editor.project_changed = false

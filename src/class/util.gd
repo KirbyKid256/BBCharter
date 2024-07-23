@@ -9,14 +9,12 @@ static func free_node(node: Node):
 static func clear_children(parent: Node):
 	for child: Node in parent.get_children():
 		parent.remove_child(child); child.queue_free()
-		continue
 	await parent.get_tree().process_frame
 
 static func clear_children_node_2d(parent: Node):
 	var filtered_children = parent.get_children().filter(func(c): return c is Node2D)
 	for n: Node2D in filtered_children:
 		parent.remove_child(n); n.queue_free()
-		continue
 	await parent.get_tree().process_frame
 
 static func get_node_2d_children(root: Node2D) -> Array:
