@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://moeqj4yom3bf"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorSoundLoop.gd" id="1_280go"]
+[ext_resource type="Texture2D" uid="uid://c8qntv7mcufiy" path="res://assets/ui/editor_loop.png" id="2_fqavn"]
+
+[node name="EditorSoundLoop" type="Node2D"]
+script = ExtResource("1_280go")
+
+[node name="LevelEditorIconLoop" type="Sprite2D" parent="."]
+texture = ExtResource("2_fqavn")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+
+[node name="SoundTest" type="AudioStreamPlayer" parent="."]
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]

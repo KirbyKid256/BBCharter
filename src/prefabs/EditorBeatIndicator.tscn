@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4kaito6s8p3r"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorBeatIndicator.gd" id="1_a6uyp"]
+[ext_resource type="FontFile" uid="uid://d23w6chkropfb" path="res://assets/font/noto/NotoSansJP-Bold.ttf" id="2_0srvf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7weot"]
+font = ExtResource("2_0srvf")
+font_color = Color(1, 1, 1, 0.239216)
+
+[node name="EditorBeatIndicator" type="Node2D"]
+script = ExtResource("1_a6uyp")
+
+[node name="BeatLine" type="Line2D" parent="."]
+points = PackedVector2Array(0, -96, 0, 96)
+width = 2.0
+default_color = Color(1, 1, 1, 0.654902)
+
+[node name="Red" type="Line2D" parent="."]
+points = PackedVector2Array(0, -240, 0, -96)
+width = 2.0
+default_color = Color(0.631373, 0, 0, 0.388235)
+
+[node name="BeatNumber" type="Label" parent="."]
+offset_left = 8.0
+offset_top = -94.0
+offset_right = 18.0
+offset_bottom = -70.0
+text = "0"
+label_settings = SubResource("LabelSettings_7weot")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://24b7o1sroq4v"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorVoice.gd" id="1_dabxe"]
+[ext_resource type="Texture2D" uid="uid://bhv30c8agkxbl" path="res://assets/ui/editor_voice.png" id="2_p8il0"]
+
+[node name="EditorVoice" type="Node2D"]
+script = ExtResource("1_dabxe")
+
+[node name="LevelEditorIconVoice" type="Sprite2D" parent="."]
+texture = ExtResource("2_p8il0")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]

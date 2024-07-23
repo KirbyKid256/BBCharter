@@ -1,0 +1,113 @@
+[gd_scene load_steps=9 format=3 uid="uid://clwu0fc30p4d5"]
+
+[ext_resource type="Script" path="res://src/prefabs/ErrorNotification.gd" id="1_qouhf"]
+[ext_resource type="FontFile" uid="uid://c8qoqe265fmaa" path="res://assets/font/noto/NotoSansJP-Black.ttf" id="2_wstuk"]
+[ext_resource type="FontFile" uid="uid://crwbv2wvibutw" path="res://assets/font/noto/NotoSansJP-Regular.ttf" id="3_il1bt"]
+
+[sub_resource type="Animation" id="Animation_u8phs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_g37qy"]
+resource_name = "show_error"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 5, 6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 5, 6),
+"transitions": PackedFloat32Array(0.2, 1, 2, 1),
+"update": 0,
+"values": [Vector2(0, 40), Vector2(0, 0), Vector2(0, 0), Vector2(0, 40)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cka5x"]
+_data = {
+"RESET": SubResource("Animation_u8phs"),
+"show_error": SubResource("Animation_g37qy")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_5mnd8"]
+font = ExtResource("2_wstuk")
+font_size = 72
+font_color = Color(1, 0, 0, 1)
+shadow_color = Color(0.454902, 0, 0, 1)
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_msjgu"]
+font = ExtResource("3_il1bt")
+font_size = 36
+
+[node name="ErrorNotification" type="Node2D"]
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_qouhf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cka5x")
+}
+
+[node name="Root" type="Node2D" parent="."]
+
+[node name="Header" type="Label" parent="Root"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -255.0
+offset_bottom = 105.0
+grow_horizontal = 0
+text = "ERROR"
+label_settings = SubResource("LabelSettings_5mnd8")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="Root"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -143.0
+offset_top = 104.0
+offset_bottom = 157.0
+grow_horizontal = 0
+text = "Message"
+label_settings = SubResource("LabelSettings_msjgu")
+horizontal_alignment = 2
+vertical_alignment = 1

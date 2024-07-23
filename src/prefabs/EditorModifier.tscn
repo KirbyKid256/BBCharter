@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1xl0dlt5hodm"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorModifier.gd" id="1_plhu5"]
+[ext_resource type="Texture2D" uid="uid://bjolrc3cj0dhl" path="res://assets/ui/editor_modifier.png" id="2_uhnup"]
+
+[node name="EditorModifier" type="Node2D"]
+script = ExtResource("1_plhu5")
+
+[node name="ModifierIcon" type="Sprite2D" parent="."]
+texture = ExtResource("2_uhnup")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[node name="BpmField" type="LineEdit" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.5312
+offset_top = -15.5
+offset_right = 33.5312
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]
+[connection signal="text_submitted" from="BpmField" to="." method="_on_bpm_field_text_submitted"]

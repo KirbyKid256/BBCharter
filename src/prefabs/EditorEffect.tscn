@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bphg0ja7ks0q1"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorEffect.gd" id="1_hnbmt"]
+[ext_resource type="Texture2D" uid="uid://ddwh1rpqdbcvh" path="res://assets/ui/level_select_map_node.png" id="2_ubrmk"]
+
+[node name="EditorEffect" type="Node2D"]
+script = ExtResource("1_hnbmt")
+
+[node name="EffectIcon" type="Sprite2D" parent="."]
+texture = ExtResource("2_ubrmk")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]

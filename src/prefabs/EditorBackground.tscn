@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://ewu0y7f1len1"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorBackground.gd" id="1_jpm41"]
+[ext_resource type="Texture2D" uid="uid://bs02rsr8xaapa" path="res://assets/ui/level_editor_icon_image.png" id="2_02nin"]
+
+[node name="EditorBackground" type="Node2D"]
+script = ExtResource("1_jpm41")
+
+[node name="ImageIcon" type="Sprite2D" parent="."]
+texture = ExtResource("2_02nin")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]

@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3djlqreu550i"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorAnimationAsset.gd" id="1_bc1c3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipg2r"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_memg6"]
+
+[node name="EditorAnimationAsset" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(240, 135)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bc1c3")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ipg2r")
+
+[node name="SpriteSheet" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.2)
+position = Vector2(120, 67)
+scale = Vector2(0.188, 0.188)
+
+[node name="FilenameLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -127.0
+offset_right = 152.0
+offset_bottom = -104.0
+grow_vertical = 0
+text = "Animation.png"
+label_settings = SubResource("LabelSettings_memg6")
+text_overrun_behavior = 3
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+size = Vector2i(133, 62)
+hide_on_state_item_selection = true
+item_count = 2
+item_0/text = "Edit Asset"
+item_1/text = "Delete Asset"
+item_1/id = 1
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="id_pressed" from="ContextMenu" to="." method="_on_context_menu_id_pressed"]

@@ -1,0 +1,85 @@
+[gd_scene load_steps=4 format=3 uid="uid://b505b3nq51pxc"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorFileAsset.gd" id="1_x1l2r"]
+[ext_resource type="Texture2D" uid="uid://44jh1ubk233d" path="res://assets/ui/level_editor_icon_audio.png" id="1_y65p2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iilh"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="EditorFileAsset" type="Control"]
+custom_minimum_size = Vector2(216, 48)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 216.0
+offset_bottom = 48.0
+script = ExtResource("1_x1l2r")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7iilh")
+
+[node name="LevelEditorIcon" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.3)
+position = Vector2(32, 24)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_y65p2")
+
+[node name="Filename" type="Label" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 8.0
+offset_right = 208.0
+offset_bottom = 40.0
+text = "Audio.ogg"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="ContextMenuImage" type="PopupMenu" parent="."]
+size = Vector2i(113, 100)
+item_count = 5
+item_0/text = "Animation"
+item_1/text = "Effect"
+item_1/id = 1
+item_2/text = "Background"
+item_2/id = 2
+item_3/id = 4
+item_3/separator = true
+item_4/text = "Delete"
+item_4/id = 3
+
+[node name="ContextMenuAudio" type="PopupMenu" parent="."]
+auto_translate_mode = 1
+size = Vector2i(219, 178)
+item_count = 8
+item_0/text = "OneShot Audio"
+item_1/text = "Sound Loop"
+item_1/id = 1
+item_2/text = "Voice Bank"
+item_2/id = 2
+item_3/id = 6
+item_3/separator = true
+item_4/text = "Set as Music"
+item_4/id = 3
+item_5/text = "Set as Horny Mode Sound"
+item_5/id = 4
+item_6/id = 7
+item_6/separator = true
+item_7/text = "Delete"
+item_7/id = 5
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="id_pressed" from="ContextMenuImage" to="." method="_on_context_menu_image_id_pressed"]
+[connection signal="id_pressed" from="ContextMenuAudio" to="." method="_on_context_menu_audio_id_pressed"]

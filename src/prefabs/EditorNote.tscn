@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://li22phhjdnut"]
+
+[ext_resource type="Texture2D" uid="uid://locc73ieg062" path="res://assets/images/note_body.png" id="1_5bj2x"]
+[ext_resource type="Script" path="res://src/prefabs/EditorNote.gd" id="1_r3bbv"]
+[ext_resource type="Texture2D" uid="uid://bbjvl71srge7k" path="res://assets/images/alpha_circle_64.png" id="2_6vh8n"]
+[ext_resource type="Texture2D" uid="uid://44jh1ubk233d" path="res://assets/ui/level_editor_icon_audio.png" id="3_ex64y"]
+[ext_resource type="Texture2D" uid="uid://2efudt7vre5m" path="res://assets/images/note_body_bomb.png" id="4_bcjca"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppfss"]
+radius = 24.0
+
+[node name="EditorNote" type="Node2D"]
+script = ExtResource("1_r3bbv")
+
+[node name="NoteTail" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, -64, 0)
+width = 8.0
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="SelectedVisual" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 3
+texture = ExtResource("2_6vh8n")
+
+[node name="NoteBody" type="Sprite2D" parent="."]
+self_modulate = Color(0.647059, 0.647059, 0.647059, 1)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("1_5bj2x")
+
+[node name="NoteBodyBomb" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(7, -2)
+texture = ExtResource("4_bcjca")
+
+[node name="Voice" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_ex64y")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_ppfss")
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+size = Vector2i(190, 174)
+hide_on_state_item_selection = true
+item_count = 7
+item_0/text = "Delete"
+item_1/id = 6
+item_1/separator = true
+item_2/text = "Ghost Note"
+item_2/id = 1
+item_3/text = "Auto Note"
+item_3/id = 2
+item_4/text = "Bomb Note"
+item_4/id = 3
+item_5/text = "Trigger Voice"
+item_5/id = 4
+item_6/text = "Set Hold Note At Time"
+item_6/id = 5
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]
+[connection signal="id_pressed" from="ContextMenu" to="." method="_on_context_menu_id_pressed"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgrvql3mns06r"]
+
+[ext_resource type="Texture2D" uid="uid://44jh1ubk233d" path="res://assets/ui/level_editor_icon_audio.png" id="1_hehs2"]
+[ext_resource type="Script" path="res://src/prefabs/EditorOneShot.gd" id="1_urpuc"]
+
+[node name="EditorOneShot" type="Node2D"]
+script = ExtResource("1_urpuc")
+
+[node name="LevelEditorIconAudio" type="Sprite2D" parent="."]
+texture = ExtResource("1_hehs2")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 16.0
+
+[node name="SoundTest" type="AudioStreamPlayer" parent="."]
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]

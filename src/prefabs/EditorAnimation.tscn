@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfnesrmhpe52e"]
+
+[ext_resource type="Script" path="res://src/prefabs/EditorAnimation.gd" id="1_07ms7"]
+[ext_resource type="Texture2D" uid="uid://yx5ejuiromw6" path="res://assets/ui/editor_keyframe.png" id="2_5g8gj"]
+
+[node name="EditorKeyframe" type="Node2D"]
+script = ExtResource("1_07ms7")
+
+[node name="KeyframeIcon" type="Sprite2D" parent="."]
+texture = ExtResource("2_5g8gj")
+
+[node name="InputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]
+[connection signal="mouse_entered" from="InputHandler" to="." method="_on_input_handler_mouse_entered"]
+[connection signal="mouse_exited" from="InputHandler" to="." method="_on_input_handler_mouse_exited"]

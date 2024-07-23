@@ -1,39 +1,45 @@
 # BB Charter
 
-The Godot 4.0 version of the BB Modding Tool
-
-**Currently there is no way to start a new project. The current best way to make a mod is to take existing levels or mods and change them by deleting or replacing the existing files in it**
+A modified version of the Beat Banger Level Editor
+Cutscene Editor coming after I'm done with all the major Level Editor stuff
 
 ### Engine Shortcuts
 | Hotkey | Function |
 | ------ | ------ |
-|Ctrl + S|Save the current mod.|
-|Ctrl + O|Open an existing mod.|
-|Alt + S|Toggle snapping|
+|Ctrl/Cmd + S|Save the current mod.|
+|Ctrl/Cmd + O|Open an existing mod.|
+|Ctrl/Cmd + N|Creating an new mod.|
+|Alt/Opt + S|Toggle snapping|
 ### Directory Shortcuts
 | Hotkey | Function |
 | ------ | ------ |
-|5|Open `keyframes.cfg` configuration file|
-|6|Open `note.cfg` configuration file|
-|7|Open project directory|
+|/|Open Project Directory|
 ### Charting Shortcuts
 | Hotkey | Function |
 | ------ | ------ |
-|Z|Spawn A Blue note|
-|X|Spawn A Orange note|
-|C|Spawn A Red note|
-|V|Spawn A Purple note|
-|Delete|Delete Selected notes|
+|Z|Spawn a Blue note|
+|X|Spawn a Orange note|
+|C|Spawn a Red note|
+|V|Spawn a Purple note|
+|Mouse Drag|Selects notes|
+|Backspace or Delete|Delete selected notes|
+|Ctrl/Cmd + C|Copies notes to clipboard|
+|Ctrl/Cmd + X|Copies notes to clipboard and removes from chart|
+|Ctrl/Cmd + V|Pastes notes from clipboard|
+|Shift + A|Adds a misc keyframe|
+|Alt/Opt + G|Turns selected notes into Ghost Notes|
+|Alt/Opt + A|Turns selected notes into Auto Notes|
+|Alt/Opt + B|Turns selected notes into Bomb Notes|
+|Alt/Opt + V|Gives selected notes a Voice Trigger|
+|Alt/Opt + H|Gives selected notes a hold length|
 ### Timeline Shortcuts
 | Hotkey | Function |
 | ------ | ------ |
-|Mouse Scroll| Scrub timeline|
-|Alt + Mouse Scroll| Slow Scrub timeline|
-|Ctrl + Mouse Scroll| Zoom|
+|Mouse Scroll|Scrub timeline|
+|Alt/Opt + Mouse Scroll|Slow Scrub timeline|
+|Ctrl/Cmd + Mouse Scroll|Zoom|
 |Spacebar|Play / Pause|
-|Page Up| Scrub -5.0 seconds|
-|Page Down| Scrub 5.0 seconds|
+|Right Arrow|Scrub -5.0 seconds|
+|Left Arrow|Scrub 5.0 seconds|
 |Home|Go to Beginning|
-|End|Go to end|
-|Right Arrow|Speed Up Song|
-|Left Arrow|Slow Down Song|
+|End|Go to End|
