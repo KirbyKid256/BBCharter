@@ -5,6 +5,8 @@ class_name LevelEditorMenu
 @onready var subheader: Label = $Subheader
 @onready var save_indicator: SaveIndicator = $'../../SaveIndicator'
 
+@onready var act_settings: Button = $Groups/VBoxContainer/ActSettingsButton
+
 var in_submenu: bool = false
 
 func _input(event):
@@ -17,13 +19,19 @@ func toggle():
 	if in_submenu: return
 	
 	LevelEditor.controls_enabled = visible
-	visible = !visible
-	if visible: music.pause()
 	
 	subheader.text = "%s - %s" % [
 		Config.meta.get("level_name", "No Name"),
 		Config.notes['charts'][MenuCache.level_difficulty_index]['name']
 	]
+	
+	if Config.act.is_empty():
+		act_settings.text = "Create Act"
+	else:
+		act_settings.text = "Act Settings"
+	
+	visible = !visible
+	if visible: music.pause()
 
 func open_submenu():
 	in_submenu = true

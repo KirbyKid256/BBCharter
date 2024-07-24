@@ -72,22 +72,17 @@ static var cutscene_script_template = [{
 	"dialogue": "Sample Dialogue"
 }]
 
-static func create_act_config(modpack_name: String, modpack_desc: String, modpack_idx: int, modpack_path: String):
+static func create_act_config():
 	Console.log({"message": "Creating Modpack Config"})
 	var act_config = ConfigFile.new()
-	act_config.set_value("main", "data", {
-		"act_name": modpack_name, 
-		"act_index": modpack_idx, 
-		"act_description": modpack_desc
-		})
-	act_config.save(modpack_path + "/act.cfg")
+	act_config.set_value("main", "data", act_template)
 
-static func create_level_directories(modpack_level_path: String):
+static func create_level_directories():
 	for folder_name in ["audio","config","images","video"]:
 		Console.log({"message": "Creating %s Folder" % folder_name})
-		if not DirAccess.make_dir_absolute(modpack_level_path.path_join(folder_name)) == OK: continue
+		if not DirAccess.make_dir_absolute(Editor.level_path.path_join(folder_name)) == OK: continue
 
-static func create_level_config(modpack_level_path: String):
+static func create_level_config():
 	var template_names = ["asset.cfg","keyframes.cfg","meta.cfg","mod.cfg","notes.cfg","settings.cfg"]
 	for i in template_names.size():
 		var template_name = template_names[i]
@@ -95,4 +90,4 @@ static func create_level_config(modpack_level_path: String):
 		var new_config = ConfigFile.new() 
 		
 		new_config.set_value("main", "data", config_template)
-		new_config.save(modpack_level_path.path_join("config").path_join(template_name))
+		new_config.save(Editor.level_path.path_join("config").path_join(template_name))

@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=91 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -56,6 +56,7 @@
 [ext_resource type="PackedScene" uid="uid://ipguruv1rs3e" path="res://src/prefabs/EditorVoiceAsset.tscn" id="42_7oqdf"]
 [ext_resource type="PackedScene" uid="uid://bffgl1iws8g42" path="res://src/prefabs/EditorVoiceButton.tscn" id="43_ck8x4"]
 [ext_resource type="PackedScene" uid="uid://c6g2sw36auhm8" path="res://src/prefabs/EditorFileSelection.tscn" id="47_bq5k6"]
+[ext_resource type="Script" path="res://src/scenes/level_editor_act_settings_menu.gd" id="48_cmey7"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_difficulty_settings_menu.gd" id="49_jscfc"]
 [ext_resource type="PackedScene" uid="uid://p7hvuu50rbka" path="res://src/prefabs/EditorDifficultyAsset.tscn" id="50_f6xji"]
 [ext_resource type="Texture2D" uid="uid://dfu4wkrohcgqq" path="res://assets/ui/plus_add.png" id="51_ybvd3"]
@@ -1274,6 +1275,180 @@ offset_bottom = 864.0
 expand_mode = 1
 stretch_mode = 5
 
+[node name="ActSettingsMenu" type="Control" parent="MenuOverlays"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("48_cmey7")
+
+[node name="Dark" type="Panel" parent="MenuOverlays/ActSettingsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f32up")
+
+[node name="DragVisual" type="Sprite2D" parent="MenuOverlays/ActSettingsMenu"]
+modulate = Color(1, 1, 1, 0.384314)
+position = Vector2(960, 540)
+texture = ExtResource("17_30xl6")
+
+[node name="Header" type="Label" parent="MenuOverlays/ActSettingsMenu"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 200.0
+offset_right = 788.0
+offset_bottom = 250.0
+text = "Act Settings"
+label_settings = SubResource("LabelSettings_g5hs2")
+vertical_alignment = 1
+
+[node name="SubHeader" type="Label" parent="MenuOverlays/ActSettingsMenu"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 256.0
+offset_right = 768.0
+offset_bottom = 306.0
+text = "Edit your act's information here"
+label_settings = SubResource("LabelSettings_mgc4n")
+vertical_alignment = 1
+
+[node name="Settings" type="VBoxContainer" parent="MenuOverlays/ActSettingsMenu"]
+layout_mode = 2
+offset_left = 256.0
+offset_top = 320.0
+offset_right = 768.0
+offset_bottom = 658.0
+metadata/_edit_group_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuOverlays/ActSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Act Name"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="ActNameField" type="LineEdit" parent="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer"]
+custom_minimum_size = Vector2(350, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("29_15ypu")
+alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MenuOverlays/ActSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Act Index"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="ActIndexField" type="SpinBox" parent="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer2"]
+custom_minimum_size = Vector2(350, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+rounded = true
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MenuOverlays/ActSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Legacy Act"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="ActLegacyField" type="Button" parent="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer3"]
+custom_minimum_size = Vector2(350, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("29_15ypu")
+toggle_mode = true
+text = "OFF"
+
+[node name="HSeparator" type="HSeparator" parent="MenuOverlays/ActSettingsMenu/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/ActSettingsMenu/Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Act Description"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="ActDescriptionField" type="TextEdit" parent="MenuOverlays/ActSettingsMenu/Settings"]
+layout_mode = 2
+size_flags_vertical = 3
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="Buttons" type="VBoxContainer" parent="MenuOverlays/ActSettingsMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -704.0
+offset_top = 156.0
+offset_right = -192.0
+offset_bottom = 321.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 1
+metadata/_edit_group_ = true
+
+[node name="Save" type="Button" parent="MenuOverlays/ActSettingsMenu/Buttons"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxFlat_fb576")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
+theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
+text = "Save Settings"
+
+[node name="Cancel" type="Button" parent="MenuOverlays/ActSettingsMenu/Buttons"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxFlat_fb576")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
+theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
+text = "Cancel
+"
+
+[node name="SplashPreview" type="TextureRect" parent="MenuOverlays/ActSettingsMenu"]
+layout_mode = 0
+offset_left = 896.0
+offset_top = 200.0
+offset_right = 1696.0
+offset_bottom = 864.0
+expand_mode = 1
+stretch_mode = 5
+
 [node name="LevelSettingsMenu" type="Control" parent="MenuOverlays"]
 visible = false
 layout_mode = 1
@@ -1334,7 +1509,7 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Level Name "
+text = "Level Name"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
@@ -1640,14 +1815,12 @@ layout_mode = 2
 theme_override_constants/separation = 8
 metadata/_edit_group_ = true
 
-[node name="ActSettingsButton2" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
+[node name="ActSettingsButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
-disabled = true
-text = "Act Settings
-"
+text = "Act Settings"
 alignment = 0
 text_overrun_behavior = 3
 
@@ -1656,8 +1829,7 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
-text = "Level Settings
-"
+text = "Level Settings"
 alignment = 0
 text_overrun_behavior = 3
 
@@ -1666,8 +1838,7 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
-text = "Difficulty Settings
-"
+text = "Difficulty Settings"
 alignment = 0
 text_overrun_behavior = 3
 
@@ -1705,8 +1876,7 @@ theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
 disabled = true
-text = "Go to Cutscene Editor
-"
+text = "Go to Cutscene Editor"
 alignment = 0
 text_overrun_behavior = 3
 
@@ -1756,6 +1926,10 @@ script = ExtResource("40_x5fle")
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Cancel" to="FileDrop" method="_on_audio_cancel_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateImageMenu/Buttons/Create" to="FileDrop" method="_on_image_import_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateImageMenu/Buttons/Cancel" to="FileDrop" method="_on_image_cancel_button_up"]
+[connection signal="toggled" from="MenuOverlays/ActSettingsMenu/Settings/HBoxContainer3/ActLegacyField" to="MenuOverlays/ActSettingsMenu" method="_on_act_legacy_field_toggled"]
+[connection signal="button_up" from="MenuOverlays/ActSettingsMenu/Buttons/Save" to="MenuOverlays/ActSettingsMenu" method="_on_save_button_up"]
+[connection signal="button_up" from="MenuOverlays/ActSettingsMenu/Buttons/Cancel" to="MenuOverlays/ActSettingsMenu" method="hide"]
+[connection signal="button_up" from="MenuOverlays/ActSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
 [connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Save" to="MenuOverlays/LevelSettingsMenu" method="_on_save_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelSettingsMenu" method="hide"]
 [connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
@@ -1764,7 +1938,9 @@ script = ExtResource("40_x5fle")
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Save" to="MenuOverlays/DifficultySettingsMenu" method="_on_save_button_up"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/DifficultySettingsMenu" method="hide"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
-[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelSettingsMenu" method="show"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/ActSettingsButton" to="MenuOverlays/ActSettingsMenu" method="_on_act_settings_button_up"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/ActSettingsButton" to="MenuOverlays/LevelEditorMenu" method="open_submenu"]
+[connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelSettingsMenu" method="_on_level_settings_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/LevelSettingsButton" to="MenuOverlays/LevelEditorMenu" method="open_submenu"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/DifficultySettingsButton" to="MenuOverlays/DifficultySettingsMenu" method="_on_difficulty_settings_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer/DifficultySettingsButton" to="MenuOverlays/LevelEditorMenu" method="open_submenu"]

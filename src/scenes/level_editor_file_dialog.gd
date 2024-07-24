@@ -35,8 +35,8 @@ func _on_dir_selected(new_path: String):
 	Editor.level_path = new_path + "/"
 	
 	if create_level:
-		LevelCreator.create_level_directories(Editor.level_path)
-		LevelCreator.create_level_config(Editor.level_path)
+		LevelCreator.create_level_directories()
+		LevelCreator.create_level_config()
 	
 	if Config.store_config_data():
 		Editor.level_loaded = false

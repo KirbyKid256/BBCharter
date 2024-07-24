@@ -136,5 +136,13 @@ static func save_project() -> void:
 	Config.save_config_data("notes.cfg", Config.notes)
 	Config.save_config_data("settings.cfg", Config.settings)
 	
+	if not Config.mod.is_empty():
+		Config.save_config_data("mod.cfg", Config.mod)
+	
+	if not Config.act.is_empty():
+		var config: ConfigFile = ConfigFile.new()
+		config.set_value('main', 'data', Config.act)
+		config.save(Editor.level_path.get_base_dir().get_base_dir().path_join("act.cfg"))
+	
 	Console.log({"message": "Saving Project"})
 	Editor.project_changed = false
