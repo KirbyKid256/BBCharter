@@ -23,5 +23,5 @@ func create_keyframe(keyframe_data: Dictionary):
 	if keyframe_data.has("stretch_mode"):
 		new_keyframe_data.merge ({"stretch_mode": keyframe_data["stretch_mode"]})
 	
-	LevelEditor.create_new_keyframe("background", new_keyframe_data, timestamp)
-	LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)
+	if LevelEditor.create_new_keyframe("background", new_keyframe_data, timestamp):
+		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)

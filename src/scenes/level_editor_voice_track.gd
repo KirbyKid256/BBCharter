@@ -13,8 +13,7 @@ func _process(_delta):
 
 func create_keyframe(keyframe_data: Dictionary):
 	var timestamp = LevelEditor.get_timestamp()
-	var new_sound_voice_data = {'timestamp': timestamp, 'voice_paths': keyframe_data['audio_path']}
+	var new_keyframe_data = {'timestamp': timestamp, 'voice_paths': keyframe_data['audio_path']}
 	
-	Console.log({"message": "Creating Voice Bank at %s" % timestamp})
-	LevelEditor.create_new_keyframe("voice_bank", new_sound_voice_data, timestamp)
-	LevelEditor.add_single_keyframe(new_sound_voice_data, self, editor_keyframe_prefab)
+	if LevelEditor.create_new_keyframe("voice_bank", new_keyframe_data, timestamp):
+		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)

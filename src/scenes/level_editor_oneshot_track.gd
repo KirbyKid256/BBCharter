@@ -13,8 +13,7 @@ func _process(_delta):
 
 func create_oneshot_audio(keyframe_data: Dictionary):
 	var timestamp = LevelEditor.get_timestamp()
-	var new_sound_oneshot_data = {'path': keyframe_data['audio_path'], 'timestamp': timestamp}
+	var new_keyframe_data = {'path': keyframe_data['audio_path'], 'timestamp': timestamp}
 	
-	Console.log({"message": "Creating Oneshot Audio at %s" % timestamp})
-	LevelEditor.create_new_keyframe("sound_oneshot", new_sound_oneshot_data, timestamp)
-	LevelEditor.add_single_keyframe(new_sound_oneshot_data, self, editor_keyframe_prefab)
+	if LevelEditor.create_new_keyframe("sound_oneshot", new_keyframe_data, timestamp):
+		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)

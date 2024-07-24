@@ -22,10 +22,9 @@ func create_keyframe(keyframe_data: Dictionary):
 	}
 	
 	if keyframe_data.has("scale_multiplier"):
-		new_keyframe_data.merge ({"scale_multiplier": keyframe_data["scale_multiplier"]})
+		new_keyframe_data.merge({"scale_multiplier": keyframe_data["scale_multiplier"]})
 	
-	LevelEditor.create_new_keyframe("loops", new_keyframe_data, timestamp)
-	LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)
-	
-	if LevelEditor.song_position_offset <= new_keyframe_data['timestamp']:
-		character.change_animation(Config.keyframes["loops"].find(new_keyframe_data))
+	if LevelEditor.create_new_keyframe("loops", new_keyframe_data, timestamp):
+		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)
+		if LevelEditor.song_position_offset <= new_keyframe_data['timestamp']:
+			character.change_animation(Config.keyframes["loops"].find(new_keyframe_data))

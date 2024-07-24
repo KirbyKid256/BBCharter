@@ -109,14 +109,15 @@ static func place_init_keyframes(key: String, root_note: Node2D, prefab: PackedS
 		new_keyframe.setup(keyframe_data)
 
 # Create a new keyframe from an asset
-static func create_new_keyframe(key: String, data: Dictionary, timestamp: float):
+static func create_new_keyframe(key: String, data: Dictionary, timestamp: float) -> bool:
 	# Check if keyframe already exists there
 	if not Config.keyframes[key].filter(LevelEditor.check_keyframe_exists.bind(timestamp)).is_empty():
-		Console.log({"message": "Keyframe already exists...", "type": 1}); return
+		Console.log({"message": "Keyframe already exists...", "type": 1}); return false
 	
 	Console.log({"message": "Creating new keyframe..."})
 	Config.keyframes[key].append(data)
 	Config.keyframes[key].sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
+	return true
 
 # Check if there's already a keyframe at the desired time
 static func check_keyframe_exists(keyframe: Dictionary, timestamp: float):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=90 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -37,7 +37,6 @@
 [ext_resource type="PackedScene" uid="uid://d1xl0dlt5hodm" path="res://src/prefabs/EditorModifier.tscn" id="20_vhcng"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_oneshot_track.gd" id="23_bh826"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_level_settings_menu.gd" id="24_64ay4"]
-[ext_resource type="PackedScene" uid="uid://cplx3epnhaqa8" path="res://src/prefabs/PreviewToolTip.tscn" id="24_dxtot"]
 [ext_resource type="PackedScene" uid="uid://bgrvql3mns06r" path="res://src/prefabs/EditorOneShot.tscn" id="24_eghhy"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_effects_track.gd" id="25_aiond"]
 [ext_resource type="PackedScene" uid="uid://bphg0ja7ks0q1" path="res://src/prefabs/EditorEffect.tscn" id="26_gjg1p"]
@@ -555,7 +554,7 @@ item_5/id = 4
 system_menu_id = 4
 item_count = 3
 item_0/text = "Controls"
-item_1/text = "Documentation (Needs Rework)"
+item_1/text = "Documentation"
 item_1/id = 1
 item_2/text = "Discord"
 item_2/id = 2
@@ -921,7 +920,37 @@ theme_override_font_sizes/font_size = 16
 text = "BPM"
 vertical_alignment = 1
 
-[node name="PreviewToolTip" parent="." instance=ExtResource("24_dxtot")]
+[node name="PreviewToolTip" type="Node2D" parent="."]
+
+[node name="Backing" type="Polygon2D" parent="PreviewToolTip"]
+color = Color(0.0117647, 0.0117647, 0.0117647, 1)
+polygon = PackedVector2Array(0, -32, -8, -64, -128, -64, -128, -248, 128, -248, 128, -64, 8, -64)
+metadata/_edit_lock_ = true
+
+[node name="AnimationPreview" type="Control" parent="PreviewToolTip"]
+auto_translate_mode = 1
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -128.0
+offset_top = -208.0
+offset_right = 1152.0
+offset_bottom = 512.0
+scale = Vector2(0.2, 0.2)
+
+[node name="Sprite" type="Sprite2D" parent="PreviewToolTip/AnimationPreview"]
+position = Vector2(640, 360)
+
+[node name="KeyframeInfoLabel" type="Label" parent="PreviewToolTip"]
+auto_translate_mode = 1
+offset_left = -120.0
+offset_top = -248.0
+offset_right = 120.0
+offset_bottom = -209.0
+text = "filename.png"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="NoteSelector" type="Node2D" parent="."]
 script = ExtResource("16_3v6vl")
@@ -1533,10 +1562,18 @@ label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
 [node name="CharacterNameField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer2"]
-custom_minimum_size = Vector2(350, 24)
+custom_minimum_size = Vector2(250, 24)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_fonts/font = ExtResource("29_15ypu")
+alignment = 1
+
+[node name="CharacterColorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer2"]
+custom_minimum_size = Vector2(84, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("29_15ypu")
+placeholder_text = "Color"
 alignment = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
@@ -1547,16 +1584,23 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Character Color"
+text = "Song Offset"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="CharacterColorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
+[node name="SongOffsetField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_fonts/font = ExtResource("29_15ypu")
+step = 0.001
+allow_greater = true
+allow_lesser = true
 alignment = 1
+suffix = "Seconds"
+custom_arrow_step = 0.1
+
+[node name="HSeparator" type="HSeparator" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+layout_mode = 2
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
 layout_mode = 2
@@ -1566,20 +1610,81 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Song Offset"
+text = "Creator"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="SongOffsetField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
+[node name="CreatorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
+custom_minimum_size = Vector2(350, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Song"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="SongTitleField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
+custom_minimum_size = Vector2(167, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+placeholder_text = "Title"
+alignment = 1
+
+[node name="SongAuthorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
+custom_minimum_size = Vector2(167, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+placeholder_text = "Author"
+alignment = 1
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Preview Time"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="PreviewTimestampField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer6"]
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
 step = 0.001
-allow_greater = true
-allow_lesser = true
 alignment = 1
-suffix = "seconds"
-custom_arrow_step = 0.01
+suffix = "Seconds"
+custom_arrow_step = 0.1
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Description"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="SongAuthorField" type="TextEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer7"]
+custom_minimum_size = Vector2(350, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+wrap_mode = 1
 
 [node name="Buttons" type="VBoxContainer" parent="MenuOverlays/LevelSettingsMenu"]
 layout_mode = 1

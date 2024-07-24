@@ -10,13 +10,15 @@ func _process(_delta):
 
 func create_keyframe():
 	var timestamp = LevelEditor.get_timestamp()
+	timestamp = clamp(timestamp, 0, timestamp)
+	
 	var prev_bpm = Config.keyframes['modifiers'].filter(func(a): return timestamp > a['timestamp']).back()
 	if prev_bpm == null: prev_bpm = Config.keyframes['modifiers'][0]
 	
-	var new_modifier_data = {
+	var new_keyframe_data = {
 		'bpm': prev_bpm.bpm,
 		'timestamp': timestamp
 		}
 	
-	LevelEditor.create_new_keyframe("modifiers", new_modifier_data, timestamp)
-	LevelEditor.add_single_keyframe(new_modifier_data, self, editor_keyframe_prefab)
+	if LevelEditor.create_new_keyframe("modifiers", new_keyframe_data, timestamp):
+		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)

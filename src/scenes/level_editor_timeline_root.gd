@@ -4,8 +4,27 @@ extends Node2D
 
 var seek_speed: float
 
-func _process(_delta):
+var translate_hold: bool
+var translate_hold_input: String
+var translate_hold_time: float
+
+func _process(delta):
 	position.x = (LevelEditor.song_position_offset * LevelEditor.note_speed_mod) + 960
+	
+	if Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_right"):
+		translate_hold = false
+		translate_hold_time = 0
+		translate_hold_input = "ui_left" if Input.is_action_just_pressed("ui_left") else "ui_right"
+	if translate_hold_input and Input.is_action_pressed(translate_hold_input):
+		translate_hold_time += delta
+	
+	if not translate_hold and translate_hold_time >= 0.5:
+		translate_hold = true
+		translate_hold_time = 0
+		timeline_translate(5.0) if translate_hold_input == "ui_left" else timeline_translate(-5.0)
+	elif translate_hold and translate_hold_time >= 0.1:
+		translate_hold_time = 0
+		timeline_translate(5.0) if translate_hold_input == "ui_left" else timeline_translate(-5.0)
 
 func _input(event):
 	if MenuCache.menu_disabled(self): return

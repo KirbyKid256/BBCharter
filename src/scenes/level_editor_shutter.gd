@@ -10,8 +10,7 @@ func _process(_delta):
 
 func create_keyframe():
 	var timestamp = LevelEditor.get_timestamp()
-	var new_shutter_data = {'timestamp': timestamp}
+	var new_keyframe_data = {'timestamp': timestamp}
 	
-	Console.log({"message": "Creating Shutter at %s" % timestamp})
-	LevelEditor.create_new_keyframe("shutter", new_shutter_data, timestamp)
-	LevelEditor.add_single_keyframe(new_shutter_data, self, editor_shutter_prefab)
+	if LevelEditor.create_new_keyframe("shutter", new_keyframe_data, timestamp):
+		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_shutter_prefab)

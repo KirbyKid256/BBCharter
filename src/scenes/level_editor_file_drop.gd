@@ -50,7 +50,7 @@ func _ready():
 func _on_files_dropped(files: PackedStringArray):
 	for file in files:
 		if ['gif','mp4','webm'].has(file.get_extension()): make_spritesheet(file); continue
-		if ['png','jpg','webp'].has(file.get_extension()): import_image(file); continue
+		if ['png','jpg','jpeg'].has(file.get_extension()): import_image(file); continue
 		if ['ogg','mp3'].has(file.get_extension()): import_audio(file); continue
 	
 	file_selection.reload_list()
