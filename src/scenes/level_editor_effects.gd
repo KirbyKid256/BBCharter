@@ -11,8 +11,8 @@ func _ready():
 
 func play_effect(idx: int):
 	if Config.keyframes['effects'].is_empty(): set_texture(null); return
-
-	idx = clampi(idx,0,Config.keyframes['effects'].size())
+	
+	idx = clampi(idx,0,Config.keyframes['effects'].size()-1)
 	data = Config.keyframes['effects'][idx]
 	
 	set_hframes(data['sheet_data'].h)

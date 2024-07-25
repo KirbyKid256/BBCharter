@@ -1,6 +1,6 @@
 extends Sprite2D
 
-@onready var tsevent = TSEvent.new()
+@onready var tsevent: TSEvent = TSEvent.new()
 
 var data: Dictionary
 var tween: Tween
@@ -18,8 +18,8 @@ func _on_editor_level_loaded():
 
 func change_animation(idx: int):
 	if Config.keyframes['loops'].is_empty(): set_texture(null); return # Ignore if no loops
-
-	idx = clampi(idx,0,Config.keyframes['loops'].size())
+	
+	idx = clampi(idx,0,Config.keyframes['loops'].size()-1)
 	data = Config.keyframes['loops'][idx]
 	
 	set_scale(Vector2(data.get('scale_multiplier', 1), data.get('scale_multiplier', 1)))

@@ -20,4 +20,4 @@ func change_background(idx: int):
 	
 	set_texture(Assets.get_asset(data['path']))
 	expand_mode = data.get('expand_mode', EXPAND_IGNORE_SIZE)
-	stretch_mode = data.get('expand_mode', STRETCH_KEEP_ASPECT_COVERED)
+	stretch_mode = data.get('stretch_mode', STRETCH_KEEP_ASPECT_COVERED)

@@ -43,3 +43,4 @@ Cutscene Editor coming after I'm done with all the major Level Editor stuff
 |Left Arrow|Scrub 5.0 seconds|
 |Home|Go to Beginning|
 |End|Go to End|
+|Keys 0-9|Jump around timeline|

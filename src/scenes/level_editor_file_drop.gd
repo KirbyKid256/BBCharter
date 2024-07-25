@@ -227,12 +227,12 @@ func add_new_animation_asset(data: Dictionary, type: int = -1):
 	else: LevelEditor.append_asset_cache(data)
 	create_image_menu.hide()
 	
-	await get_tree().process_frame
+	replacement_data = {}
 	pending_image_file = ""
 	pending_image_type = -1
 	
+	await get_tree().process_frame
 	cache_assets.get_image_assets(type)
-	file_assets.get_files()
 
 # Add new image asset to editor cache and load it from the Asset Autoload
 func add_new_audio_asset(data: Dictionary):
@@ -240,8 +240,8 @@ func add_new_audio_asset(data: Dictionary):
 	else: LevelEditor.append_asset_cache(data)
 	create_audio_menu.hide()
 	
+	replacement_data = {}
 	pending_audio_data = {}
 	
 	await get_tree().process_frame
 	cache_assets.get_audio_assets()
-	file_assets.get_files()

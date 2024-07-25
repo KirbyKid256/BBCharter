@@ -8,6 +8,13 @@ var translate_hold: bool
 var translate_hold_input: String
 var translate_hold_time: float
 
+func _init():
+	InputMap.add_action("ui_jump")
+	for i in 10:
+		var event = InputEventKey.new()
+		event.keycode = KEY_0 + i
+		InputMap.action_add_event("ui_jump", event)
+
 func _process(delta):
 	position.x = (LevelEditor.song_position_offset * LevelEditor.note_speed_mod) + 960
 	
@@ -27,7 +34,7 @@ func _process(delta):
 		timeline_translate(5.0) if translate_hold_input == "ui_left" else timeline_translate(-5.0)
 
 func _input(event):
-	if MenuCache.menu_disabled(self): return
+	if not Editor.level_loaded: return
 	if not LevelEditor.controls_enabled: return
 	
 	if event is InputEventMouseButton:
@@ -58,6 +65,10 @@ func _input(event):
 			timeline_seek(0.0)
 		if event.is_action_pressed("ui_end"):
 			timeline_seek(LevelEditor.song_length)
+		
+		# Jump to different points
+		if event.is_action_pressed("ui_jump"):
+			timeline_seek((float(event.keycode - KEY_0) / 10.0) * LevelEditor.song_length)
 		
 		# Fast Seek +10
 		if event.is_action_pressed("ui_left"):

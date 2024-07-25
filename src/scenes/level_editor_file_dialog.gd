@@ -18,6 +18,9 @@ extends FileDialog
 var create_level: bool
 var asset_paths: Array
 
+func _ready():
+	current_dir = Global.get_executable_path()
+
 func open_project():
 	Console.log({'message': 'Opening New Project...'})
 	title = "Select Project Directory"
@@ -94,6 +97,8 @@ func ensure_climax_video():
 	Console.log({"message": "Checking Climax Video..."})
 	var climax_filename = Config.asset.get("final_video")
 	if climax_filename == null: return
+	if not FileAccess.file_exists(Editor.level_path + "video".path_join(climax_filename)): return
+
 	match climax_filename.get_extension().to_lower():
 		"webm","mp4","mov":
 			Config.asset["final_video"] = FFmpeg.convert_file(

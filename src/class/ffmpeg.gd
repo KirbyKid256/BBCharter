@@ -3,22 +3,22 @@ class_name FFmpeg
 static var executable_path: String
 
 static var ffmpeg_exec_paths: Dictionary = {
-	"Windows": ProjectSettings.globalize_path("res://bin/win64/ffmpeg.exe"),
-	"macOS": ProjectSettings.globalize_path("res://bin/macos/ffmpeg"),
-	"Linux": ProjectSettings.globalize_path("res://bin/linux/ffmpeg"),
+	"Windows": Global.get_executable_path().path_join("bin/win64/ffmpeg.exe"),
+	"macOS": Global.get_executable_path().path_join("bin/macos/ffmpeg"),
+	"Linux": Global.get_executable_path().path_join("bin/linux/ffmpeg"),
 }
 
 static var ffprobe_exec_paths: Dictionary = {
-	"Windows": ProjectSettings.globalize_path("res://bin/win64/ffprobe.exe"),
-	"macOS": ProjectSettings.globalize_path("res://bin/macos/ffprobe"),
-	"Linux": ProjectSettings.globalize_path("res://bin/linux/ffprobe"),
+	"Windows": Global.get_executable_path().path_join("bin/win64/ffprobe.exe"),
+	"macOS": Global.get_executable_path().path_join("bin/macos/ffprobe"),
+	"Linux": Global.get_executable_path().path_join("bin/linux/ffprobe"),
 }
 
 static func convert_file(input_file: String, output_file: String, type: String) -> String:
 	# Check If File Exists
-	if FileAccess.file_exists(output_file): 
+	if FileAccess.file_exists(output_file):
 		Console.log({"message": "FFMPEG - File already exists: " + output_file})
-		return output_file.get_file() 
+		return output_file.get_file()
 	
 	#Get FFmpeg Executable
 	executable_path = ffmpeg_exec_paths.get(OS.get_name(), "Unknown")
@@ -28,16 +28,15 @@ static func convert_file(input_file: String, output_file: String, type: String) 
 	# Convert Video
 	Console.log({"message": "Converting Climax Video..."})
 	var execute_output: Array = []
-	if OS.execute(executable_path, get_command(input_file, output_file, "ogv"), execute_output, true) != 0:
-		Console.log({"message": "could not convert final video %s" % output_file, "type": 2})
-		Console.log({"message": "%s" % execute_output, "type": 2})
+	if OS.execute(executable_path, get_command(input_file, output_file), execute_output, true) != 0:
+		Console.log({"message": "Could not convert final video %s with %s" % [output_file, execute_output], "type": 2})
 		return ""
-	else:
-		Console.log({"message": "Converted final video: %s" % output_file})
-		return output_file.get_file() 
+	
+	Console.log({"message": "Converted final video: %s" % output_file})
+	return output_file.get_file() 
 
-static func get_command(input_file: String, output_file :String, type: String) -> PackedStringArray:
-	match type:
+static func get_command(input_file: String, output_file: String) -> PackedStringArray:
+	match output_file.get_extension():
 		"ogv": 
 			return["-y", "-i", input_file, "-c:v", "libtheora", "-q:v", "5", "-c:a", "libvorbis", "-q:a", "1",  output_file]
 		"ogg": 
@@ -46,7 +45,7 @@ static func get_command(input_file: String, output_file :String, type: String) -
 			return []
 
 static func create_sprite_sheet_from_gif(input_file: String) -> Dictionary:
-	print("Converting %s to Sprite Sheet..." % input_file.get_file())
+	Console.log({"message": "Converting %s to Sprite Sheet..." % input_file.get_file()})
 	var total_frames = get_gif_framecount(input_file)
 	var h_frames = calculate_sheet_dimensions(total_frames).h
 	var v_frames = calculate_sheet_dimensions(total_frames).v
@@ -62,7 +61,7 @@ static func create_sprite_sheet_from_gif(input_file: String) -> Dictionary:
 	execute_output = []
 	OS.execute(executable_path, ffmpeg_make_sheet("%s" % input_file, h_frames, v_frames, output_file), execute_output, true)
 	# FFMPEG output
-	print(execute_output)
+	Console.log({"message": execute_output})
 	
 	return {"output": output_file, "h": h_frames, "v": v_frames, "total": total_frames}
 

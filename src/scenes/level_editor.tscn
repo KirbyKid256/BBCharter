@@ -30,7 +30,7 @@
 [ext_resource type="PackedScene" uid="uid://cfnesrmhpe52e" path="res://src/prefabs/EditorAnimation.tscn" id="15_givjm"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_note_selector.gd" id="16_3v6vl"]
 [ext_resource type="Texture2D" uid="uid://rn4wt7v8d7dw" path="res://assets/images/level_editor_drag_and_drop.png" id="17_30xl6"]
-[ext_resource type="Script" path="res://src/scenes/level_editor_shutter.gd" id="17_otbon"]
+[ext_resource type="Script" path="res://src/scenes/level_editor_shutter_track.gd" id="17_otbon"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_file_drop.gd" id="17_q0adn"]
 [ext_resource type="PackedScene" uid="uid://3crp3omc661c" path="res://src/prefabs/EditorShutter.tscn" id="18_s8cfp"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_modifiers_track.gd" id="19_fo15r"]
@@ -705,6 +705,7 @@ width = 2.0
 default_color = Color(0.25, 0.25, 0.25, 1)
 
 [node name="Gradient" type="Panel" parent="NoteTimeline"]
+z_index = 1
 layout_mode = 0
 offset_top = -144.0
 offset_right = 286.0
@@ -750,7 +751,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 105.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Animations"
 vertical_alignment = 1
@@ -774,7 +774,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 68.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Effects"
 vertical_alignment = 1
@@ -798,7 +797,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 117.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Backgrounds"
 vertical_alignment = 1
@@ -821,7 +819,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 116.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "OneShots"
 vertical_alignment = 1
@@ -845,7 +842,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 116.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Sound Loops"
 vertical_alignment = 1
@@ -869,7 +865,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 116.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Voice Banks"
 vertical_alignment = 1
@@ -892,7 +887,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 116.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Shutters"
 vertical_alignment = 1
@@ -915,7 +909,6 @@ layout_mode = 0
 offset_left = 16.0
 offset_right = 116.0
 offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "BPM"
 vertical_alignment = 1

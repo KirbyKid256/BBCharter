@@ -15,5 +15,5 @@ func _process(_delta):
 	var items = Config.keyframes.get(config_key, []).filter(func(item): return LevelEditor.song_position_offset > item.get('timestamp', 0.0))
 	index = items.size()
 	if index != last_index:
-		last_index = index
 		callback.call(index-1)
+		last_index = index
