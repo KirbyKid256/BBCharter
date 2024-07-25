@@ -76,6 +76,12 @@ static func create_act_config():
 	Console.log({"message": "Creating Modpack Config"})
 	var act_config = ConfigFile.new()
 	act_config.set_value("main", "data", act_template)
+	act_config.save(Editor.level_path.get_base_dir().get_base_dir().path_join("act.cfg"))
+
+static func create_act_placeholders():
+	Console.log({"message": "Creating Modpack Placeholders"})
+	var thumb: Image = preload("res://assets/images/placeholder_album_cover.png").get_image()
+	thumb.save_png(Editor.level_path.get_base_dir().get_base_dir().path_join("thumb.png"))
 
 static func create_level_directories():
 	for folder_name in ["audio","config","images","video"]:
@@ -91,3 +97,12 @@ static func create_level_config():
 		
 		new_config.set_value("main", "data", config_template)
 		new_config.save(Editor.level_path.path_join("config").path_join(template_name))
+
+static func create_level_placeholders():
+	Console.log({"message": "Creating Level Placeholders"})
+	
+	var thumb: Image = preload("res://assets/images/placeholder_level_icon.png").get_image()
+	thumb.save_png(Editor.level_path + "thumb.png")
+	
+	var splash: Image = preload("res://assets/images/placeholder_splash.png").get_image()
+	splash.save_png(Editor.level_path + "splash.png")

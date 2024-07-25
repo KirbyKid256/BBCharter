@@ -31,10 +31,9 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT: pass
-		MOUSE_BUTTON_RIGHT:delete_voice()
-
-func delete_voice():
-	var idx = Config.keyframes['voice_bank'].find(data)
-	Console.log({"message": "Deleting Voice Bank at %s (index %s)" % [data['timestamp'],idx]})
-	Config.keyframes['voice_bank'].remove_at(idx)
-	Util.free_node(self)
+		MOUSE_BUTTON_RIGHT:
+			var idx = Config.keyframes['voice_bank'].find(data)
+			Console.log({"message": "Deleting Voice Bank at %s (index %s)" % [data['timestamp'],idx]})
+			Config.keyframes['voice_bank'].remove_at(idx)
+			Editor.project_changed = true
+			Util.free_node(self)

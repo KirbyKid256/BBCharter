@@ -25,3 +25,4 @@ func create_keyframe(keyframe_data: Dictionary):
 	
 	if LevelEditor.create_new_keyframe("background", new_keyframe_data, timestamp):
 		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)
+		Editor.project_changed = true

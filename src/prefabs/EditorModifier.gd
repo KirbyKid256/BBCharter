@@ -27,8 +27,10 @@ func setup(modifier_data: Dictionary):
 	data = modifier_data
 	beat = Math.secs_to_beat_dynamic(data['timestamp'])
 	bpm_field.text = str(data['bpm'])
-	input_handler.tooltip_text = bpm_field.text
 	update_position()
+	
+	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
+	.replace("{", "").replace("}", "").replace("\"", "")
 
 func _on_editor_update_bpm():
 	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
@@ -65,16 +67,14 @@ func _on_input_handler_gui_input(event: InputEvent):
 				Console.log({"message": "You can't delete this BPM modifier", "type": 2})
 				return
 			else:
-				delete_modifier()
-
-func delete_modifier():
-	var idx = Config.keyframes['modifiers'].find(data)
-	Console.log({"message": "Deleting BPM Change at %s (index %s)" % [data['timestamp'],idx]})
-	Config.keyframes['modifiers'].remove_at(idx)
-	Util.free_node(self)
-	
-	LevelEditor.calculate_song_info(music.stream)
-	EventManager.emit_signal('editor_update_bpm')
+				var idx = Config.keyframes['modifiers'].find(data)
+				Console.log({"message": "Deleting BPM Change at %s (index %s)" % [data['timestamp'],idx]})
+				Config.keyframes['modifiers'].remove_at(idx)
+				Editor.project_changed = true
+				Util.free_node(self)
+				
+				LevelEditor.calculate_song_info(music.stream)
+				EventManager.emit_signal('editor_update_bpm')
 
 func _on_bpm_field_text_submitted(new_text: String):
 	set_bpm(float(new_text))

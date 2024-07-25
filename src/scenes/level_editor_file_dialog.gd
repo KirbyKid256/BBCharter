@@ -38,6 +38,7 @@ func _on_dir_selected(new_path: String):
 	Editor.level_path = new_path + "/"
 	
 	if create_level:
+		LevelCreator.create_level_placeholders()
 		LevelCreator.create_level_directories()
 		LevelCreator.create_level_config()
 	
@@ -62,8 +63,6 @@ func _on_dir_selected(new_path: String):
 		Util.clear_children(indicators.sixth_beats)
 		Util.clear_children(indicators.eighth_beats)
 		
-		timeline.timeline_seek(0.0)
-		
 		# Asset Conversion Check
 		ensure_climax_video()
 		
@@ -74,13 +73,15 @@ func _on_dir_selected(new_path: String):
 		
 		# Load Assets
 		load_game_assets()
+		music.set_editor_music()
+		timeline.timeline_seek(0)
+		
 		animations.load_keyframes()
 		effects.load_keyframes()
 		backgrounds.load_keyframes()
 		oneshots.load_keyframes()
 		loopsounds.load_keyframes()
 		voices.load_keyframes()
-		music.set_editor_music()
 		
 		await get_tree().process_frame
 		EventManager.editor_level_loaded.emit()

@@ -20,7 +20,9 @@ func _input(event):
 	if event.is_action("ui_cancel"): hide()
 
 func _on_act_settings_button_up():
-	if Config.act.is_empty(): LevelCreator.create_act_config()
+	if Config.act.is_empty():
+		LevelCreator.create_act_config()
+		LevelCreator.create_act_placeholders()
 	
 	act_name_field.text = Config.act.get('act_name', "My Act")
 	act_description_field.text = Config.act.get('act_description', "My Description")

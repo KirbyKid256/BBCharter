@@ -92,6 +92,7 @@ func delete_note():
 	Console.log({"message": "Deleting nogte at %s (index %s)" % [data['timestamp'],idx]})
 	Difficulty.get_chart_notes().remove_at(idx)
 	LevelEditor.selected_notes.erase(self)
+	Editor.project_changed = true
 	Util.free_node(self)
 
 func check_selected():
@@ -154,6 +155,7 @@ func run_action(id: int):
 			
 			update_visual()
 			update_position()
+	Editor.project_changed = true
 
 func set_note_type(note_type_enum: int):
 	if data['note_modifier'] == note_type_enum:
@@ -162,3 +164,4 @@ func set_note_type(note_type_enum: int):
 	else: 
 		data['note_modifier'] = note_type_enum
 	update_visual()
+	Editor.project_changed = true

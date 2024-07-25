@@ -10,6 +10,9 @@ var data: Dictionary
 var preview_frame_value: float = 0.0
 var hovering: bool
 
+func _ready():
+	get_viewport().files_dropped.connect(_on_files_dropped)
+
 func setup(keyframe_data: Dictionary):
 	data = keyframe_data
 	var filename: String = data['sprite_sheet']
@@ -23,6 +26,9 @@ func setup(keyframe_data: Dictionary):
 	
 	tooltip_text = str(data).replace(", ", "\r\n")\
 	.replace("{", "").replace("}", "").replace("\"", "")
+
+func _on_files_dropped(files: PackedStringArray):
+	sprite_sheet.texture = Assets.get_asset(filename_label.text)
 
 func _on_mouse_entered():
 	filename_label.hide()

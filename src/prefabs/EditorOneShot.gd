@@ -15,8 +15,9 @@ func setup(oneshot_data: Dictionary):
 	beat = Math.secs_to_beat_dynamic(data['timestamp'])
 	update_position()
 	
-	input_handler.tooltip_text = data['path']
 	sound_test.stream = Assets.get_asset(data['path'])
+	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
+	.replace("{", "").replace("}", "").replace("\"", "")
 
 func _on_editor_update_bpm():
 	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
@@ -32,10 +33,9 @@ func _on_input_handler_gui_input(event: InputEvent):
 	match event.button_index:
 		MOUSE_BUTTON_LEFT:
 			if sound_test.stream: sound_test.play()
-		MOUSE_BUTTON_RIGHT: delete_oneshot()
-
-func delete_oneshot():
-	var idx = Config.keyframes['sound_oneshot'].find(data)
-	print("Deleting oneshot %s at %s (index %s)" % [self,data['timestamp'],idx])
-	Config.keyframes['sound_oneshot'].remove_at(idx)
-	Util.free_node(self)
+		MOUSE_BUTTON_RIGHT:
+			var idx = Config.keyframes['sound_oneshot'].find(data)
+			Console.log({"message": "Deleting oneshot %s at %s (index %s)" % [self,data['timestamp'],idx]})
+			Config.keyframes['sound_oneshot'].remove_at(idx)
+			Editor.project_changed = true
+			Util.free_node(self)

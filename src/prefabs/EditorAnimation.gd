@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var input_handler = $InputHandler
+
 @onready var preview_tooltip = $"../../../../../PreviewToolTip"
 @onready var animation_preview = preview_tooltip.get_node("AnimationPreview/Sprite")
 @onready var keyframe_info_label = preview_tooltip.get_node("KeyframeInfoLabel")
@@ -14,6 +16,7 @@ func _ready():
 
 func setup(keyframe_data: Dictionary):
 	data = keyframe_data
+	input_handler.tooltip_text = str(data['timestamp'])
 	update_position()
 
 func update_position():
@@ -49,8 +52,9 @@ func _on_input_handler_gui_input(event: InputEvent):
 		MOUSE_BUTTON_LEFT: pass
 		MOUSE_BUTTON_RIGHT:
 			var idx = Config.keyframes['loops'].find(data)
-			print("Deleting animation %s at %s (index %s)" % [self,data['timestamp'],idx])
+			Console.log({"message": "Deleting animation %s at %s (index %s)" % [self,data['timestamp'],idx]})
 			Config.keyframes['loops'].remove_at(idx)
+			Editor.project_changed = true
 			Util.free_node(self)
 			
 			if LevelEditor.song_position_offset <= data['timestamp']:

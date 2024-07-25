@@ -62,6 +62,7 @@ func _on_add_id_pressed(id):
 		2: backgrounds.create_keyframe({'sprite_sheet': ""})
 		3: loopsounds.create_keyframe({'audio_path': ""})
 		4: voices.create_keyframe({'audio_path': []})
+	Editor.project_changed = true
 
 func _on_help_id_pressed(id):
 	#TODO: Make Help tab more fancy

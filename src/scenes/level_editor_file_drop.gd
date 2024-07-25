@@ -59,7 +59,6 @@ func make_spritesheet(file):
 	var data = FFmpeg.create_sprite_sheet_from_gif(file)
 	add_new_animation_asset(data)
 	Assets.load_asset(data['output'])
-	Assets.get_asset(data['output'])
 	file_assets.get_files()
 
 #region Image File Drop
@@ -69,7 +68,6 @@ func import_image(file: String):
 	var new_file = Editor.level_path + "images/" + file.get_file()
 	DirAccess.copy_absolute(file, new_file)
 	Assets.load_asset(new_file)
-	Assets.get_asset(new_file)
 	file_assets.get_files()
 
 func create_image_keyframe(data: Dictionary, type: int, replace: bool = false):
@@ -175,12 +173,10 @@ func import_audio(file: String):
 	if file.get_extension() != "ogg" and file.get_extension() != "mp3":
 		var converted_audio = FFmpeg.convert_file(file, Editor.level_path + "audio/" + file.get_file().get_basename() + ".ogg", "ogg")
 		Assets.load_asset(converted_audio)
-		Assets.get_asset(converted_audio)
 	else:
 		var new_file = Editor.level_path + "audio/" + file.get_file()
 		DirAccess.copy_absolute(file, new_file)
 		Assets.load_asset(new_file)
-		Assets.get_asset(new_file)
 	file_assets.get_files()
 
 func create_audio_keyframe(data: Dictionary, replace: bool = false):

@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var input_handler = $InputHandler
+
 var data: Dictionary
 var beat: float
 
@@ -11,6 +13,8 @@ func setup(shutter_data: Dictionary):
 	data = shutter_data
 	beat = Math.secs_to_beat_dynamic(data['timestamp'])
 	update_position()
+	
+	input_handler.tooltip_text = str(data['timestamp'])
 
 func _on_editor_update_bpm():
 	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
@@ -29,4 +33,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['shutter'].find(data)
 			Console.log({"message": "Deleting Shutter at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['shutter'].remove_at(idx)
+			Editor.project_changed = true
 			Util.free_node(self)

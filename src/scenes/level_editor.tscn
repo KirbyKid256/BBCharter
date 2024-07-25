@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=91 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -59,6 +59,7 @@
 [ext_resource type="Script" path="res://src/scenes/level_editor_difficulty_settings_menu.gd" id="49_jscfc"]
 [ext_resource type="PackedScene" uid="uid://p7hvuu50rbka" path="res://src/prefabs/EditorDifficultyAsset.tscn" id="50_f6xji"]
 [ext_resource type="Texture2D" uid="uid://dfu4wkrohcgqq" path="res://assets/ui/plus_add.png" id="51_ybvd3"]
+[ext_resource type="PackedScene" uid="uid://jjnb7nscg65j" path="res://src/prefabs/ConfirmMenu.tscn" id="54_yo7j7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gewp"]
 bg_color = Color(0, 0, 0, 1)
@@ -968,6 +969,7 @@ voice_asset = ExtResource("43_ck8x4")
 metadata/_edit_lock_ = true
 
 [node name="MenuOverlays" type="Control" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1853,8 +1855,7 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/hover = SubResource("StyleBoxFlat_fb576")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
 theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
-text = "Cancel
-"
+text = "Cancel"
 
 [node name="LevelEditorMenu" type="Control" parent="MenuOverlays"]
 visible = false
@@ -1987,6 +1988,21 @@ text = "Close Menu"
 alignment = 0
 text_overrun_behavior = 3
 
+[node name="ConfirmMenu" parent="MenuOverlays" instance=ExtResource("54_yo7j7")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Music" type="AudioStreamPlayer" parent="."]
 script = ExtResource("3_yhtrx")
 
@@ -2045,4 +2061,5 @@ script = ExtResource("40_x5fle")
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer2/SaveLevelButton" to="MenuOverlays/LevelEditorMenu" method="_on_save_level_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer2/ExportModButton" to="." method="_on_export_mod_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer3/CloseMenuButton" to="MenuOverlays/LevelEditorMenu" method="hide"]
+[connection signal="visibility_changed" from="MenuOverlays/ConfirmMenu" to="Music" method="pause"]
 [connection signal="dir_selected" from="FileDialog" to="FileDialog" method="_on_dir_selected"]

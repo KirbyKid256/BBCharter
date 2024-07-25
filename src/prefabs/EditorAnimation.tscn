@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/prefabs/EditorAnimation.gd" id="1_07ms7"]
 [ext_resource type="Texture2D" uid="uid://yx5ejuiromw6" path="res://assets/ui/editor_keyframe.png" id="2_5g8gj"]
 
-[node name="EditorKeyframe" type="Node2D"]
+[node name="EditorAnimation" type="Node2D"]
 script = ExtResource("1_07ms7")
 
 [node name="KeyframeIcon" type="Sprite2D" parent="."]

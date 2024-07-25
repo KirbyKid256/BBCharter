@@ -130,7 +130,7 @@ static func add_single_keyframe(data: Dictionary, root_note: Node2D, prefab: Pac
 	root_note.add_child(new_keyframe)
 	new_keyframe.setup(data)
 
-static func save_project() -> void:
+static func save_project():
 	Config.save_config_data("asset.cfg", Config.asset)
 	Config.save_config_data("keyframes.cfg", Config.keyframes)
 	Config.save_config_data("meta.cfg", Config.meta)

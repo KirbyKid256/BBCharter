@@ -38,6 +38,7 @@ func cut_selected_notes():
 	for note: EditorNote in LevelEditor.selected_notes:
 		note_clipboard.append(note.data)
 	note_selector.group_delete_notes()
+	Editor.project_changed = true
 
 func copy_selected_notes():
 	if LevelEditor.selected_notes.is_empty(): Console.log({"message": "No Notes to copy..."}); return
@@ -49,6 +50,7 @@ func paste_selected_notes():
 	if note_clipboard.is_empty(): Console.log({"message": "No Notes to paste..."}); return
 	for note: Dictionary in note_clipboard:
 		copy_note(note)
+	Editor.project_changed = true
 
 func create_note(input_type: int = 0):
 	# Batch Replace Note Types
@@ -69,6 +71,7 @@ func create_note(input_type: int = 0):
 	Difficulty.get_chart_notes().append(new_note_data)
 	Difficulty.get_chart_notes().sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
 	EventManager.emit_signal("editor_note_created", new_note_data)
+	Editor.project_changed = true
 
 func copy_note(note: Dictionary):
 	var copied_note_data = note.duplicate(true)

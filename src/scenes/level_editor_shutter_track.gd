@@ -14,3 +14,4 @@ func create_keyframe():
 	
 	if LevelEditor.create_new_keyframe("shutter", new_keyframe_data, timestamp):
 		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_shutter_prefab)
+		Editor.project_changed = true

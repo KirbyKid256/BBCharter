@@ -34,4 +34,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['effects'].find(data)
 			Console.log({"message": "Deleting Effect at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['effects'].remove_at(idx)
+			Editor.project_changed = true
 			Util.free_node(self)

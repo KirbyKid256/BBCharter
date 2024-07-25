@@ -34,4 +34,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['background'].find(data)
 			Console.log({"message": "Deleting Background at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['background'].remove_at(idx)
+			Editor.project_changed = true
 			Util.free_node(self)
