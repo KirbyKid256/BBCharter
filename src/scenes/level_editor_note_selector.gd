@@ -48,8 +48,14 @@ func get_notes_in_selection():
 	
 	if Input.is_action_pressed("ui_shift"): 
 		for new_note in area_notes:
-			LevelEditor.selected_notes.append(new_note) # append notes to array
-	else: LevelEditor.selected_notes = area_notes # Replace notes
+			if LevelEditor.selected_notes.has(new_note):
+				LevelEditor.selected_notes.erase(new_note)
+				new_note.selected = false
+				new_note.check_selected()
+			else:
+				LevelEditor.selected_notes.append(new_note) # append notes to array
+	else:
+		LevelEditor.selected_notes = area_notes # Replace notes
 	
 	LevelEditor.selected_notes.sort_custom(func(a, b): return a.data['timestamp'] < b.data['timestamp'])
 	select_notes()

@@ -1,7 +1,10 @@
 class_name Assets
 
 static var lib: Dictionary
-static var total: Array
+
+static var act_thumb: ImageTexture
+static var level_thumb: ImageTexture
+static var level_splash: ImageTexture
 
 static func load_asset(file: String):
 	Console.log({"message": "Loading Asset: %s" % file, "verbose": true})

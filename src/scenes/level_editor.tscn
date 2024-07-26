@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=94 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -56,8 +56,11 @@
 [ext_resource type="PackedScene" uid="uid://bffgl1iws8g42" path="res://src/prefabs/EditorVoiceButton.tscn" id="43_ck8x4"]
 [ext_resource type="PackedScene" uid="uid://c6g2sw36auhm8" path="res://src/prefabs/EditorFileSelection.tscn" id="47_bq5k6"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_act_settings_menu.gd" id="48_cmey7"]
+[ext_resource type="Texture2D" uid="uid://bf6hb14ga15e4" path="res://assets/images/placeholder_album_cover.png" id="48_fqmeb"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_difficulty_settings_menu.gd" id="49_jscfc"]
 [ext_resource type="PackedScene" uid="uid://p7hvuu50rbka" path="res://src/prefabs/EditorDifficultyAsset.tscn" id="50_f6xji"]
+[ext_resource type="Texture2D" uid="uid://cj6pmv6w8n2qy" path="res://assets/images/placeholder_level_icon.png" id="50_xqrbk"]
+[ext_resource type="Texture2D" uid="uid://cqriliweetlmk" path="res://assets/images/placeholder_splash.png" id="51_iuflb"]
 [ext_resource type="Texture2D" uid="uid://dfu4wkrohcgqq" path="res://assets/ui/plus_add.png" id="51_ybvd3"]
 [ext_resource type="PackedScene" uid="uid://jjnb7nscg65j" path="res://src/prefabs/ConfirmMenu.tscn" id="54_yo7j7"]
 
@@ -1386,7 +1389,6 @@ horizontal_alignment = 2
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
-rounded = true
 allow_greater = true
 allow_lesser = true
 alignment = 1
@@ -1407,6 +1409,7 @@ horizontal_alignment = 2
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 toggle_mode = true
 text = "OFF"
@@ -1464,14 +1467,43 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
 text = "Cancel
 "
 
-[node name="SplashPreview" type="TextureRect" parent="MenuOverlays/ActSettingsMenu"]
+[node name="ThumbSelect" type="Panel" parent="MenuOverlays/ActSettingsMenu"]
+self_modulate = Color(1, 1, 1, 0.372549)
 layout_mode = 0
 offset_left = 896.0
-offset_top = 200.0
+offset_top = 367.0
 offset_right = 1696.0
-offset_bottom = 864.0
+offset_bottom = 697.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fb576")
+
+[node name="Preview" type="TextureRect" parent="MenuOverlays/ActSettingsMenu/ThumbSelect"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 326.0
+offset_bottom = 326.0
+texture = ExtResource("48_fqmeb")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Header" type="Label" parent="MenuOverlays/ActSettingsMenu/ThumbSelect"]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 89.0
+offset_right = 668.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 40
+text = "Thumbnail"
+
+[node name="Browse" type="Button" parent="MenuOverlays/ActSettingsMenu/ThumbSelect"]
+layout_mode = 0
+offset_left = 458.0
+offset_top = 160.0
+offset_right = 670.0
+offset_bottom = 228.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+text = "Browse Files"
 
 [node name="LevelSettingsMenu" type="Control" parent="MenuOverlays"]
 visible = false
@@ -1521,7 +1553,7 @@ vertical_alignment = 1
 layout_mode = 2
 offset_left = 256.0
 offset_top = 320.0
-offset_right = 811.0
+offset_right = 812.0
 offset_bottom = 658.0
 metadata/_edit_group_ = true
 
@@ -1552,23 +1584,16 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Character Name"
+text = "Level Index"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="CharacterNameField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer2"]
-custom_minimum_size = Vector2(250, 24)
+[node name="LevelIndexField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer2"]
+custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_fonts/font = ExtResource("29_15ypu")
-alignment = 1
-
-[node name="CharacterColorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer2"]
-custom_minimum_size = Vector2(84, 24)
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_fonts/font = ExtResource("29_15ypu")
-placeholder_text = "Color"
+allow_greater = true
+allow_lesser = true
 alignment = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
@@ -1579,11 +1604,39 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 0
+text = "Character"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="CharacterNameField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
+custom_minimum_size = Vector2(250, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("29_15ypu")
+placeholder_text = "Name"
+alignment = 1
+
+[node name="CharacterColorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
+custom_minimum_size = Vector2(84, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("29_15ypu")
+placeholder_text = "Color"
+alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 0
 text = "Song Offset"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="SongOffsetField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer3"]
+[node name="SongOffsetField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -1597,24 +1650,6 @@ custom_arrow_step = 0.1
 [node name="HSeparator" type="HSeparator" parent="MenuOverlays/LevelSettingsMenu/Settings"]
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 2
-
-[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Creator"
-label_settings = SubResource("LabelSettings_irclh")
-horizontal_alignment = 2
-
-[node name="CreatorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer4"]
-custom_minimum_size = Vector2(350, 24)
-layout_mode = 2
-size_flags_horizontal = 8
-alignment = 1
-
 [node name="HBoxContainer5" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
 layout_mode = 2
 theme_override_constants/separation = 16
@@ -1623,22 +1658,14 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Song"
+text = "Creator"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="SongTitleField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
-custom_minimum_size = Vector2(167, 24)
+[node name="CreatorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
+custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
-placeholder_text = "Title"
-alignment = 1
-
-[node name="SongAuthorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer5"]
-custom_minimum_size = Vector2(167, 24)
-layout_mode = 2
-size_flags_horizontal = 8
-placeholder_text = "Author"
 alignment = 1
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
@@ -1649,11 +1676,37 @@ alignment = 2
 [node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer6"]
 layout_mode = 2
 size_flags_horizontal = 0
+text = "Song"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 2
+
+[node name="SongTitleField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer6"]
+custom_minimum_size = Vector2(167, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+placeholder_text = "Title"
+alignment = 1
+
+[node name="SongAuthorField" type="LineEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer6"]
+custom_minimum_size = Vector2(167, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+placeholder_text = "Author"
+alignment = 1
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 0
 text = "Preview Time"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="PreviewTimestampField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer6"]
+[node name="PreviewTimestampField" type="SpinBox" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer7"]
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -1662,20 +1715,20 @@ alignment = 1
 suffix = "Seconds"
 custom_arrow_step = 0.1
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MenuOverlays/LevelSettingsMenu/Settings"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 alignment = 2
 
-[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer7"]
+[node name="Label" type="Label" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer8"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Description"
 label_settings = SubResource("LabelSettings_irclh")
 horizontal_alignment = 2
 
-[node name="SongAuthorField" type="TextEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer7"]
+[node name="SongAuthorField" type="TextEdit" parent="MenuOverlays/LevelSettingsMenu/Settings/HBoxContainer8"]
 custom_minimum_size = Vector2(350, 24)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -1718,14 +1771,118 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
 text = "Cancel
 "
 
-[node name="SplashPreview" type="TextureRect" parent="MenuOverlays/LevelSettingsMenu"]
+[node name="ThumbSelect" type="Panel" parent="MenuOverlays/LevelSettingsMenu"]
+self_modulate = Color(1, 1, 1, 0.372549)
 layout_mode = 0
-offset_left = 896.0
-offset_top = 200.0
+offset_left = 897.0
+offset_top = 255.0
 offset_right = 1696.0
-offset_bottom = 864.0
+offset_bottom = 475.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fb576")
+
+[node name="Preview" type="TextureRect" parent="MenuOverlays/LevelSettingsMenu/ThumbSelect"]
+layout_mode = 1
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 216.0
+offset_bottom = 216.0
+texture = ExtResource("50_xqrbk")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Header" type="Label" parent="MenuOverlays/LevelSettingsMenu/ThumbSelect"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -224.0
+offset_top = -59.5
+offset_right = -12.0
+offset_bottom = -4.5
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Thumbnail"
+
+[node name="Browse" type="Button" parent="MenuOverlays/LevelSettingsMenu/ThumbSelect"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -224.0
+offset_top = -2.0
+offset_right = -12.0
+offset_bottom = 66.0
+grow_horizontal = 0
+grow_vertical = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+text = "Browse Files"
+
+[node name="SplashSelect" type="Panel" parent="MenuOverlays/LevelSettingsMenu"]
+self_modulate = Color(1, 1, 1, 0.372549)
+layout_mode = 0
+offset_left = 896.0
+offset_top = 495.0
+offset_right = 1696.0
+offset_bottom = 818.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fb576")
+
+[node name="Preview" type="TextureRect" parent="MenuOverlays/LevelSettingsMenu/SplashSelect"]
+layout_mode = 1
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 564.0
+offset_bottom = 319.0
+texture = ExtResource("51_iuflb")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Header" type="Label" parent="MenuOverlays/LevelSettingsMenu/SplashSelect"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -224.0
+offset_top = -59.5
+offset_right = -12.0
+offset_bottom = -4.5
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Splash"
+horizontal_alignment = 1
+
+[node name="Browse" type="Button" parent="MenuOverlays/LevelSettingsMenu/SplashSelect"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -224.0
+offset_top = -2.0
+offset_right = -12.0
+offset_bottom = 66.0
+grow_horizontal = 0
+grow_vertical = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+text = "Browse Files"
+
+[node name="FileDialog" type="FileDialog" parent="MenuOverlays"]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("png")
+use_native_dialog = true
 
 [node name="DifficultySettingsMenu" type="Control" parent="MenuOverlays"]
 visible = false
@@ -1916,6 +2073,7 @@ metadata/_edit_group_ = true
 
 [node name="ActSettingsButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -1925,6 +2083,7 @@ text_overrun_behavior = 3
 
 [node name="LevelSettingsButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -1934,6 +2093,7 @@ text_overrun_behavior = 3
 
 [node name="DifficultySettingsButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -1948,6 +2108,7 @@ metadata/_edit_group_ = true
 
 [node name="SaveLevelButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer2"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -1957,6 +2118,7 @@ text_overrun_behavior = 3
 
 [node name="ExportModButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer2"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -1971,6 +2133,7 @@ metadata/_edit_group_ = true
 
 [node name="CutsceneEditorButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer3"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -1981,6 +2144,7 @@ text_overrun_behavior = 3
 
 [node name="CloseMenuButton" type="Button" parent="MenuOverlays/LevelEditorMenu/Groups/VBoxContainer3"]
 layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
@@ -2021,7 +2185,6 @@ metadata/_edit_lock_ = true
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
-position = Vector2i(320, 180)
 size = Vector2i(342, 180)
 ok_button_text = "Select Current Folder"
 file_mode = 2
@@ -2044,9 +2207,18 @@ script = ExtResource("40_x5fle")
 [connection signal="button_up" from="MenuOverlays/ActSettingsMenu/Buttons/Save" to="MenuOverlays/ActSettingsMenu" method="_on_save_button_up"]
 [connection signal="button_up" from="MenuOverlays/ActSettingsMenu/Buttons/Cancel" to="MenuOverlays/ActSettingsMenu" method="hide"]
 [connection signal="button_up" from="MenuOverlays/ActSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
+[connection signal="mouse_entered" from="MenuOverlays/ActSettingsMenu/ThumbSelect" to="MenuOverlays/ActSettingsMenu" method="_on_thumb_select_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOverlays/ActSettingsMenu/ThumbSelect" to="MenuOverlays/ActSettingsMenu" method="_on_thumb_select_mouse_exited"]
+[connection signal="button_up" from="MenuOverlays/ActSettingsMenu/ThumbSelect/Browse" to="MenuOverlays/FileDialog" method="popup"]
 [connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Save" to="MenuOverlays/LevelSettingsMenu" method="_on_save_button_up"]
 [connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelSettingsMenu" method="hide"]
 [connection signal="button_up" from="MenuOverlays/LevelSettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]
+[connection signal="mouse_entered" from="MenuOverlays/LevelSettingsMenu/ThumbSelect" to="MenuOverlays/LevelSettingsMenu" method="_on_thumb_select_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOverlays/LevelSettingsMenu/ThumbSelect" to="MenuOverlays/LevelSettingsMenu" method="_on_thumb_select_mouse_exited"]
+[connection signal="mouse_entered" from="MenuOverlays/LevelSettingsMenu/SplashSelect" to="MenuOverlays/LevelSettingsMenu" method="_on_splash_select_mouse_entered"]
+[connection signal="mouse_exited" from="MenuOverlays/LevelSettingsMenu/SplashSelect" to="MenuOverlays/LevelSettingsMenu" method="_on_splash_select_mouse_exited"]
+[connection signal="file_selected" from="MenuOverlays/FileDialog" to="MenuOverlays/ActSettingsMenu" method="_on_file_dialog_file_selected"]
+[connection signal="file_selected" from="MenuOverlays/FileDialog" to="MenuOverlays/LevelSettingsMenu" method="_on_file_dialog_file_selected"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Difficulties/VBoxContainer/AddButton" to="MenuOverlays/DifficultySettingsMenu" method="_on_add_button_up"]
 [connection signal="text_submitted" from="MenuOverlays/DifficultySettingsMenu/Settings/NameField" to="MenuOverlays/DifficultySettingsMenu" method="_on_name_field_text_submitted"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Save" to="MenuOverlays/DifficultySettingsMenu" method="_on_save_button_up"]

@@ -30,9 +30,6 @@ func setup(editor_note_data):
 	hold_beat = Math.secs_to_beat_dynamic(data.get('hold_end_timestamp', data['timestamp']))
 	update_visual()
 	update_position()
-	
-	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
-	.replace("{", "").replace("}", "").replace("\"", "")
 
 func _on_editor_update_bpm():
 	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
@@ -66,6 +63,10 @@ func update_visual():
 	
 	# Bomb Notes
 	note_body_bomb.set_visible(data['note_modifier'] == LevelEditor.NOTETYPE.BOMB)
+	
+	# Update Tooltip
+	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
+	.replace("{", "").replace("}", "").replace("\"", "")
 
 func _process(_delta):
 	set_visible(global_position.x >= 0 and global_position.x < 1920)
@@ -110,20 +111,47 @@ func run_action(id: int):
 				delete_note()
 		GHOST:
 			if LevelEditor.selected_notes.size() > 0 and LevelEditor.selected_notes.has(self):
-				for note: EditorNote in LevelEditor.selected_notes:
-					note.set_note_type(LevelEditor.NOTETYPE.GHOST)
+				var all_modified: bool = true
+				for i in LevelEditor.selected_notes.size():
+					var note: EditorNote = LevelEditor.selected_notes[i]
+					
+					if note.data['note_modifier'] != LevelEditor.NOTETYPE.GHOST:
+						all_modified = false
+						note.set_note_type(LevelEditor.NOTETYPE.GHOST)
+					
+					if i == LevelEditor.selected_notes.size()-1 and all_modified:
+						for n: EditorNote in LevelEditor.selected_notes:
+							n.set_note_type(LevelEditor.NOTETYPE.NORMAL)
 			else:
 				set_note_type(LevelEditor.NOTETYPE.GHOST)
 		AUTO:
 			if LevelEditor.selected_notes.size() > 0 and LevelEditor.selected_notes.has(self):
-				for note: EditorNote in LevelEditor.selected_notes:
-					note.set_note_type(LevelEditor.NOTETYPE.AUTO)
+				var all_modified: bool = true
+				for i in LevelEditor.selected_notes.size():
+					var note: EditorNote = LevelEditor.selected_notes[i]
+					
+					if note.data['note_modifier'] != LevelEditor.NOTETYPE.AUTO:
+						all_modified = false
+						note.set_note_type(LevelEditor.NOTETYPE.AUTO)
+					
+					if i == LevelEditor.selected_notes.size()-1 and all_modified:
+						for n: EditorNote in LevelEditor.selected_notes:
+							n.set_note_type(LevelEditor.NOTETYPE.NORMAL)
 			else:
 				set_note_type(LevelEditor.NOTETYPE.AUTO)
 		BOMB:
 			if LevelEditor.selected_notes.size() > 0 and LevelEditor.selected_notes.has(self):
-				for note: EditorNote in LevelEditor.selected_notes:
-					note.set_note_type(LevelEditor.NOTETYPE.BOMB)
+				var all_modified: bool = true
+				for i in LevelEditor.selected_notes.size():
+					var note: EditorNote = LevelEditor.selected_notes[i]
+					
+					if note.data['note_modifier'] != LevelEditor.NOTETYPE.BOMB:
+						all_modified = false
+						note.set_note_type(LevelEditor.NOTETYPE.BOMB)
+					
+					if i == LevelEditor.selected_notes.size()-1 and all_modified:
+						for n: EditorNote in LevelEditor.selected_notes:
+							n.set_note_type(LevelEditor.NOTETYPE.NORMAL)
 			else:
 				set_note_type(LevelEditor.NOTETYPE.BOMB)
 		VOICE:
