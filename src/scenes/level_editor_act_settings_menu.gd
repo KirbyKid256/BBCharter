@@ -2,37 +2,38 @@ extends Control
 
 @onready var act_name_field: LineEdit = $Settings/HBoxContainer/ActNameField
 @onready var act_description_field: TextEdit = $Settings/ActDescriptionField
-@onready var act_index_field: SpinBox = $Settings/HBoxContainer2/ActIndexField
-@onready var act_legacy: Button = $Settings/HBoxContainer3/ActLegacyField
+@onready var act_index_field: SpinBox = $Settings/HBoxContainer/ActIndexField
+@onready var act_legacy: Button = $Settings/HBoxContainer2/ActLegacyField
 
 @onready var thumb_select: Panel = $ThumbSelect
 @onready var thumb_preview: TextureRect = $ThumbSelect/Preview
 @onready var file_dialog: FileDialog = $"../FileDialog"
 
-@onready var top_bar: Polygon2D = $"../../Preview/TopBar"
 @onready var legacy_bars: Node2D = $"../../Preview/Legacy"
 
 func _ready():
-	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	file_dialog.current_dir = Global.get_executable_path()
 
-func _on_editor_level_loaded():
+func _on_editor_project_loaded():
 	legacy_bars.visible = Config.act.get('act_legacy', false)
-	top_bar.visible = not legacy_bars.visible
 	
-	Assets.act_thumb = Files.load_image(Editor.level_path.get_base_dir().get_base_dir() + "/thumb.png")
+	Assets.act_thumb = Files.load_image(Editor.project_path.get_base_dir().get_base_dir() + "/thumb.png")
 	thumb_preview.texture = Assets.act_thumb
 
 func _input(event):
-	if MenuCache.menu_disabled(self): return
+	if not visible: return
 	if event.is_action("ui_cancel"): hide()
+
+func text_focused() -> bool:
+	return act_name_field.has_focus() or act_description_field.has_focus() or act_index_field.has_focus()
 
 func _on_act_settings_button_up():
 	if Config.act.is_empty():
 		LevelCreator.create_act_config()
 		LevelCreator.create_act_placeholders()
 		
-		Assets.act_thumb = Files.load_image(Editor.level_path.get_base_dir().get_base_dir() + "/thumb.png")
+		Assets.act_thumb = Files.load_image(Editor.project_path.get_base_dir().get_base_dir() + "/thumb.png")
 		thumb_preview.texture = Assets.act_thumb
 	
 	act_name_field.text = Config.act.get('act_name', "My Act")
@@ -52,9 +53,9 @@ func _on_thumb_select_mouse_exited():
 	thumb_select.self_modulate = Color8(255, 255, 255, 95)
 
 func _on_file_dialog_file_selected(path):
-	if MenuCache.menu_disabled(self): return
+	if not visible: return
 	
-	var thumb: String = Editor.level_path.get_base_dir().get_base_dir().path_join("thumb.png")
+	var thumb: String = Editor.project_path.get_base_dir().get_base_dir().path_join("thumb.png")
 	DirAccess.copy_absolute(path, thumb)
 	
 	Assets.act_thumb = Files.load_image(thumb)
@@ -67,8 +68,8 @@ func _on_save_button_up():
 	
 	if act_legacy.button_pressed: Config.act['act_legacy'] = true
 	else: Config.act.erase('act_legacy')
-	_on_editor_level_loaded()
+	_on_editor_project_loaded()
 	
-	Editor.project_changed = true
-	LevelEditor.controls_enabled = true
+	Editor.level_changed = true
+	Editor.controls_enabled = true
 	hide()

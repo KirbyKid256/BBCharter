@@ -15,12 +15,12 @@ enum AUDIO {ONESHOT,LOOP,VOICE,MUSIC,HORNY}
 
 # General
 static var editor_asset_cache: Array
-static var controls_enabled: bool = true
+static var difficulty_index: int
 
 # Snapping
 static var snapping_allowed = true
 static var snapping_factor: int = 1
-static var snapping_index: int = 0
+static var snapping_index: int
 
 # Music
 static var song_position_raw: float
@@ -43,20 +43,20 @@ static func calculate_song_info(stream: AudioStream):
 	song_beats_total = ceil(Math.secs_to_beat_dynamic(song_length - Config.settings['song_offset']))
 
 static func get_timestamp() -> float:
-	var song_length_offset = song_length - Config.settings['song_offset']
+	var song_length_offset = snappedf(song_length - Config.settings['song_offset'], 0.001)
 	var time = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(song_position_offset), 1.0 / snapping_factor)
 	if snapping_allowed else Math.secs_to_beat_dynamic(song_position_offset)))
 	
 	return song_length_offset if time > song_length_offset\
 	else -Config.settings['song_offset'] if time < -Config.settings['song_offset']\
-	else time
+	else snappedf(time, 0.001)
 #endregion
 
 #region Asset Cache
 static func get_asset_cache() -> Array:
 	var asset_config = ConfigFile.new()
 	
-	if asset_config.load(Editor.level_path + "editor_cache.cfg") == OK:
+	if asset_config.load(Editor.project_path + "editor_cache.cfg") == OK:
 		return asset_config.get_value("main","data", [])
 	return []
 
@@ -71,7 +71,7 @@ static func append_asset_cache(cache_data: Dictionary) -> void:
 	editor_asset_cache.append(cache_data)
 	var asset_config: ConfigFile = ConfigFile.new()
 	asset_config.set_value("main","data",editor_asset_cache)
-	asset_config.save(Editor.level_path + "editor_cache.cfg")
+	asset_config.save(Editor.project_path + "editor_cache.cfg")
 
 # Remove an asset from the cache
 static func remove_asset_cache(cache_data: Dictionary) -> void:
@@ -82,7 +82,7 @@ static func remove_asset_cache(cache_data: Dictionary) -> void:
 	editor_asset_cache.remove_at(editor_asset_cache.find(cache_data))
 	var asset_config: ConfigFile = ConfigFile.new()
 	asset_config.set_value("main","data",editor_asset_cache)
-	asset_config.save(Editor.level_path + "editor_cache.cfg")
+	asset_config.save(Editor.project_path + "editor_cache.cfg")
 
 # Replace an asset in the cache
 static func replace_asset_cache(old_data: Dictionary, new_data: Dictionary) -> void:
@@ -98,7 +98,7 @@ static func replace_asset_cache(old_data: Dictionary, new_data: Dictionary) -> v
 	
 	var asset_config: ConfigFile = ConfigFile.new()
 	asset_config.set_value("main","data",editor_asset_cache)
-	asset_config.save(Editor.level_path + "editor_cache.cfg")
+	asset_config.save(Editor.project_path + "editor_cache.cfg")
 #endregion
 
 # Place all keyframes founc in config
@@ -130,7 +130,7 @@ static func add_single_keyframe(data: Dictionary, root_note: Node2D, prefab: Pac
 	root_note.add_child(new_keyframe)
 	new_keyframe.setup(data)
 
-static func save_project():
+static func save_level():
 	Config.save_config_data("asset.cfg", Config.asset)
 	Config.save_config_data("keyframes.cfg", Config.keyframes)
 	Config.save_config_data("meta.cfg", Config.meta)
@@ -143,7 +143,7 @@ static func save_project():
 	if not Config.act.is_empty():
 		var config: ConfigFile = ConfigFile.new()
 		config.set_value('main', 'data', Config.act)
-		config.save(Editor.level_path.get_base_dir().get_base_dir().path_join("act.cfg"))
+		config.save(Editor.project_path.get_base_dir().get_base_dir().path_join("act.cfg"))
 	
 	Console.log({"message": "Saving Project"})
-	Editor.project_changed = false
+	Editor.level_changed = false

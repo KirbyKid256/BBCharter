@@ -1,6 +1,7 @@
 extends Node2D
 
-@onready var input_handler: Control = $InputHandler
+@onready var input_handler = $InputHandler
+@onready var background = $"../../../../../Preview/Background"
 
 var data: Dictionary
 var beat: float
@@ -16,6 +17,9 @@ func setup(background_data: Dictionary):
 	
 	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
 	.replace("{", "").replace("}", "").replace("\"", "")
+	
+	if Config.keyframes['background'].is_empty() and LevelEditor.song_position_offset > data['timestamp']:
+		background.change_background(background.tsevent.index)
 
 func _on_editor_update_bpm():
 	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
@@ -34,5 +38,8 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['background'].find(data)
 			Console.log({"message": "Deleting Background at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['background'].remove_at(idx)
-			Editor.project_changed = true
+			Editor.level_changed = true
 			Util.free_node(self)
+			
+			if Config.keyframes['background'].is_empty():
+				background.change_background(idx)

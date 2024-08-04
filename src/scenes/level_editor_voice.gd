@@ -6,20 +6,24 @@ var voice_trigger_index: int
 var last_voice_trigger_index: int
 
 func _ready():
-	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	EventManager.editor_note_hit.connect(_on_editor_note_hit)
 	
 	var tsevent = TSEvent.new()
 	tsevent.callback = change_voice_bank
 	tsevent.config_key = "voice_bank"
 	add_child(tsevent)
+	
+	if Editor.project_loaded:
+		current_bank.clear()
+		change_voice_bank(tsevent.index)
 
-func _on_editor_level_loaded():
+func _on_editor_project_loaded():
 	current_bank.clear()
 	change_voice_bank(0)
 
 func _process(_delta):
-	if not Editor.level_loaded: return
+	if not Editor.project_loaded: return
 	
 	var arr = Difficulty.get_chart_notes().filter(func(note): return LevelEditor.song_position_offset >= note['timestamp'] and note.get('trigger_voice', false))
 	voice_trigger_index = arr.size()

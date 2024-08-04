@@ -16,7 +16,7 @@ static func load_image(path: String, exts: PackedStringArray = []) -> ImageTextu
 		image.premultiply_alpha()
 		return ImageTexture.create_from_image(image)
 	else:
-		if exts.is_empty(): exts = ['.png','.jpg','.jpeg']
+		if exts.is_empty(): exts = ['.png','.jpg','.jpeg','.webp']
 		for ext in exts: if FileAccess.file_exists(path + ext):
 			var image: Image = Image.load_from_file(path + ext)
 			if image == null: continue

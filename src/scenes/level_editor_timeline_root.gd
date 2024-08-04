@@ -34,8 +34,8 @@ func _process(delta):
 		timeline_translate(5.0) if translate_hold_input == "ui_left" else timeline_translate(-5.0)
 
 func _input(event):
-	if not Editor.level_loaded: return
-	if not LevelEditor.controls_enabled: return
+	if not Editor.project_loaded: return
+	if not Editor.controls_enabled: return
 	
 	if event is InputEventMouseButton:
 		# Ignore if mouse on in timeline

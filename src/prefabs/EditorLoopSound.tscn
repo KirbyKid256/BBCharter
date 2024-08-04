@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://moeqj4yom3bf"]
 
-[ext_resource type="Script" path="res://src/prefabs/EditorSoundLoop.gd" id="1_280go"]
+[ext_resource type="Script" path="res://src/prefabs/EditorLoopSound.gd" id="1_280go"]
 [ext_resource type="Texture2D" uid="uid://c8qntv7mcufiy" path="res://assets/ui/editor_loop.png" id="2_fqavn"]
 
 [node name="EditorSoundLoop" type="Node2D"]

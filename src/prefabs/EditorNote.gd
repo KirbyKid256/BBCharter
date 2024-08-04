@@ -72,7 +72,7 @@ func _process(_delta):
 	set_visible(global_position.x >= 0 and global_position.x < 1920)
 	
 	if global_position.x >= 960 and !hit:
-		EventManager.emit_signal('editor_note_hit', data)
+		EventManager.editor_note_hit.emit(data)
 		hit = true
 	elif global_position.x < 960 and hit:
 		hit = false
@@ -93,7 +93,7 @@ func delete_note():
 	Console.log({"message": "Deleting nogte at %s (index %s)" % [data['timestamp'],idx]})
 	Difficulty.get_chart_notes().remove_at(idx)
 	LevelEditor.selected_notes.erase(self)
-	Editor.project_changed = true
+	Editor.level_changed = true
 	Util.free_node(self)
 
 func check_selected():
@@ -183,7 +183,7 @@ func run_action(id: int):
 			
 			update_visual()
 			update_position()
-	Editor.project_changed = true
+	Editor.level_changed = true
 
 func set_note_type(note_type_enum: int):
 	if data['note_modifier'] == note_type_enum:
@@ -192,4 +192,4 @@ func set_note_type(note_type_enum: int):
 	else: 
 		data['note_modifier'] = note_type_enum
 	update_visual()
-	Editor.project_changed = true
+	Editor.level_changed = true

@@ -13,7 +13,7 @@ static func load_asset(file: String):
 			lib[file.get_file().to_lower()] = Files.load_mp3(file)
 		"ogg":
 			lib[file.get_file().to_lower()] = AudioStreamOggVorbis.load_from_file(file)
-		"png","jpg","jpeg":
+		"png","jpg","jpeg","webp":
 			lib[file.get_file().to_lower()] = Files.load_image(file)
 		"ogv":
 			var stream: VideoStreamTheora = VideoStreamTheora.new()

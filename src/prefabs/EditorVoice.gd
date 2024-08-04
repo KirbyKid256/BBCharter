@@ -35,5 +35,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['voice_bank'].find(data)
 			Console.log({"message": "Deleting Voice Bank at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['voice_bank'].remove_at(idx)
-			Editor.project_changed = true
+			Editor.level_changed = true
 			Util.free_node(self)

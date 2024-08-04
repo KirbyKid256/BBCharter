@@ -14,7 +14,7 @@ func _on_item_selected(index):
 	LevelEditor.snapping_index = index
 	LevelEditor.snapping_factor = snap_values[index]
 	Console.log({"message": 'Snapping factor set to 1/%s' % LevelEditor.snapping_factor})
-	EventManager.emit_signal('editor_update_snapping', index)
+	EventManager.editor_update_snapping.emit(index)
 
 func _on_snapping_toggled(toggled_on):
 	LevelEditor.snapping_allowed = toggled_on

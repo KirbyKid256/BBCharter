@@ -1,13 +1,11 @@
 extends Control
-class_name LevelEditorMenu
 
 @onready var music: LevelEditorMusic = $'../../Music'
 @onready var subheader: Label = $Subheader
-@onready var save_indicator: SaveIndicator = $'../../SaveIndicator'
 
 @onready var act_settings: Button = $Groups/VBoxContainer/ActSettingsButton
 
-var in_submenu: bool = false
+var in_submenu: bool
 
 func _input(event):
 	await get_tree().process_frame
@@ -15,14 +13,14 @@ func _input(event):
 		close_submenu()
 
 func toggle():
-	if not Editor.level_loaded: return
+	if not Editor.project_loaded: return
 	if in_submenu: return
 	
-	LevelEditor.controls_enabled = visible
+	Editor.controls_enabled = visible
 	
 	subheader.text = "%s - %s" % [
 		Config.meta.get("level_name", "No Name"),
-		Config.notes['charts'][MenuCache.level_difficulty_index]['name']
+		Config.notes['charts'][LevelEditor.difficulty_index]['name']
 	]
 	
 	if Config.act.is_empty():
@@ -42,6 +40,11 @@ func close_submenu():
 	toggle()
 
 func _on_save_level_button_up():
-	LevelEditor.save_project() 
-	save_indicator.show_saved_succes()
+	LevelEditor.save_level() 
+	Global.save_indicator.show_saved_succes()
+	hide()
+
+func _on_save_project_button_up():
+	Editor.save_project() 
+	Global.save_indicator.show_saved_succes()
 	hide()

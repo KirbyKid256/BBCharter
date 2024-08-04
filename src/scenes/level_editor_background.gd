@@ -1,16 +1,19 @@
 extends TextureRect
 
+@onready var tsevent: TSEvent = TSEvent.new()
+
 var data: Dictionary
 
 func _ready():
-	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	
-	var tsevent = TSEvent.new()
 	tsevent.callback = change_background
 	tsevent.config_key = "background"
 	add_child(tsevent)
+	
+	if Editor.project_loaded: change_background(tsevent.index)
 
-func _on_editor_level_loaded():
+func _on_editor_project_loaded():
 	set_texture(null)
 
 func change_background(idx: int):

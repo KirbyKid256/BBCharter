@@ -7,6 +7,7 @@ var note_clipboard: Array
 
 func _ready():
 	EventManager.editor_note_created.connect(_on_editor_note_created)
+	if Editor.project_loaded: load_notes()
 
 func load_notes():
 	for editor_note in Difficulty.get_chart_notes():
@@ -15,10 +16,8 @@ func load_notes():
 		new_editor_note.setup(editor_note)
 
 func _input(event):
-	if not Editor.level_loaded: return
-	
-	if MenuCache.menu_disabled(self): return
-	if not LevelEditor.controls_enabled: return
+	if not Editor.project_loaded: return
+	if not Editor.controls_enabled: return
 	
 	if event.is_action_pressed("ui_cut"): cut_selected_notes()
 	if event.is_action_pressed("ui_copy"): copy_selected_notes()
@@ -27,10 +26,8 @@ func _input(event):
 	if event is InputEventKey and event.alt_pressed: return
 	if event is InputEventKey and event.is_command_or_control_pressed(): return
 	
-	if event.is_action_pressed("action_0"): create_note(0)
-	if event.is_action_pressed("action_1"): create_note(1)
-	if event.is_action_pressed("action_2"): create_note(2)
-	if event.is_action_pressed("action_3"): create_note(3)
+	for i in 4:
+		if event.is_action_pressed("action_" + str(i)): create_note(i)
 
 func cut_selected_notes():
 	if LevelEditor.selected_notes.is_empty(): Console.log({"message": "No Notes to cut..."}); return
@@ -38,7 +35,7 @@ func cut_selected_notes():
 	for note: EditorNote in LevelEditor.selected_notes:
 		note_clipboard.append(note.data)
 	note_selector.group_delete_notes()
-	Editor.project_changed = true
+	Editor.level_changed = true
 
 func copy_selected_notes():
 	if LevelEditor.selected_notes.is_empty(): Console.log({"message": "No Notes to copy..."}); return
@@ -50,7 +47,7 @@ func paste_selected_notes():
 	if note_clipboard.is_empty(): Console.log({"message": "No Notes to paste..."}); return
 	for note: Dictionary in note_clipboard:
 		copy_note(note)
-	Editor.project_changed = true
+	Editor.level_changed = true
 
 func create_note(input_type: int = 0):
 	# Batch Replace Note Types
@@ -70,15 +67,14 @@ func create_note(input_type: int = 0):
 	var new_note_data = {'input_type':input_type, "note_modifier":0, 'timestamp':new_note_timestamp}
 	Difficulty.get_chart_notes().append(new_note_data)
 	Difficulty.get_chart_notes().sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
-	EventManager.emit_signal("editor_note_created", new_note_data)
-	Editor.project_changed = true
+	EventManager.editor_note_created.emit(new_note_data)
+	Editor.level_changed = true
 
 func copy_note(note: Dictionary):
 	var copied_note_data = note.duplicate(true)
 	
 	# Get first notes offset
-	copied_note_data['timestamp'] = note['timestamp']\
-	+ LevelEditor.get_timestamp() - note_clipboard[0]['timestamp'] 
+	copied_note_data['timestamp'] = note['timestamp'] + LevelEditor.get_timestamp() - note_clipboard[0]['timestamp'] 
 	
 	# Offset hold notes
 	if copied_note_data['note_modifier'] == LevelEditor.NOTETYPE.HOLD:

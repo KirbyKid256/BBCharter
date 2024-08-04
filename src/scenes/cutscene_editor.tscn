@@ -1,0 +1,370 @@
+[gd_scene load_steps=22 format=3 uid="uid://cb40e1geen0y3"]
+
+[ext_resource type="Script" path="res://src/scenes/cutscene_editor.gd" id="1_b28o8"]
+[ext_resource type="Script" path="res://src/scenes/cutscene_editor_panel_tracks.gd" id="2_6qb1v"]
+[ext_resource type="Script" path="res://src/scenes/cutscene_editor_panels.gd" id="2_372to"]
+[ext_resource type="PackedScene" uid="uid://das7s0vbarfpr" path="res://src/prefabs/CutsceneEditorPanel.tscn" id="4_47d6k"]
+[ext_resource type="Script" path="res://src/scenes/cutscene_editor_assets.gd" id="4_ns17s"]
+[ext_resource type="PackedScene" uid="uid://5y7oxd4p5ujl" path="res://src/prefabs/CutsceneEditorAudioAsset.tscn" id="6_f6f6j"]
+[ext_resource type="Texture2D" uid="uid://dfu4wkrohcgqq" path="res://assets/ui/plus_add.png" id="7_o4ify"]
+[ext_resource type="PackedScene" uid="uid://jjnb7nscg65j" path="res://src/prefabs/ConfirmMenu.tscn" id="7_u8ahr"]
+[ext_resource type="FontFile" uid="uid://d23w6chkropfb" path="res://assets/font/noto/NotoSansJP-Bold.ttf" id="8_6n2py"]
+[ext_resource type="PackedScene" uid="uid://c6i14hpcxdtig" path="res://src/prefabs/SaveIndicator.tscn" id="8_ct3jo"]
+[ext_resource type="Script" path="res://src/scenes/CutsceneEditorMenu.gd" id="8_ha06y"]
+[ext_resource type="FontFile" uid="uid://crwbv2wvibutw" path="res://assets/font/noto/NotoSansJP-Regular.ttf" id="9_lllx6"]
+[ext_resource type="PackedScene" uid="uid://clwu0fc30p4d5" path="res://src/prefabs/ErrorNotification.tscn" id="14_mihgv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qg4sm"]
+bg_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wgvv7"]
+bg_color = Color(0.0196078, 0.0196078, 0.0196078, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixr3r"]
+bg_color = Color(0, 0, 0, 1)
+expand_margin_left = 16.0
+expand_margin_top = 16.0
+expand_margin_right = 16.0
+expand_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygi7t"]
+bg_color = Color(0.0352941, 0.0352941, 0.0352941, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h26xw"]
+bg_color = Color(0, 0, 0, 0.901961)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vc6gu"]
+font = ExtResource("8_6n2py")
+font_size = 72
+
+[sub_resource type="LabelSettings" id="LabelSettings_bgy54"]
+font = ExtResource("9_lllx6")
+font_size = 28
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y27ds"]
+
+[node name="CutsceneEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b28o8")
+
+[node name="EditorPanelTracks" type="Node" parent="."]
+script = ExtResource("2_6qb1v")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qg4sm")
+metadata/_edit_lock_ = true
+
+[node name="TimelineBacking" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 704.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wgvv7")
+
+[node name="CutsceneEditorControls" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 42.0
+offset_right = 432.0
+offset_bottom = 662.0
+
+[node name="InsertShot" type="Button" parent="CutsceneEditorControls"]
+layout_mode = 0
+offset_top = 532.0
+offset_right = 416.0
+offset_bottom = 572.0
+text = "Insert New Shot"
+
+[node name="DeleteShot" type="Button" parent="CutsceneEditorControls"]
+layout_mode = 0
+offset_top = 580.0
+offset_right = 416.0
+offset_bottom = 620.0
+text = " Delete Shot"
+
+[node name="DialogueField" type="TextEdit" parent="CutsceneEditorControls"]
+layout_mode = 0
+offset_top = 56.0
+offset_right = 416.0
+offset_bottom = 524.0
+theme_override_font_sizes/font_size = 24
+placeholder_text = "Enter Dialogue Here..."
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="CharacterField" type="LineEdit" parent="CutsceneEditorControls"]
+layout_mode = 0
+offset_right = 416.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 24
+placeholder_text = "Character Name"
+
+[node name="CutsceneEditorPanels" type="Node2D" parent="."]
+position = Vector2(960, 888)
+script = ExtResource("2_372to")
+cutscene_editor_panel_prefab = ExtResource("4_47d6k")
+metadata/_edit_group_ = true
+
+[node name="CutsceneEditorPreview" type="Node2D" parent="."]
+position = Vector2(1000, 352)
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="CutsceneEditorPreview"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -523.0
+offset_top = -294.0
+offset_right = 522.0
+offset_bottom = 294.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ixr3r")
+
+[node name="PreviewImage" type="TextureRect" parent="CutsceneEditorPreview/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CutsceneEditorAssets" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1568.0
+offset_top = 42.0
+offset_right = -16.0
+offset_bottom = 662.0
+grow_horizontal = 2
+script = ExtResource("4_ns17s")
+audio_asset_prefab = ExtResource("6_f6f6j")
+
+[node name="Backing" type="Panel" parent="CutsceneEditorAssets"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygi7t")
+
+[node name="Tabs" type="TabContainer" parent="CutsceneEditorAssets"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Audio" type="ScrollContainer" parent="CutsceneEditorAssets/Tabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CutsceneEditorAssets/Tabs/Audio"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="AddButton" type="Button" parent="CutsceneEditorAssets/Tabs/Audio/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Add Audio"
+icon = ExtResource("7_o4ify")
+
+[node name="SaveIndicator" parent="." instance=ExtResource("8_ct3jo")]
+
+[node name="MenuOverlays" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="CutsceneEditorMenu" type="Control" parent="MenuOverlays"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_ha06y")
+
+[node name="Dark" type="Panel" parent="MenuOverlays/CutsceneEditorMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h26xw")
+
+[node name="Header" type="Label" parent="MenuOverlays/CutsceneEditorMenu"]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 40.0
+offset_right = 655.0
+offset_bottom = 145.0
+text = "CUTSCENE EDITOR"
+label_settings = SubResource("LabelSettings_vc6gu")
+
+[node name="Subheader" type="Label" parent="MenuOverlays/CutsceneEditorMenu"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 136.0
+offset_right = 660.0
+offset_bottom = 178.0
+text = "Path Enum"
+label_settings = SubResource("LabelSettings_bgy54")
+
+[node name="Line2D" type="Line2D" parent="MenuOverlays/CutsceneEditorMenu"]
+position = Vector2(-5, -64)
+points = PackedVector2Array(128, 256, 704, 256)
+width = 3.0
+default_color = Color(1, 1, 1, 0.25098)
+
+[node name="Groups" type="VBoxContainer" parent="MenuOverlays/CutsceneEditorMenu"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 280.0
+offset_right = 707.0
+offset_bottom = 946.0
+theme_override_constants/separation = 72
+metadata/_edit_group_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuOverlays/CutsceneEditorMenu/Groups"]
+layout_mode = 2
+theme_override_constants/separation = 8
+metadata/_edit_group_ = true
+
+[node name="PrePostButton" type="Button" parent="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("8_6n2py")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y27ds")
+text = "Edit Pre-Cutscene"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MenuOverlays/CutsceneEditorMenu/Groups"]
+layout_mode = 2
+theme_override_constants/separation = 8
+metadata/_edit_group_ = true
+
+[node name="SaveCutsceneButton" type="Button" parent="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer2"]
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("8_6n2py")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y27ds")
+text = "Save Cutscenes"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="SaveProjectButton" type="Button" parent="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer2"]
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("8_6n2py")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y27ds")
+text = "Save Project"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="ExportModButton" type="Button" parent="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer2"]
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("8_6n2py")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y27ds")
+text = "Export Modpack"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MenuOverlays/CutsceneEditorMenu/Groups"]
+layout_mode = 2
+theme_override_constants/separation = 8
+metadata/_edit_group_ = true
+
+[node name="LevelEditorButton" type="Button" parent="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer3"]
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("8_6n2py")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y27ds")
+text = "Go to Level Editor"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="CloseMenuButton" type="Button" parent="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer3"]
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("8_6n2py")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y27ds")
+text = "Close Menu"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="ConfirmMenu" parent="MenuOverlays" instance=ExtResource("7_u8ahr")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ErrorNotification" parent="." instance=ExtResource("14_mihgv")]
+position = Vector2(1869, 48)
+metadata/_edit_lock_ = true
+
+[connection signal="button_up" from="CutsceneEditorControls/InsertShot" to="." method="_on_insert_shot_button_up"]
+[connection signal="button_up" from="CutsceneEditorControls/DeleteShot" to="." method="_on_delete_shot_button_up"]
+[connection signal="text_changed" from="CutsceneEditorControls/DialogueField" to="." method="_on_dialogue_field_text_changed"]
+[connection signal="text_submitted" from="CutsceneEditorControls/CharacterField" to="." method="_on_character_field_text_submitted"]
+[connection signal="button_up" from="CutsceneEditorAssets/Tabs/Audio/VBoxContainer/AddButton" to="CutsceneEditorAssets" method="_on_add_audio_button_up"]
+[connection signal="button_up" from="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer/PrePostButton" to="." method="_on_pre_post_button_up"]
+[connection signal="button_up" from="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer2/SaveCutsceneButton" to="MenuOverlays/CutsceneEditorMenu" method="_on_save_cutscene_button_up"]
+[connection signal="button_up" from="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer2/SaveProjectButton" to="MenuOverlays/CutsceneEditorMenu" method="_on_save_project_button_up"]
+[connection signal="button_up" from="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer3/LevelEditorButton" to="MenuOverlays/CutsceneEditorMenu" method="_on_level_editor_button_up"]
+[connection signal="button_up" from="MenuOverlays/CutsceneEditorMenu/Groups/VBoxContainer3/CloseMenuButton" to="MenuOverlays/CutsceneEditorMenu" method="toggle"]

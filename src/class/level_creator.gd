@@ -76,17 +76,17 @@ static func create_act_config():
 	Console.log({"message": "Creating Modpack Config"})
 	var act_config = ConfigFile.new()
 	act_config.set_value("main", "data", act_template)
-	act_config.save(Editor.level_path.get_base_dir().get_base_dir().path_join("act.cfg"))
+	act_config.save(Editor.project_path.get_base_dir().get_base_dir().path_join("act.cfg"))
 
 static func create_act_placeholders():
 	Console.log({"message": "Creating Modpack Placeholders"})
 	var thumb: Image = preload("res://assets/images/placeholder_album_cover.png").get_image()
-	thumb.save_png(Editor.level_path.get_base_dir().get_base_dir().path_join("thumb.png"))
+	thumb.save_png(Editor.project_path.get_base_dir().get_base_dir().path_join("thumb.png"))
 
 static func create_level_directories():
 	for folder_name in ["audio","config","images","video"]:
 		Console.log({"message": "Creating %s Folder" % folder_name})
-		if not DirAccess.make_dir_absolute(Editor.level_path.path_join(folder_name)) == OK: continue
+		if not DirAccess.make_dir_absolute(Editor.project_path.path_join(folder_name)) == OK: continue
 
 static func create_level_config():
 	var template_names = ["asset.cfg","keyframes.cfg","meta.cfg","mod.cfg","notes.cfg","settings.cfg"]
@@ -96,13 +96,29 @@ static func create_level_config():
 		var new_config = ConfigFile.new() 
 		
 		new_config.set_value("main", "data", config_template)
-		new_config.save(Editor.level_path.path_join("config").path_join(template_name))
+		new_config.save(Editor.project_path.path_join("config").path_join(template_name))
 
 static func create_level_placeholders():
 	Console.log({"message": "Creating Level Placeholders"})
 	
 	var thumb: Image = preload("res://assets/images/placeholder_level_icon.png").get_image()
-	thumb.save_png(Editor.level_path + "thumb.png")
+	thumb.save_png(Editor.project_path + "thumb.png")
 	
 	var splash: Image = preload("res://assets/images/placeholder_splash.png").get_image()
-	splash.save_png(Editor.level_path + "splash.png")
+	splash.save_png(Editor.project_path + "splash.png")
+
+static func create_cutscene():
+	var type: String
+	match Cutscene.type:
+		Cutscene.PRE: type = "pre"
+		Cutscene.POST: type = "post"
+	
+	var dir = DirAccess.open(Editor.project_path)
+	dir.make_dir_recursive("cutscene/%s/shots" % type)
+	dir.make_dir_recursive("cutscene/%s/audio" % type)
+	
+	if not FileAccess.file_exists(Editor.project_path + "cutscene/%s/script.cfg" % type):
+		var config = ConfigFile.new()
+		config.set_value("data", "lines", cutscene_script_template)
+		config.save(Editor.project_path + "cutscene/%s/script.cfg" % type)
+		CutsceneEditor.load_pre_script() if type == "pre" else CutsceneEditor.load_post_script()

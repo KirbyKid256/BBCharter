@@ -50,7 +50,7 @@ func set_bpm(value: float):
 	
 	# Reinit the editor music and indicator elements
 	LevelEditor.calculate_song_info(music.stream)
-	EventManager.emit_signal('editor_update_bpm')
+	EventManager.editor_update_bpm.emit()
 	Console.log({"message": "Bpm set to %s" % value})
 
 func _on_input_handler_gui_input(event: InputEvent):
@@ -58,7 +58,7 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT:
-			LevelEditor.controls_enabled = false
+			Editor.controls_enabled = false
 			modifier_icon.hide()
 			input_handler.hide()
 			bpm_field.show()
@@ -70,15 +70,15 @@ func _on_input_handler_gui_input(event: InputEvent):
 				var idx = Config.keyframes['modifiers'].find(data)
 				Console.log({"message": "Deleting BPM Change at %s (index %s)" % [data['timestamp'],idx]})
 				Config.keyframes['modifiers'].remove_at(idx)
-				Editor.project_changed = true
+				Editor.level_changed = true
 				Util.free_node(self)
 				
 				LevelEditor.calculate_song_info(music.stream)
-				EventManager.emit_signal('editor_update_bpm')
+				EventManager.editor_update_bpm.emit()
 
 func _on_bpm_field_text_submitted(new_text: String):
 	set_bpm(float(new_text))
-	LevelEditor.controls_enabled = true
+	Editor.controls_enabled = true
 	
 	modifier_icon.show()
 	input_handler.show()

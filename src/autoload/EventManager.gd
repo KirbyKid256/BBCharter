@@ -1,10 +1,15 @@
 extends Node
 
-#Global Signals
+# Global Signals
 signal console_logged(message: String)
+signal editor_project_loaded()
 
-# Editor Signals
-signal editor_level_loaded()
+# Cutscene signals
+signal cutscene_loaded()
+signal cutscene_panel_changed()
+signal cutscene_ended()
+
+# Level Signals
 signal editor_note_hit(note_object: Dictionary)
 signal editor_note_created(new_editor_note_data: Dictionary)
 signal editor_update_snapping(snap_index: int)

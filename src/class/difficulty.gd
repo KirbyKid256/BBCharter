@@ -3,7 +3,7 @@ class_name Difficulty
 ## Gets the chart for the current difficulty
 static func get_current_chart() -> Dictionary:
 	if not Config.notes.has('charts'): return {}
-	return Config.notes['charts'][MenuCache.level_difficulty_index]
+	return Config.notes['charts'][LevelEditor.difficulty_index]
 
 ## Gets the chart for the current difficulty
 static func get_current_chart_value(key: String, fallback: Variant = null) -> Variant:

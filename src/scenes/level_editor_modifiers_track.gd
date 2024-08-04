@@ -2,6 +2,9 @@ extends Node2D
 
 @export var editor_keyframe_prefab: PackedScene
 
+func _ready():
+	if Editor.project_loaded: load_keyframes()
+
 func load_keyframes():
 	LevelEditor.place_init_keyframes("modifiers", self, editor_keyframe_prefab)
 
@@ -22,4 +25,4 @@ func create_keyframe():
 	
 	if LevelEditor.create_new_keyframe("modifiers", new_keyframe_data, timestamp):
 		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)
-		Editor.project_changed = true
+		Editor.level_changed = true

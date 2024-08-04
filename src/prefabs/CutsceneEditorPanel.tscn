@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://das7s0vbarfpr"]
+
+[ext_resource type="Texture2D" uid="uid://d26s07qyxxmec" path="res://assets/images/placeholder_misc.png" id="1_an6un"]
+[ext_resource type="Script" path="res://src/prefabs/CutsceneEditorPanel.gd" id="1_bl5vd"]
+[ext_resource type="FontFile" uid="uid://d23w6chkropfb" path="res://assets/font/noto/NotoSansJP-Bold.ttf" id="2_odmfs"]
+[ext_resource type="Texture2D" uid="uid://dbsmygu8s8chd" path="res://assets/ui/arrow_left.png" id="4_ulb4o"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_erer2"]
+font = ExtResource("2_odmfs")
+font_size = 30
+
+[node name="CutsceneEditorPanel" type="Node2D"]
+script = ExtResource("1_bl5vd")
+
+[node name="Backing" type="Polygon2D" parent="."]
+color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+polygon = PackedVector2Array(-224, -192, 224, -192, 224, 192, -224, 192)
+
+[node name="ImagePreview" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -207.0
+offset_top = -176.0
+offset_right = 206.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_an6un")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CharacterName" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -203.0
+offset_top = 64.0
+offset_right = 200.0
+offset_bottom = 108.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CHARACTER NAME"
+label_settings = SubResource("LabelSettings_erer2")
+horizontal_alignment = 1
+
+[node name="Dialogue" type="RichTextLabel" parent="."]
+offset_left = -192.0
+offset_top = 108.0
+offset_right = 184.0
+offset_bottom = 177.0
+bbcode_enabled = true
+text = "[center]ALL THE DIALOGUE GOES HERE[/center]"
+
+[node name="LeftButton" type="TextureButton" parent="."]
+modulate = Color(1, 1, 1, 0.301961)
+offset_left = -224.0
+offset_top = 144.0
+offset_right = -192.0
+offset_bottom = 176.0
+texture_normal = ExtResource("4_ulb4o")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RightButton" type="TextureButton" parent="."]
+modulate = Color(1, 1, 1, 0.301961)
+offset_left = 192.0
+offset_top = 145.0
+offset_right = 224.0
+offset_bottom = 177.0
+texture_normal = ExtResource("4_ulb4o")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
+
+[connection signal="button_up" from="LeftButton" to="." method="_on_left_button_up"]
+[connection signal="mouse_entered" from="LeftButton" to="." method="_on_left_button_mouse_entered"]
+[connection signal="mouse_exited" from="LeftButton" to="." method="_on_left_button_mouse_exited"]
+[connection signal="button_up" from="RightButton" to="." method="_on_right_button_up"]
+[connection signal="mouse_entered" from="RightButton" to="." method="_on_right_button_mouse_entered"]
+[connection signal="mouse_exited" from="RightButton" to="." method="_on_right_button_mouse_exited"]

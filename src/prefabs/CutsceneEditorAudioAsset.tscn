@@ -1,0 +1,105 @@
+[gd_scene load_steps=8 format=3 uid="uid://5y7oxd4p5ujl"]
+
+[ext_resource type="Script" path="res://src/prefabs/CutsceneEditorAudioAsset.gd" id="1_3hkx5"]
+[ext_resource type="FontFile" uid="uid://c8qoqe265fmaa" path="res://assets/font/noto/NotoSansJP-Black.ttf" id="1_l843l"]
+[ext_resource type="Texture2D" uid="uid://44jh1ubk233d" path="res://assets/ui/level_editor_icon_audio.png" id="3_vt3gg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rgsj"]
+bg_color = Color(0.0823529, 0.0823529, 0.0823529, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_h3a7h"]
+font = ExtResource("1_l843l")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ak0t3"]
+bg_color = Color(0.0117647, 0.0117647, 0.0117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vrex1"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="CutsceneEditorAudioAsset" type="Control"]
+custom_minimum_size = Vector2(320, 64)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 64.0
+size_flags_horizontal = 0
+mouse_filter = 1
+script = ExtResource("1_3hkx5")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(320, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Right-click to Delete"
+theme_override_styles/panel = SubResource("StyleBoxFlat_1rgsj")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -24.0
+offset_right = -144.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+text = "AUDIO NAME"
+label_settings = SubResource("LabelSettings_h3a7h")
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="BusSelection" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 16.0
+offset_right = 312.0
+offset_bottom = 48.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ak0t3")
+alignment = 1
+text_overrun_behavior = 3
+item_count = 4
+popup/item_0/text = "Master"
+popup/item_1/text = "Music"
+popup/item_1/id = 1
+popup/item_2/text = "SFX"
+popup/item_2/id = 2
+popup/item_3/text = "Voice"
+popup/item_3/id = 3
+
+[node name="LevelEditorIconAudio" type="Sprite2D" parent="."]
+position = Vector2(24, 32)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_vt3gg")
+
+[node name="RenameAudio" type="LineEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 312.0
+offset_bottom = 47.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_vrex1")
+placeholder_text = "Enter Audio Filepath"
+alignment = 1
+
+[connection signal="gui_input" from="Panel" to="." method="_on_panel_gui_input"]
+[connection signal="gui_input" from="Panel/Label" to="." method="_on_label_gui_input"]
+[connection signal="item_selected" from="BusSelection" to="." method="_on_bus_selection_item_selected"]
+[connection signal="focus_exited" from="RenameAudio" to="." method="_on_rename_audio_focus_exited"]
+[connection signal="text_submitted" from="RenameAudio" to="." method="_on_rename_audio_text_submitted"]

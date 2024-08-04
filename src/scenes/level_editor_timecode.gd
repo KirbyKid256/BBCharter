@@ -13,7 +13,7 @@ var offset_time_sec: float
 var offset_time_min: float
 
 func _process(_delta):
-	if not Editor.level_loaded: return
+	if not Editor.project_loaded: return
 	
 	current_time_msec = snappedi(fmod(LevelEditor.song_position_offset, 1) * 1000, 1)
 	current_time_sec = int(fmod(LevelEditor.song_position_offset, 60))

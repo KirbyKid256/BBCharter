@@ -4,6 +4,7 @@ extends Node2D
 
 func _ready():
 	EventManager.editor_try_add_oneshot.connect(create_keyframe)
+	if Editor.project_loaded: load_keyframes()
 
 func load_keyframes():
 	LevelEditor.place_init_keyframes("sound_oneshot", self, editor_keyframe_prefab)
@@ -17,4 +18,4 @@ func create_keyframe(keyframe_data: Dictionary):
 	
 	if LevelEditor.create_new_keyframe("sound_oneshot", new_keyframe_data, timestamp):
 		LevelEditor.add_single_keyframe(new_keyframe_data, self, editor_keyframe_prefab)
-		Editor.project_changed = true
+		Editor.level_changed = true

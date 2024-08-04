@@ -14,14 +14,16 @@ extends Control
 @onready var menu_bar_panel: Panel = $"../MenuBarPanel"
 
 func _ready():
-	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	
 	if menu_bar.is_native_menu():
 		menu_bar_panel.hide()
 		position.y -= 40
 		size.y += 40
+	
+	if Editor.project_loaded: _on_editor_project_loaded()
 
-func _on_editor_level_loaded():
+func _on_editor_project_loaded():
 	get_image_assets()
 	get_audio_assets()
 

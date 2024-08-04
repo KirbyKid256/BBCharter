@@ -33,5 +33,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['shutter'].find(data)
 			Console.log({"message": "Deleting Shutter at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['shutter'].remove_at(idx)
-			Editor.project_changed = true
+			Editor.level_changed = true
 			Util.free_node(self)

@@ -4,17 +4,17 @@ class_name LevelEditorSettings
 enum {THUMB,SPLASH}
 
 @onready var level_name_field: LineEdit = $Settings/HBoxContainer/LevelNameField
-@onready var level_index_field: SpinBox = $Settings/HBoxContainer2/LevelIndexField
-@onready var character_name_field: LineEdit = $Settings/HBoxContainer3/CharacterNameField
-@onready var character_color_field: LineEdit = $Settings/HBoxContainer3/CharacterColorField
+@onready var level_index_field: SpinBox = $Settings/HBoxContainer/LevelIndexField
+@onready var character_name_field: LineEdit = $Settings/HBoxContainer2/CharacterNameField
+@onready var character_color_field: LineEdit = $Settings/HBoxContainer2/CharacterColorField
 
-@onready var song_offset_field: SpinBox = $Settings/HBoxContainer4/SongOffsetField
+@onready var song_offset_field: SpinBox = $Settings/HBoxContainer3/SongOffsetField
 
-@onready var creator_field: LineEdit = $Settings/HBoxContainer5/CreatorField
-@onready var song_title_field: LineEdit = $Settings/HBoxContainer6/SongTitleField
-@onready var song_author_field: LineEdit = $Settings/HBoxContainer6/SongAuthorField
-@onready var preview_timestamp_field: SpinBox = $Settings/HBoxContainer7/PreviewTimestampField
-@onready var description_field: TextEdit = $Settings/HBoxContainer8/SongAuthorField
+@onready var creator_field: LineEdit = $Settings/HBoxContainer4/CreatorField
+@onready var song_title_field: LineEdit = $Settings/HBoxContainer5/SongTitleField
+@onready var song_author_field: LineEdit = $Settings/HBoxContainer5/SongAuthorField
+@onready var preview_timestamp_field: SpinBox = $Settings/HBoxContainer6/PreviewTimestampField
+@onready var description_field: TextEdit = $Settings/HBoxContainer7/DescriptionField
 
 @onready var thumb_select: Panel = $ThumbSelect
 @onready var thumb_preview: TextureRect = $ThumbSelect/Preview
@@ -27,7 +27,7 @@ enum {THUMB,SPLASH}
 var selected: int
 
 func _ready():
-	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	
 	thumb_browse.button_up.connect(func():
 		selected = THUMB; file_dialog.popup())
@@ -35,18 +35,19 @@ func _ready():
 		selected = SPLASH; file_dialog.popup())
 
 func _input(event):
-	if MenuCache.menu_disabled(self): return
+	if not visible: return
 	if event.is_action("ui_cancel"): hide()
 
-func _on_editor_level_loaded():
-	Assets.level_thumb = Files.load_image(Editor.level_path + "thumb.png")
+func _on_editor_project_loaded():
+	Assets.level_thumb = Files.load_image(Editor.project_path + "thumb.png")
 	thumb_preview.texture = Assets.level_thumb
-	Assets.level_splash = Files.load_image(Editor.level_path + "splash.png")
+	Assets.level_splash = Files.load_image(Editor.project_path + "splash.png")
 	splash_preview.texture = Assets.level_splash
 
 func _on_level_settings_button_up():
 	var color = Config.meta.get('color', [0.5, 0.5, 0.5])
 	color = Color(color[0], color[1], color[2])
+	character_color_field.add_theme_color_override("font_color", color)
 	character_color_field.text = color.to_html(false)
 	
 	level_name_field.text = Config.meta.get('level_name', "My Level")
@@ -62,6 +63,10 @@ func _on_level_settings_button_up():
 	
 	show()
 
+func _on_character_color_field_text_changed(new_text):
+	var color = Color.from_string(character_color_field.text, Color.WHITE)
+	character_color_field.add_theme_color_override("font_color", color)
+
 func _on_thumb_select_mouse_entered():
 	thumb_select.self_modulate = Color.WHITE
 
@@ -75,15 +80,15 @@ func _on_splash_select_mouse_exited():
 	splash_select.self_modulate = Color8(255, 255, 255, 95)
 
 func _on_file_dialog_file_selected(path):
-	if MenuCache.menu_disabled(self): return
+	if not visible: return
 	
 	if selected == THUMB:
-		var thumb: String = Editor.level_path + "thumb.png"
+		var thumb: String = Editor.project_path + "thumb.png"
 		DirAccess.copy_absolute(path, thumb)
 		Assets.level_thumb = Files.load_image(thumb)
 		thumb_preview.texture = Assets.level_thumb
 	elif selected == SPLASH:
-		var splash: String = Editor.level_path + "splash.png"
+		var splash: String = Editor.project_path + "splash.png"
 		DirAccess.copy_absolute(path, splash)
 		Assets.level_splash = Files.load_image(splash)
 		splash_preview.texture = Assets.level_splash
@@ -104,6 +109,6 @@ func _on_save_button_up():
 		Config.mod['song_author'] = song_author_field.text
 		Config.mod['preview_timestamp'] = preview_timestamp_field.value
 	
-	Editor.project_changed = true
-	LevelEditor.controls_enabled = true
+	Editor.level_changed = true
+	Editor.controls_enabled = true
 	hide()

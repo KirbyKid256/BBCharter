@@ -16,7 +16,7 @@ func _ready():
 	file_selection.button_up.connect(_on_file_button_up)
 
 func _input(event):
-	if MenuCache.menu_disabled(self): return
+	if not visible: return
 	if event.is_action("ui_cancel"): hide()
 
 func _on_difficulty_settings_button_up():
@@ -27,7 +27,7 @@ func _on_difficulty_settings_button_up():
 		difficulties.remove_child(child)
 		child.queue_free()
 	
-	LevelEditor.controls_enabled = false
+	Editor.controls_enabled = false
 	total_data = Config.notes['charts'].duplicate(true)
 	
 	for data in total_data:
@@ -37,7 +37,7 @@ func _on_difficulty_settings_button_up():
 		difficulty.selected.connect(_on_difficulty_selected)
 	
 	difficulties.move_child(add_button, total_data.size())
-	_on_difficulty_selected(MenuCache.level_difficulty_index)
+	_on_difficulty_selected(LevelEditor.difficulty_index)
 	show()
 
 func _on_difficulty_selected(idx: int):
@@ -81,12 +81,12 @@ func _on_file_button_up(text):
 func _on_save_button_up():
 	for i in total_data.size():
 		if total_data[i].get("rating", 0) == Difficulty.get_current_chart_value("rating", 0):
-			MenuCache.level_difficulty_index = i
+			LevelEditor.difficulty_index = i
 		total_data[i].rating = i
 	Config.notes['charts'] = total_data
 	
 	difficulty_select.reload_items()
 	
-	Editor.project_changed = true
-	LevelEditor.controls_enabled = true
+	Editor.level_changed = true
+	Editor.controls_enabled = true
 	hide()

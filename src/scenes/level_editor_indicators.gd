@@ -27,6 +27,8 @@ func _ready():
 	add_child(quarter_beats)
 	add_child(sixth_beats)
 	add_child(eighth_beats)
+	
+	if Editor.project_loaded: create_indicators()
 
 # Create the indicators / Seperators in the timeline
 func create_indicators():

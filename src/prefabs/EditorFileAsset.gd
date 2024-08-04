@@ -44,7 +44,7 @@ func _on_gui_input(event: InputEvent):
 func _on_context_menu_image_id_pressed(id):
 	if id < LevelEditor.IMAGE.size(): EventManager.editor_create_image_keyframe.emit(data, id)
 	else:
-		DirAccess.remove_absolute(Editor.level_path + "images/" + filename.text)
+		DirAccess.remove_absolute(Editor.project_path + "images/" + filename.text)
 		Util.free_node(self)
 
 func _on_context_menu_audio_id_pressed(id):
@@ -64,8 +64,8 @@ func _on_context_menu_audio_id_pressed(id):
 			Config.asset["horny_mode_sound"] = filename.text
 	
 	if id == 5:
-		DirAccess.remove_absolute(Editor.level_path + "audio/" + filename.text)
+		DirAccess.remove_absolute(Editor.project_path + "audio/" + filename.text)
 		file_drop.reload_file_list_audio()
 		Util.free_node(self)
 	
-	Editor.project_changed = true
+	Editor.level_changed = true

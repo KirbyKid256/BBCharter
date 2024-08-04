@@ -37,5 +37,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['sound_oneshot'].find(data)
 			Console.log({"message": "Deleting oneshot %s at %s (index %s)" % [self,data['timestamp'],idx]})
 			Config.keyframes['sound_oneshot'].remove_at(idx)
-			Editor.project_changed = true
+			Editor.level_changed = true
 			Util.free_node(self)

@@ -37,5 +37,5 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['sound_loop'].find(data)
 			Console.log({"message": "Deleting Sound Loop at %s (index %s)" % [data['timestamp'],idx]})
 			Config.keyframes['sound_loop'].remove_at(idx)
-			Editor.project_changed = true
+			Editor.level_changed = true
 			Util.free_node(self)

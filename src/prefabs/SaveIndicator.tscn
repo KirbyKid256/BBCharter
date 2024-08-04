@@ -143,6 +143,7 @@ anchor_right = 1.0
 offset_left = -376.0
 offset_bottom = 64.0
 grow_horizontal = 0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_1x0yw")
 
 [node name="UiLevelEditorSaveIcon" type="Sprite2D" parent="Root"]

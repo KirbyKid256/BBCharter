@@ -16,8 +16,18 @@ func _ready():
 
 func setup(keyframe_data: Dictionary):
 	data = keyframe_data
-	input_handler.tooltip_text = str(data['timestamp'])
 	update_position()
+	
+	var tooltip_data = data.duplicate()
+	tooltip_data.erase('animations')
+	tooltip_data.erase('sheet_data')
+	tooltip_data.erase('scale_multiplier')
+	
+	input_handler.tooltip_text = str(tooltip_data).replace(", ", "\r\n")\
+	.replace("{", "").replace("}", "").replace("\"", "")
+	
+	if Config.keyframes['loops'].is_empty() and LevelEditor.song_position_offset > data['timestamp']:
+		character.change_animation(character.tsevent.index)
 
 func update_position():
 	position.x = -(data['timestamp'] * LevelEditor.note_speed_mod)
@@ -54,8 +64,8 @@ func _on_input_handler_gui_input(event: InputEvent):
 			var idx = Config.keyframes['loops'].find(data)
 			Console.log({"message": "Deleting animation %s at %s (index %s)" % [self,data['timestamp'],idx]})
 			Config.keyframes['loops'].remove_at(idx)
-			Editor.project_changed = true
+			Editor.level_changed = true
 			Util.free_node(self)
 			
-			if LevelEditor.song_position_offset <= data['timestamp']:
+			if Config.keyframes['loops'].is_empty() or LevelEditor.song_position_offset <= data['timestamp']:
 				character.change_animation(idx)

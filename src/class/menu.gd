@@ -20,9 +20,8 @@ func register_items(item_array: Array[Node]):
 	refresh()
 
 func _input(event):
-	if not enabled: return
+	if not Editor.controls_enabled: return
 	if not get_parent().is_visible_in_tree(): return
-	
 	if items.is_empty(): return
 	
 	if event.is_action(actions[0]) and event.is_pressed(): cycle_menu(-1)

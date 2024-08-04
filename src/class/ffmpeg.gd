@@ -50,7 +50,7 @@ static func create_sprite_sheet_from_gif(input_file: String) -> Dictionary:
 	var h_frames = calculate_sheet_dimensions(total_frames).h
 	var v_frames = calculate_sheet_dimensions(total_frames).v
 
-	var output_dir = Editor.level_path.path_join("images")
+	var output_dir = Editor.project_path.path_join("images")
 	var output_file_format: String = "sheet_%s" % input_file.get_file().replace(input_file.get_file().get_extension(), "png")
 	var output_file: String = output_dir.path_join(output_file_format)
 	

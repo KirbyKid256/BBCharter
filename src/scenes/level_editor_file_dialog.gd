@@ -6,14 +6,14 @@ extends FileDialog
 
 @onready var notes = $"../NoteTimeline/TimelineRoot/Notes"
 @onready var indicators = $"../NoteTimeline/TimelineRoot/Indicators"
-@onready var animations = $"../ScrollContainer/KeyframeAssetGrid/Animations/Track"
-@onready var effects = $"../ScrollContainer/KeyframeAssetGrid/Effects/Track"
-@onready var backgrounds = $"../ScrollContainer/KeyframeAssetGrid/Backgrounds/Track"
-@onready var oneshots = $"../ScrollContainer/KeyframeAssetGrid/OneShotAudios/Track"
-@onready var loopsounds = $"../ScrollContainer/KeyframeAssetGrid/SoundLoops/Track"
-@onready var voices = $"../ScrollContainer/KeyframeAssetGrid/VoiceBanks/Track"
-@onready var shutters = $"../ScrollContainer/KeyframeAssetGrid/Shutters/Track"
-@onready var modifiers = $"../ScrollContainer/KeyframeAssetGrid/Modifiers/Track"
+@onready var animations = $"../ScrollContainer/Keyframes/Animations/Track"
+@onready var effects = $"../ScrollContainer/Keyframes/Effects/Track"
+@onready var backgrounds = $"../ScrollContainer/Keyframes/Backgrounds/Track"
+@onready var oneshots = $"../ScrollContainer/Keyframes/OneShotAudios/Track"
+@onready var loopsounds = $"../ScrollContainer/Keyframes/LoopSounds/Track"
+@onready var voices = $"../ScrollContainer/Keyframes/VoiceBanks/Track"
+@onready var shutters = $"../ScrollContainer/Keyframes/Shutters/Track"
+@onready var modifiers = $"../ScrollContainer/Keyframes/Modifiers/Track"
 
 var create_level: bool
 var asset_paths: Array
@@ -34,8 +34,8 @@ func new_project():
 	popup()
 
 func _on_dir_selected(new_path: String):
-	var old_path = Editor.level_path
-	Editor.level_path = new_path + "/"
+	var old_path = Editor.project_path
+	Editor.project_path = new_path + "/"
 	
 	if create_level:
 		LevelCreator.create_level_placeholders()
@@ -43,7 +43,7 @@ func _on_dir_selected(new_path: String):
 		LevelCreator.create_level_config()
 	
 	if Config.store_config_data():
-		Editor.level_loaded = false
+		Editor.project_loaded = false
 		Config.validate_ids()
 		
 		Util.clear_children(notes)
@@ -84,13 +84,14 @@ func _on_dir_selected(new_path: String):
 		voices.load_keyframes()
 		
 		await get_tree().process_frame
-		EventManager.editor_level_loaded.emit()
-		Editor.level_loaded = true
+		Cutscene.type = Cutscene.PRE
+		EventManager.editor_project_loaded.emit()
+		Editor.project_loaded = true
 		
 		Console.log({"message": "Finished Loading Level"})
 	else:
 		Console.log({"message": "Could Not Store Config Data!", "type": 2})
-		Editor.level_path = old_path
+		Editor.project_path = old_path
 		error_notification.show_error("Invalid Level Path")
 
 ## Ensures the climax video is in a format Godot can load, converting if needed
@@ -98,13 +99,13 @@ func ensure_climax_video():
 	Console.log({"message": "Checking Climax Video..."})
 	var climax_filename = Config.asset.get("final_video")
 	if climax_filename == null: return
-	if not FileAccess.file_exists(Editor.level_path + "video".path_join(climax_filename)): return
+	if not FileAccess.file_exists(Editor.project_path + "video".path_join(climax_filename)): return
 
 	match climax_filename.get_extension().to_lower():
 		"webm","mp4","mov":
 			Config.asset["final_video"] = FFmpeg.convert_file(
-				Editor.level_path.path_join("video").path_join(climax_filename), # Input
-				Editor.level_path.path_join("video/%s.ogv" % [climax_filename.get_basename()]),
+				Editor.project_path.path_join("video").path_join(climax_filename), # Input
+				Editor.project_path.path_join("video/%s.ogv" % [climax_filename.get_basename()]),
 				"ogg"
 				)
 		"ogv":
@@ -116,7 +117,7 @@ func load_game_assets():
 	Console.log({"message": "Loading Game Assets..."})
 	
 	# Change Folder Paths if Legacy
-	if Global.get_modtype() == Global.MODTYPE.LEGACY:
+	if Editor.get_modtype() == Editor.MODTYPE.LEGACY:
 		asset_paths = ["anims","anims/fx","sfx","songs","textures","voice"]
 	else:
 		asset_paths = ["images","audio","video"]
@@ -126,10 +127,10 @@ func load_game_assets():
 	
 	# Get New Assets
 	for asset_path in asset_paths:
-		if asset_path == "voice" and DirAccess.dir_exists_absolute(Editor.level_path + "voice") and DirAccess.get_directories_at(Editor.level_path + "voice").size() > 0:
-			for bank in DirAccess.get_directories_at(Editor.level_path + "voice"): if DirAccess.get_files_at(Editor.level_path + "voice/%s" % bank).size() > 0:
-				for file in DirAccess.get_files_at(Editor.level_path + "voice/%s" % bank):
-					Assets.load_asset(Editor.level_path + "voice/%s/%s" % [bank, file])
+		if asset_path == "voice" and DirAccess.dir_exists_absolute(Editor.project_path + "voice") and DirAccess.get_directories_at(Editor.project_path + "voice").size() > 0:
+			for bank in DirAccess.get_directories_at(Editor.project_path + "voice"): if DirAccess.get_files_at(Editor.project_path + "voice/%s" % bank).size() > 0:
+				for file in DirAccess.get_files_at(Editor.project_path + "voice/%s" % bank):
+					Assets.load_asset(Editor.project_path + "voice/%s/%s" % [bank, file])
 		else:
-			for file in DirAccess.get_files_at(Editor.level_path + asset_path):
-				Assets.load_asset(Editor.level_path + asset_path + "/" + file)
+			for file in DirAccess.get_files_at(Editor.project_path + asset_path):
+				Assets.load_asset(Editor.project_path + asset_path + "/" + file)

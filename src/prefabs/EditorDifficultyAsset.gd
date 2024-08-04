@@ -44,24 +44,17 @@ func _on_down_button_mouse_exited():
 	down_button.modulate.a = 0.3
 
 func _on_up_button_up():
-	var idx = get_index()
-	var new_idx = clampi(idx-1,0,difficulty_settings.total_data.size()-1)
-	
-	difficulty_settings.total_data.remove_at(idx)
-	difficulty_settings.total_data.insert(new_idx, data)
-	
-	difficulty_settings.difficulties.move_child(self, new_idx)
-	selected.emit(new_idx)
+	button_up(clampi(get_index()-1,0,difficulty_settings.total_data.size()-1))
 
 func _on_down_button_up():
-	var idx = get_index()
-	var new_idx = clampi(idx+1,0,difficulty_settings.total_data.size()-1)
+	button_up(clampi(get_index()+1,0,difficulty_settings.total_data.size()-1))
+
+func button_up(idx: int):
+	difficulty_settings.total_data.remove_at(get_index())
+	difficulty_settings.total_data.insert(idx, data)
 	
-	difficulty_settings.total_data.remove_at(idx)
-	difficulty_settings.total_data.insert(new_idx, data)
-	
-	difficulty_settings.difficulties.move_child(self, new_idx)
-	selected.emit(new_idx)
+	difficulty_settings.difficulties.move_child(self, idx)
+	selected.emit(idx)
 
 func _on_gui_input(event: InputEvent):
 	var idx = get_index()

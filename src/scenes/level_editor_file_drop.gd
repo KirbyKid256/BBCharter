@@ -50,7 +50,7 @@ func _ready():
 func _on_files_dropped(files: PackedStringArray):
 	for file in files:
 		if ['gif','mp4','webm'].has(file.get_extension()): make_spritesheet(file); continue
-		if ['png','jpg','jpeg'].has(file.get_extension()): import_image(file); continue
+		if ['png','jpg','jpeg','webp'].has(file.get_extension()): import_image(file); continue
 		if ['ogg','mp3'].has(file.get_extension()): import_audio(file); continue
 	
 	file_selection.reload_list()
@@ -65,7 +65,7 @@ func make_spritesheet(file):
 # TODO: Fix this from running too many times
 func import_image(file: String):
 	# TODO: Ask for confirmation to overwrite existing file
-	var new_file = Editor.level_path + "images/" + file.get_file()
+	var new_file = Editor.project_path + "images/" + file.get_file()
 	DirAccess.copy_absolute(file, new_file)
 	Assets.load_asset(new_file)
 	file_assets.get_files()
@@ -133,12 +133,12 @@ func create_image_keyframe(data: Dictionary, type: int, replace: bool = false):
 	create_image_menu.show()
 	create_image_label.text = pending_image_file
 	sheet_preview.texture = Assets.get_asset(pending_image_file)
-	LevelEditor.controls_enabled = false
+	Editor.controls_enabled = false
 
 func _on_image_import_button_up():
 	if pending_image_file.is_empty(): return
-	if not FileAccess.file_exists(Editor.level_path + "images/" + pending_image_file.get_file()):
-		DirAccess.copy_absolute(pending_image_file, Editor.level_path + "images/" + pending_image_file.get_file())
+	if not FileAccess.file_exists(Editor.project_path + "images/" + pending_image_file.get_file()):
+		DirAccess.copy_absolute(pending_image_file, Editor.project_path + "images/" + pending_image_file.get_file())
 	
 	var data: Dictionary = {"sprite_sheet": pending_image_file.get_file()}
 	if sheet_data.visible:
@@ -158,12 +158,12 @@ func _on_image_import_button_up():
 		data.merge({"stretch_mode": stretch_mode.selected})
 	
 	add_new_animation_asset(data, pending_image_type)
-	LevelEditor.controls_enabled = true
+	Editor.controls_enabled = true
 
 func _on_image_cancel_button_up():
 	pending_image_file = ""
 	create_image_menu.hide()
-	LevelEditor.controls_enabled = true
+	Editor.controls_enabled = true
 #endregion
 
 #region Audio File Drop
@@ -171,10 +171,10 @@ func _on_image_cancel_button_up():
 func import_audio(file: String):
 	# TODO: Ask for confirmation to overwrite existing file
 	if file.get_extension() != "ogg" and file.get_extension() != "mp3":
-		var converted_audio = FFmpeg.convert_file(file, Editor.level_path + "audio/" + file.get_file().get_basename() + ".ogg", "ogg")
+		var converted_audio = FFmpeg.convert_file(file, Editor.project_path + "audio/" + file.get_file().get_basename() + ".ogg", "ogg")
 		Assets.load_asset(converted_audio)
 	else:
-		var new_file = Editor.level_path + "audio/" + file.get_file()
+		var new_file = Editor.project_path + "audio/" + file.get_file()
 		DirAccess.copy_absolute(file, new_file)
 		Assets.load_asset(new_file)
 	file_assets.get_files()
@@ -189,7 +189,7 @@ func create_audio_keyframe(data: Dictionary, replace: bool = false):
 	file_selection.reload_list()
 	
 	create_audio_menu.show()
-	LevelEditor.controls_enabled = false
+	Editor.controls_enabled = false
 
 func reload_path_list_audio():
 	Util.clear_children(create_audio_voice_paths)
@@ -210,11 +210,11 @@ func _on_audio_create_button_up():
 	if pending_audio_data.is_empty(): return
 	
 	add_new_audio_asset(pending_audio_data)
-	LevelEditor.controls_enabled = true
+	Editor.controls_enabled = true
 
 func _on_audio_cancel_button_up():
 	create_audio_menu.hide()
-	LevelEditor.controls_enabled = true
+	Editor.controls_enabled = true
 #endregion
 
 # Add new image asset to editor cache and load it from the Asset Autoload

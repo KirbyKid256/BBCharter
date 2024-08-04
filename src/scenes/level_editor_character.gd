@@ -6,14 +6,16 @@ var data: Dictionary
 var tween: Tween
 
 func _ready():
-	EventManager.editor_level_loaded.connect(_on_editor_level_loaded)
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	EventManager.editor_note_hit.connect(_on_editor_note_hit)
 	
 	tsevent.callback = change_animation
 	tsevent.config_key = "loops"
 	add_child(tsevent)
+	
+	if Editor.project_loaded: change_animation(tsevent.index)
 
-func _on_editor_level_loaded():
+func _on_editor_project_loaded():
 	change_animation(0)
 
 func change_animation(idx: int):
@@ -28,7 +30,7 @@ func change_animation(idx: int):
 	set_texture(Assets.get_asset(data['animations'].normal))
 
 func _on_editor_note_hit(note_data):
-	if not Editor.level_loaded: return
+	if not Editor.project_loaded: return
 	if Config.keyframes['loops'].is_empty(): return # Ignore if no loops
 	if note_data['note_modifier'] == LevelEditor.NOTETYPE.GHOST: return # Ignore ghost notes
 	
