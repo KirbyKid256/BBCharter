@@ -135,7 +135,11 @@ static func load_chart(path: String = Editor.project_path):
 			meta["level_id"] = chart.get("level_id", create_new_id(meta, chart["name"]))
 			
 			# Notes
-			notes["charts"] = [{"name": "Normal", "notes": load_legacy_notes(chart)}]
+			notes["charts"] = [{
+				"name": "Normal",
+				"notes": load_legacy_notes(chart),
+				"rating": 0
+				}]
 			
 			# Settings
 			settings["song_offset"] = -chart.get("note_offset", 0.0)

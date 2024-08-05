@@ -1,12 +1,14 @@
-[gd_scene load_steps=94 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=96 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_snapping.gd" id="2_w2qtk"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_notes.gd" id="3_cba6w"]
+[ext_resource type="Texture2D" uid="uid://crfo7mgcdp00n" path="res://assets/ui/tool_pointer.png" id="3_et7bs"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_timecode.gd" id="3_gu2ck"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_timeline_root.gd" id="3_qfnli"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_music.gd" id="3_yhtrx"]
+[ext_resource type="Script" path="res://src/scenes/level_editor_quick_tools_button.gd" id="4_5pt1t"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_indicators.gd" id="4_cejdt"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_character.gd" id="4_vy5i5"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_difficulty_select.gd" id="4_yk23y"]
@@ -319,9 +321,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_tjjme")
 
 [node name="Snapping" type="OptionButton" parent="TimelineInfo"]
 layout_mode = 0
-offset_left = 908.0
+offset_left = 888.0
 offset_top = 8.0
-offset_right = 1052.0
+offset_right = 1032.0
 offset_bottom = 48.0
 tooltip_text = "Snapping"
 focus_mode = 0
@@ -356,6 +358,22 @@ toggle_mode = true
 button_pressed = true
 shortcut = SubResource("Shortcut_qx875")
 text = "ON"
+
+[node name="QuickTools" type="Button" parent="TimelineInfo"]
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 8.0
+offset_right = 1072.0
+offset_bottom = 48.0
+focus_mode = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3ark")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_ptw7n")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ptw7n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kxf78")
+button_mask = 3
+icon = ExtResource("3_et7bs")
+icon_alignment = 1
+script = ExtResource("4_5pt1t")
 
 [node name="Timecode" type="Label" parent="TimelineInfo"]
 layout_mode = 0
@@ -2188,6 +2206,7 @@ script = ExtResource("40_x5fle")
 
 [connection signal="item_selected" from="TimelineInfo/Snapping" to="TimelineInfo/Snapping" method="_on_item_selected"]
 [connection signal="toggled" from="TimelineInfo/Snapping/Toggle" to="TimelineInfo/Snapping" method="_on_snapping_toggled"]
+[connection signal="gui_input" from="TimelineInfo/QuickTools" to="TimelineInfo/QuickTools" method="_on_gui_input"]
 [connection signal="item_selected" from="TimelineInfo/DifficultySelect" to="TimelineInfo/DifficultySelect" method="_on_item_selected"]
 [connection signal="id_pressed" from="MenuBar/File" to="MenuBar" method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Edit" to="MenuBar" method="_on_edit_id_pressed"]

@@ -1,5 +1,6 @@
 class_name LevelEditor
 
+enum TOOL {POINT,MODIFY,HOLD,VOICE}
 enum NOTETYPE {
 	NORMAL, # 0
 	AUTO, # 1
@@ -16,6 +17,7 @@ enum AUDIO {ONESHOT,LOOP,VOICE,MUSIC,HORNY}
 # General
 static var editor_asset_cache: Array
 static var difficulty_index: int
+static var current_tool: int
 
 # Snapping
 static var snapping_allowed = true
@@ -46,6 +48,18 @@ static func get_timestamp() -> float:
 	var song_length_offset = snappedf(song_length - Config.settings['song_offset'], 0.001)
 	var time = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(song_position_offset), 1.0 / snapping_factor)
 	if snapping_allowed else Math.secs_to_beat_dynamic(song_position_offset)))
+	
+	return song_length_offset if time > song_length_offset\
+	else -Config.settings['song_offset'] if time < -Config.settings['song_offset']\
+	else snappedf(time, 0.001)
+
+static func get_mouse_timestamp(mouse_pos) -> float:
+	mouse_pos -= 960
+	# Need to grab mouse pos calculations externally
+	var song_length_offset = snappedf(song_length - Config.settings['song_offset'], 0.001)
+	var time = ((song_position_offset * note_speed_mod) - mouse_pos) / note_speed_mod
+	time = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(time), 1.0 / snapping_factor)
+	if snapping_allowed else Math.secs_to_beat_dynamic(time)))
 	
 	return song_length_offset if time > song_length_offset\
 	else -Config.settings['song_offset'] if time < -Config.settings['song_offset']\

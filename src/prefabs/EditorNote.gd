@@ -11,6 +11,7 @@ enum {DELETE,GHOST,AUTO,BOMB,VOICE,HOLD}
 @onready var selected_visual: Sprite2D = $SelectedVisual
 @onready var context_menu: PopupMenu = $ContextMenu
 @onready var note_tail: Line2D = $NoteTail
+@onready var tail_input_handler = $TailInputHandler
 @onready var note_body_bomb: Sprite2D = $NoteBodyBomb
 
 var hit: bool
@@ -19,6 +20,9 @@ var beat: float
 var hold_beat: float
 var selected: bool
 var last_type: int
+
+var mouse_drag: bool
+var mouse_drag_start: float
 
 func _ready():
 	EventManager.editor_update_notespeed.connect(update_position)
@@ -46,6 +50,9 @@ func update_position():
 	
 	var hold_end_timestamp = data.get('hold_end_timestamp', data['timestamp']) - data['timestamp']
 	note_tail.points[1].x = -(hold_end_timestamp * LevelEditor.note_speed_mod)
+	
+	tail_input_handler.size.x = 16 - note_tail.points[1].x
+	tail_input_handler.position.x = -8 + note_tail.points[1].x
 
 func update_visual():
 	voice_icon.set_visible(data.has('trigger_voice'))
@@ -78,19 +85,84 @@ func _process(_delta):
 		hit = false
 
 func _on_input_handler_gui_input(event):
-	if event is InputEventMouseButton and event.pressed:
-		match event.button_index:
-			MOUSE_BUTTON_RIGHT:
-				if LevelEditor.selected_notes.size() > 0 and LevelEditor.selected_notes.has(self):
-					context_menu.set_item_disabled(context_menu.get_item_index(HOLD), true)
-				else: context_menu.set_item_disabled(context_menu.get_item_index(HOLD), false)
+	# Note Dragging
+	match LevelEditor.current_tool:
+		LevelEditor.TOOL.POINT:
+			if event is InputEventMouseButton:
+				if event.button_index == MOUSE_BUTTON_LEFT:
+					if event.is_pressed():
+						mouse_drag_start = data['timestamp']
+						mouse_drag = true
+						note_selector.hide()
+						note_selector.dragging_area = false
+					elif mouse_drag:
+						mouse_drag = false
+						note_selector.show()
+				elif event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
+					# Context Menu
+					if LevelEditor.selected_notes.size() > 0 and LevelEditor.selected_notes.has(self):
+						context_menu.set_item_disabled(context_menu.get_item_index(HOLD), true)
+					else: context_menu.set_item_disabled(context_menu.get_item_index(HOLD), false)
+					
+					context_menu.position = get_global_mouse_position()
+					context_menu.popup()
+			
+			if event is InputEventMouseMotion and mouse_drag:
+				var difference = LevelEditor.get_mouse_timestamp(event.global_position.x) - data['timestamp'] 
+				data['timestamp'] += difference
+				update_position()
 				
-				context_menu.position = get_global_mouse_position()
-				context_menu.popup()
+				for note: EditorNote in LevelEditor.selected_notes:
+					if note == self: continue
+					note.data['timestamp'] += difference
+					note.update_position()
+		LevelEditor.TOOL.MODIFY:
+			if event is InputEventMouseButton and event.is_pressed():
+				var modifier: int = 0 if data['note_modifier'] == LevelEditor.NOTETYPE.HOLD else data['note_modifier']
+				if event.button_index == MOUSE_BUTTON_LEFT:
+					modifier += 1
+					if modifier == LevelEditor.NOTETYPE.HOLD:
+						modifier = LevelEditor.NOTETYPE.BOMB
+				elif event.button_index == MOUSE_BUTTON_RIGHT:
+					modifier -= 1
+					if modifier == LevelEditor.NOTETYPE.HOLD:
+						modifier = LevelEditor.NOTETYPE.GHOST
+				
+				modifier = wrapi(modifier, 0, LevelEditor.NOTETYPE.keys().size()-1)
+				if modifier == LevelEditor.NOTETYPE.NORMAL and data.has('hold_end_timestamp'):
+					modifier = LevelEditor.NOTETYPE.HOLD
+				
+				set_note_type(modifier)
+		LevelEditor.TOOL.HOLD:
+			if data['note_modifier'] != 0 and data['note_modifier'] != LevelEditor.NOTETYPE.HOLD: return
+			
+			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+				if event.is_pressed():
+					if data['note_modifier'] == 0:
+						data.get_or_add('hold_end_timestamp', data['timestamp'])
+						data['note_modifier'] = LevelEditor.NOTETYPE.HOLD
+					mouse_drag = true
+				elif mouse_drag:
+					mouse_drag = false
+					if data['hold_end_timestamp'] <= data['timestamp']:
+						data.erase('hold_end_timestamp')
+						data['note_modifier'] = 0
+			
+			if event is InputEventMouseMotion and mouse_drag:
+				var difference = LevelEditor.get_mouse_timestamp(event.global_position.x) - data['hold_end_timestamp']
+				data['hold_end_timestamp'] = clampf(data['hold_end_timestamp'] + difference, data['timestamp'], LevelEditor.song_length - Config.settings['song_offset'])
+				update_position()
+		LevelEditor.TOOL.VOICE:
+			if event is InputEventMouseButton and event.is_pressed():
+				if data.has('trigger_voice'):
+					data.erase('trigger_voice')
+				else:
+					data['trigger_voice'] = true
+				update_visual()
 
 func delete_note():
 	var idx = Difficulty.get_chart_notes().find(data)
-	Console.log({"message": "Deleting nogte at %s (index %s)" % [data['timestamp'],idx]})
+	Console.log({"message": "Deleting note at %s (index %s)" % [data['timestamp'],idx]})
 	Difficulty.get_chart_notes().remove_at(idx)
 	LevelEditor.selected_notes.erase(self)
 	Editor.level_changed = true
@@ -187,7 +259,7 @@ func run_action(id: int):
 
 func set_note_type(note_type_enum: int):
 	if data['note_modifier'] == note_type_enum:
-		if data.has('hold_end_timestamp'): data['note_modifier'] = LevelEditor.NOTETYPE.HOLD  
+		if data.has('hold_end_timestamp'): data['note_modifier'] = LevelEditor.NOTETYPE.HOLD
 		else: data['note_modifier'] = LevelEditor.NOTETYPE.NORMAL  
 	else: 
 		data['note_modifier'] = note_type_enum

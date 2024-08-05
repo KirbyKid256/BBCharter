@@ -10,6 +10,7 @@ func _ready():
 	if Editor.project_loaded: load_notes()
 
 func load_notes():
+	LevelEditor.selected_notes.clear()
 	for editor_note in Difficulty.get_chart_notes():
 		var new_editor_note = editor_note_prefab.instantiate() as EditorNote
 		add_child(new_editor_note)

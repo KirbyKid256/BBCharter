@@ -10,6 +10,10 @@ var drag_start_pos: Vector2
 var drag_end_pos: Vector2
 
 func _input(event: InputEvent):
+	if LevelEditor.current_tool != LevelEditor.TOOL.POINT:
+		dragging_area = false
+		return
+	
 	# Selected Note Handling
 	if event.is_action_pressed("ui_delete"):
 		if not LevelEditor.selected_notes.is_empty(): group_delete_notes()
@@ -17,7 +21,7 @@ func _input(event: InputEvent):
 	# Note Selection
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
-			if event.position.y < 820: return
+			if event.position.y < 744: return
 			dragging_area = true
 			drag_start_pos = event.position
 		elif dragging_area:

@@ -51,6 +51,20 @@ offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="TailInputHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -75,4 +89,5 @@ item_6/text = "Set Hold Note At Time"
 item_6/id = 5
 
 [connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]
+[connection signal="gui_input" from="TailInputHandler" to="." method="_on_input_handler_gui_input"]
 [connection signal="id_pressed" from="ContextMenu" to="." method="_on_context_menu_id_pressed"]
