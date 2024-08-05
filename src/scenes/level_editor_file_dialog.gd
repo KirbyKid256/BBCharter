@@ -19,7 +19,7 @@ var create_level: bool
 var asset_paths: Array
 
 func _ready():
-	current_dir = Global.get_executable_path()
+	current_dir = Editor.project_path if Editor.project_loaded else Global.get_executable_path()
 
 func open_project():
 	Console.log({'message': 'Opening New Project...'})

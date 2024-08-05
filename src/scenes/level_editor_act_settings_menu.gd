@@ -2,8 +2,8 @@ extends Control
 
 @onready var act_name_field: LineEdit = $Settings/HBoxContainer/ActNameField
 @onready var act_description_field: TextEdit = $Settings/ActDescriptionField
-@onready var act_index_field: SpinBox = $Settings/HBoxContainer/ActIndexField
-@onready var act_legacy: Button = $Settings/HBoxContainer2/ActLegacyField
+@onready var act_index_field: SpinBox = $Settings/HBoxContainer2/ActIndexField
+@onready var act_legacy: Button = $Settings/HBoxContainer3/ActLegacyField
 
 @onready var thumb_select: Panel = $ThumbSelect
 @onready var thumb_preview: TextureRect = $ThumbSelect/Preview
