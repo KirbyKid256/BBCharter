@@ -36,14 +36,14 @@ static func save_config_data(path: String, data: Dictionary):
 	config.set_value('main', 'data', data)
 	config.save(Editor.project_path.path_join("config").path_join(path))
 
-## Check to see if the ACT has a valid act_id
+## Check to see if there is a valid ID
 static func validate_ids():
 	Console.log({"message": "Validating IDs"})
 	
 	if not meta.has("level_id"): meta["level_id"] = create_new_id(meta, meta.get("level_name"))
 	if not act.is_empty() and not act.has("act_id"): act["act_id"] = create_new_id(act, act.get("act_name"))
 
-## Create a new act_id in the speicified ACT
+## Create a new ID
 static func create_new_id(dict: Dictionary, hash_string: String) -> String:
 	Console.log({"message": "Creating new ID..."})
 	var curtime = Time.get_unix_time_from_system()

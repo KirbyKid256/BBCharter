@@ -1,6 +1,5 @@
 extends FileDialog
 
-@onready var error_notification: ErrorNotification = $"../ErrorNotification"
 @onready var timeline = $"../NoteTimeline/TimelineRoot"
 @onready var music = $"../Music"
 
@@ -92,7 +91,7 @@ func _on_dir_selected(new_path: String):
 	else:
 		Console.log({"message": "Could Not Store Config Data!", "type": 2})
 		Editor.project_path = old_path
-		error_notification.show_error("Invalid Level Path")
+		Global.error_notification.show_error("Invalid Level Path")
 
 ## Ensures the climax video is in a format Godot can load, converting if needed
 func ensure_climax_video():

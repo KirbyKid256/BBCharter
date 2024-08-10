@@ -2,6 +2,7 @@ extends Node
 
 var save_indicator: SaveIndicator
 var error_notification: ErrorNotification
+var confirm_menu: Panel
 var file_dialog: FileDialog
 var editor_menu: Control
 

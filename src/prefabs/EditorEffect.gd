@@ -3,24 +3,17 @@ extends Node2D
 @onready var input_handler: Control = $InputHandler
 
 var data: Dictionary
-var beat: float
 
 func _ready():
 	EventManager.editor_update_notespeed.connect(update_position)
-	EventManager.editor_update_bpm.connect(_on_editor_update_bpm)
+	EventManager.editor_update_bpm.connect(update_position)
 
 func setup(effect_data: Dictionary):
 	data = effect_data
-	beat = Math.secs_to_beat_dynamic(data['timestamp'])
 	update_position()
 	
 	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
 	.replace("{", "").replace("}", "").replace("\"", "")
-
-func _on_editor_update_bpm():
-	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
-	beat = Math.secs_to_beat_dynamic(data['timestamp'])
-	update_position()
 
 func update_position():
 	position.x = -(data['timestamp'] * LevelEditor.note_speed_mod)

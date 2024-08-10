@@ -91,9 +91,9 @@ func copy_note(note: Dictionary):
 	EventManager.editor_note_created.emit(copied_note_data)
 
 func check_note_exists(note, new_note_timestamp):
-	var snapped_note_check = Math.beat_to_secs_dynamic(snappedf(Math.secs_to_beat_dynamic(note['timestamp']), 1.0 / LevelEditor.snapping_factor)
-	if LevelEditor.snapping_allowed else Math.secs_to_beat_dynamic(note['timestamp']))
-	return snapped_note_check == new_note_timestamp
+	var snapped_note_check = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(note['timestamp']), 1.0 / LevelEditor.snapping_factor)
+	if LevelEditor.snapping_allowed else Math.secs_to_beat_dynamic(note['timestamp'])))
+	return snappedf(snapped_note_check, 0.001) == new_note_timestamp
 
 func _on_editor_note_created(new_editor_note_data: Dictionary):
 	var new_editor_note = editor_note_prefab.instantiate() as Node2D

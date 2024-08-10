@@ -13,6 +13,7 @@ var preview_frame_value: float = 0.0
 
 func _ready():
 	EventManager.editor_update_notespeed.connect(update_position)
+	EventManager.editor_update_bpm.connect(update_position)
 
 func setup(keyframe_data: Dictionary):
 	data = keyframe_data

@@ -3,6 +3,7 @@ extends Control
 func _ready():
 	Global.save_indicator = $SaveIndicator
 	Global.error_notification = $ErrorNotification
+	Global.confirm_menu = $MenuOverlays/ConfirmMenu
 	Global.file_dialog = $FileDialog
 	Global.editor_menu = $MenuOverlays/LevelEditorMenu
 

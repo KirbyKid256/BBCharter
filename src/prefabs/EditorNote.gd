@@ -16,7 +16,6 @@ enum {DELETE,GHOST,AUTO,BOMB,VOICE,HOLD}
 
 var hit: bool
 var data: Dictionary
-var beat: float
 var hold_beat: float
 var selected: bool
 var last_type: int
@@ -26,23 +25,11 @@ var mouse_drag_start: float
 
 func _ready():
 	EventManager.editor_update_notespeed.connect(update_position)
-	EventManager.editor_update_bpm.connect(_on_editor_update_bpm)
+	EventManager.editor_update_bpm.connect(update_position)
 
 func setup(editor_note_data):
 	data = editor_note_data
-	beat = Math.secs_to_beat_dynamic(data['timestamp'])
-	hold_beat = Math.secs_to_beat_dynamic(data.get('hold_end_timestamp', data['timestamp']))
 	update_visual()
-	update_position()
-
-func _on_editor_update_bpm():
-	data['timestamp'] = Math.beat_to_secs_dynamic(beat)
-	beat = Math.secs_to_beat_dynamic(data['timestamp'])
-	
-	if data.has('hold_end_timestamp'):
-		data['hold_end_timestamp'] = Math.beat_to_secs_dynamic(hold_beat)
-		hold_beat = Math.secs_to_beat_dynamic(data['hold_end_timestamp'])
-	
 	update_position()
 
 func update_position():
@@ -110,25 +97,28 @@ func _on_input_handler_gui_input(event):
 			if event is InputEventMouseMotion and mouse_drag:
 				var difference = LevelEditor.get_mouse_timestamp(event.global_position.x) - data['timestamp'] 
 				data['timestamp'] += difference
+				if data.has('hold_end_timestamp'): data['hold_end_timestamp'] += difference
 				update_position()
 				
 				for note: EditorNote in LevelEditor.selected_notes:
 					if note == self: continue
-					note.data['timestamp'] += difference
+					note.data['timestamp'] = clampf(note.data['timestamp'] + difference, -Config.settings['song_offset'], LevelEditor.song_length - Config.settings['song_offset'])
+					if note.data.has('hold_end_timestamp'): note.data['hold_end_timestamp'] += difference
 					note.update_position()
 		LevelEditor.TOOL.MODIFY:
 			if event is InputEventMouseButton and event.is_pressed():
 				var modifier: int = 0 if data['note_modifier'] == LevelEditor.NOTETYPE.HOLD else data['note_modifier']
+				
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					modifier += 1
 					if modifier == LevelEditor.NOTETYPE.HOLD:
-						modifier = LevelEditor.NOTETYPE.BOMB
+						modifier = LevelEditor.NOTETYPE.NORMAL
 				elif event.button_index == MOUSE_BUTTON_RIGHT:
 					modifier -= 1
 					if modifier == LevelEditor.NOTETYPE.HOLD:
 						modifier = LevelEditor.NOTETYPE.GHOST
 				
-				modifier = wrapi(modifier, 0, LevelEditor.NOTETYPE.keys().size()-1)
+				modifier = wrapi(modifier, 0, LevelEditor.NOTETYPE.keys().size()-3)
 				if modifier == LevelEditor.NOTETYPE.NORMAL and data.has('hold_end_timestamp'):
 					modifier = LevelEditor.NOTETYPE.HOLD
 				
@@ -138,9 +128,10 @@ func _on_input_handler_gui_input(event):
 			
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 				if event.is_pressed():
-					if data['note_modifier'] == 0:
+					if data['note_modifier'] == LevelEditor.NOTETYPE.NORMAL:
 						data.get_or_add('hold_end_timestamp', data['timestamp'])
 						data['note_modifier'] = LevelEditor.NOTETYPE.HOLD
+						update_visual()
 					mouse_drag = true
 				elif mouse_drag:
 					mouse_drag = false

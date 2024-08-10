@@ -10,10 +10,10 @@ enum {THUMB,SPLASH}
 
 @onready var song_offset_field: SpinBox = $Settings/HBoxContainer3/SongOffsetField
 
-@onready var creator_field: LineEdit = $Settings/HBoxContainer4/CreatorField
+@onready var creator_field: LineEdit = $Settings/HBoxContainer6/CreatorField
 @onready var song_title_field: LineEdit = $Settings/HBoxContainer5/SongTitleField
 @onready var song_author_field: LineEdit = $Settings/HBoxContainer5/SongAuthorField
-@onready var preview_timestamp_field: SpinBox = $Settings/HBoxContainer6/PreviewTimestampField
+@onready var preview_timestamp_field: SpinBox = $Settings/HBoxContainer4/PreviewTimestampField
 @onready var description_field: TextEdit = $Settings/HBoxContainer7/DescriptionField
 
 @onready var thumb_select: Panel = $ThumbSelect
