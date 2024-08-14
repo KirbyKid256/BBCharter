@@ -1,6 +1,6 @@
 extends Control
 
-enum {EDIT,DELETE}
+enum {EDIT,DELETE,LOOP,VOICE}
 
 @onready var icon: Sprite2D = $Icon
 @onready var file_list: Label = $FileListPrev
@@ -23,9 +23,9 @@ func _on_mouse_exited():
 
 func _on_gui_input(event: InputEvent):
 	if EventManager.left_mouse_clicked(event):
-		EventManager.editor_try_add_voicebank.emit(data)
+		EventManager.editor_try_add_loopsound.emit(data)
 	elif EventManager.right_mouse_clicked(event):
-		context_menu.set_position(position + event.position)
+		context_menu.set_position(get_global_position() + event.position)
 		context_menu.popup()
 
 func _on_context_menu_id_pressed(id: int):
@@ -34,3 +34,5 @@ func _on_context_menu_id_pressed(id: int):
 		DELETE:
 			LevelEditor.remove_asset_cache(data)
 			Util.free_node(self)
+		LOOP: EventManager.editor_try_add_loopsound.emit(data)
+		VOICE: EventManager.editor_try_add_voicebank.emit(data)

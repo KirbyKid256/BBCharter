@@ -1,7 +1,6 @@
 # BB Charter
 
-A modified version of the Beat Banger Level Editor
-Cutscene Editor coming after I'm done with all the major Level Editor stuff
+A modified version of the Beat Banger Level Editor, Cutscene Editor coming eventually...
 
 ### Engine Shortcuts
 | Hotkey | Function |
@@ -22,6 +21,7 @@ Cutscene Editor coming after I'm done with all the major Level Editor stuff
 |C|Spawn a Red note|
 |V|Spawn a Purple note|
 |Mouse Drag|Selects notes|
+|Mouse Drag on Note|Moves single or selected notes|
 |Backspace or Delete|Delete selected notes|
 |Ctrl/Cmd + C|Copies notes to clipboard|
 |Ctrl/Cmd + X|Copies notes to clipboard and removes from chart|
@@ -31,7 +31,6 @@ Cutscene Editor coming after I'm done with all the major Level Editor stuff
 |Alt/Opt + A|Turns selected notes into Auto Notes|
 |Alt/Opt + B|Turns selected notes into Bomb Notes|
 |Alt/Opt + V|Gives selected notes a Voice Trigger|
-|Alt/Opt + H|Gives selected notes a hold length|
 ### Timeline Shortcuts
 | Hotkey | Function |
 | ------ | ------ |

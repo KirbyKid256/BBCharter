@@ -38,7 +38,7 @@ func _on_gui_input(event: InputEvent):
 	if EventManager.left_mouse_clicked(event):
 		EventManager.editor_try_add_background.emit(data)
 	elif EventManager.right_mouse_clicked(event):
-		context_menu.set_position(position + event.position)
+		context_menu.set_position(get_global_position() + event.position)
 		context_menu.popup()
 
 func _on_context_menu_id_pressed(id: int):

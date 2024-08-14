@@ -1,7 +1,6 @@
 extends Node2D
 
 @onready var input_handler: Control = $InputHandler
-@onready var context_menu: PopupMenu = $ContextMenu
 
 var data: Dictionary
 

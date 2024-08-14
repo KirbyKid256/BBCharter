@@ -12,7 +12,7 @@ enum NOTETYPE {
 
 # Menu
 enum IMAGE {ANIMATION,EFFECT,BACKGROUND}
-enum AUDIO {ONESHOT,LOOP,VOICE,MUSIC,HORNY}
+enum AUDIO {ONESHOT,LOOP,BANK,MUSIC,HORNY}
 
 # General
 static var editor_asset_cache: Array

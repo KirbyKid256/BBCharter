@@ -51,7 +51,7 @@ func _on_context_menu_audio_id_pressed(id):
 	match id:
 		LevelEditor.AUDIO.ONESHOT: EventManager.editor_try_add_oneshot.emit(data)
 		LevelEditor.AUDIO.LOOP: EventManager.editor_try_add_loopsound.emit(data)
-		LevelEditor.AUDIO.VOICE:
+		LevelEditor.AUDIO.BANK:
 			var new_data = data.duplicate()
 			new_data['audio_path'] = [data['audio_path']]
 			EventManager.editor_create_audio_keyframe.emit(new_data)

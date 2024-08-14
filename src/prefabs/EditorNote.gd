@@ -3,6 +3,7 @@ class_name EditorNote
 
 enum {DELETE,GHOST,AUTO,BOMB,VOICE,HOLD}
 
+@onready var note_track: Node2D = $".."
 @onready var note_selector: NoteSelector = $"../../../../NoteSelector"
 
 @onready var note_body: Sprite2D = $NoteBody
@@ -16,7 +17,6 @@ enum {DELETE,GHOST,AUTO,BOMB,VOICE,HOLD}
 
 var hit: bool
 var data: Dictionary
-var hold_beat: float
 var selected: bool
 var last_type: int
 
@@ -40,6 +40,10 @@ func update_position():
 	
 	tail_input_handler.size.x = 16 - note_tail.points[1].x
 	tail_input_handler.position.x = -8 + note_tail.points[1].x
+	
+	Difficulty.get_chart_notes().sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
+	var idx = Difficulty.get_chart_notes().find(data)
+	if get_index() != idx: note_track.move_child(self, Difficulty.get_chart_notes().find(data))
 
 func update_visual():
 	voice_icon.set_visible(data.has('trigger_voice'))
@@ -69,6 +73,7 @@ func _process(_delta):
 		EventManager.editor_note_hit.emit(data)
 		hit = true
 	elif global_position.x < 960 and hit:
+		EventManager.editor_note_miss.emit(data)
 		hit = false
 
 func _on_input_handler_gui_input(event):
@@ -78,13 +83,40 @@ func _on_input_handler_gui_input(event):
 			if event is InputEventMouseButton:
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					if event.is_pressed():
-						mouse_drag_start = data['timestamp']
 						mouse_drag = true
 						note_selector.hide()
 						note_selector.dragging_area = false
+						if LevelEditor.selected_notes.has(self):
+							for note: EditorNote in LevelEditor.selected_notes: note.mouse_drag_start = note.data['timestamp']
+						else:
+							mouse_drag_start = data['timestamp']
 					elif mouse_drag:
 						mouse_drag = false
 						note_selector.show()
+						# Check if notes exist
+						if LevelEditor.selected_notes.has(self):
+							var arr: Array
+							for note: EditorNote in LevelEditor.selected_notes:
+								arr.append_array(Difficulty.get_chart_notes().filter(check_note_exists_drag.bind(data['timestamp'])))
+							if arr.is_empty():
+								Editor.level_changed = true
+							else:
+								Console.log({"message": "Notes already exist..."})
+								for note: EditorNote in LevelEditor.selected_notes:
+									var difference = note.data.get('hold_end_timestamp', note.data['timestamp']) - note.data['timestamp']
+									note.data['timestamp'] = note.mouse_drag_start
+									note.data['hold_end_timestamp'] = note.mouse_drag_start + difference
+									update_position()
+						else:
+							var arr = Difficulty.get_chart_notes().filter(check_note_exists_drag.bind(data['timestamp']))
+							if arr.is_empty():
+								Editor.level_changed = true
+							else:
+								Console.log({"message": "Note already exists..."})
+								var difference = data.get('hold_end_timestamp', data['timestamp']) - data['timestamp']
+								data['timestamp'] = mouse_drag_start
+								data['hold_end_timestamp'] = mouse_drag_start + difference
+								update_position()
 				elif event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 					# Context Menu
 					if LevelEditor.selected_notes.size() > 0 and LevelEditor.selected_notes.has(self):
@@ -96,15 +128,15 @@ func _on_input_handler_gui_input(event):
 			
 			if event is InputEventMouseMotion and mouse_drag:
 				var difference = LevelEditor.get_mouse_timestamp(event.global_position.x) - data['timestamp'] 
-				data['timestamp'] += difference
-				if data.has('hold_end_timestamp'): data['hold_end_timestamp'] += difference
-				update_position()
-				
-				for note: EditorNote in LevelEditor.selected_notes:
-					if note == self: continue
-					note.data['timestamp'] = clampf(note.data['timestamp'] + difference, -Config.settings['song_offset'], LevelEditor.song_length - Config.settings['song_offset'])
-					if note.data.has('hold_end_timestamp'): note.data['hold_end_timestamp'] += difference
-					note.update_position()
+				if LevelEditor.selected_notes.has(self):
+					for note: EditorNote in LevelEditor.selected_notes:
+						note.data['timestamp'] = clampf(note.data['timestamp'] + difference, -Config.settings['song_offset'], LevelEditor.song_length - Config.settings['song_offset'])
+						if note.data.has('hold_end_timestamp'): note.data['hold_end_timestamp'] += difference
+						note.update_position()
+				else:
+					data['timestamp'] += difference
+					if data.has('hold_end_timestamp'): data['hold_end_timestamp'] += difference
+					update_position()
 		LevelEditor.TOOL.MODIFY:
 			if event is InputEventMouseButton and event.is_pressed():
 				var modifier: int = 0 if data['note_modifier'] == LevelEditor.NOTETYPE.HOLD else data['note_modifier']
@@ -161,6 +193,11 @@ func delete_note():
 
 func check_selected():
 	selected_visual.set_visible(selected)
+
+func check_note_exists_drag(note, old_note_timestamp):
+	var snapped_note_check = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(old_note_timestamp), 1.0 / LevelEditor.snapping_factor)
+	if LevelEditor.snapping_allowed else Math.secs_to_beat_dynamic(old_note_timestamp)))
+	return snappedf(snapped_note_check, 0.001) == note['timestamp']
 
 func _on_context_menu_id_pressed(id: int):
 	run_action(id)
@@ -231,18 +268,6 @@ func run_action(id: int):
 				else:
 					data['trigger_voice'] = true
 				update_visual()
-		HOLD:
-			if data['note_modifier'] == LevelEditor.NOTETYPE.NORMAL or data['note_modifier'] == LevelEditor.NOTETYPE.HOLD:
-				data['note_modifier'] = LevelEditor.NOTETYPE.HOLD 
-				
-				if data['timestamp'] > LevelEditor.get_timestamp():
-					print("Cannot do that >:("); return
-				elif data['timestamp'] == LevelEditor.get_timestamp():
-					data['note_modifier'] = LevelEditor.NOTETYPE.NORMAL 
-					data.erase('hold_end_timestamp')
-				
-				data['hold_end_timestamp'] = LevelEditor.get_timestamp()
-				hold_beat = Math.secs_to_beat_dynamic(data.get('hold_end_timestamp', data['timestamp']))
 			
 			update_visual()
 			update_position()

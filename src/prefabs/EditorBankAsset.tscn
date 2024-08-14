@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ipguruv1rs3e"]
 
-[ext_resource type="Script" path="res://src/prefabs/EditorVoiceAsset.gd" id="1_nll2m"]
-[ext_resource type="Texture2D" uid="uid://p10pu0mb2rp7" path="res://assets/ui/editor_voice_64.png" id="2_rg5x4"]
+[ext_resource type="Script" path="res://src/prefabs/EditorBankAsset.gd" id="1_nll2m"]
+[ext_resource type="Texture2D" uid="uid://p10pu0mb2rp7" path="res://assets/ui/level_editor_icon_audio_48.png" id="2_rg5x4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jptoj"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
@@ -12,7 +12,7 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="LabelSettings" id="LabelSettings_memg6"]
 
-[node name="EditorVoiceAsset" type="Control"]
+[node name="EditorBankAsset" type="Control"]
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 3
 anchors_preset = 0
@@ -53,12 +53,18 @@ vertical_alignment = 1
 text_overrun_behavior = 3
 
 [node name="ContextMenu" type="PopupMenu" parent="."]
-size = Vector2i(133, 62)
+size = Vector2i(146, 93)
 hide_on_state_item_selection = true
-item_count = 2
+item_count = 5
 item_0/text = "Edit Asset"
 item_1/text = "Delete Asset"
 item_1/id = 1
+item_2/id = 4
+item_2/separator = true
+item_3/text = "As Sound Loop"
+item_3/id = 2
+item_4/text = "As Voice Bank"
+item_4/id = 3
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

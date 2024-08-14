@@ -3,12 +3,12 @@ extends Control
 @export var editor_animation_asset_prefab: PackedScene
 @export var editor_effect_asset_prefab: PackedScene
 @export var editor_background_asset_prefab: PackedScene
-@export var editor_voice_asset_prefab: PackedScene
+@export var editor_bank_asset_prefab: PackedScene
 
 @onready var animations_grid = $Animations/AssetGrid
 @onready var effects_grid = $Effects/AssetGrid
 @onready var backgrounds_grid = $Backgrounds/AssetGrid
-@onready var voices_grid = $"Voice Banks/AssetGrid"
+@onready var banks_grid = $"Sound Banks/AssetGrid"
 
 @onready var menu_bar: MenuBar = $"../../MenuBar"
 @onready var menu_bar_panel: Panel = $"../MenuBarPanel"
@@ -57,13 +57,13 @@ func get_image_assets(type: int = -1):
 
 # There's only one set of audio cache right now
 func get_audio_assets():
-	Util.clear_children(voices_grid)
+	Util.clear_children(banks_grid)
 	
 	Console.log({"message": "Getting Editor Audio Cache..."})
 	var cache_assets = LevelEditor.get_asset_cache().filter(func(a): return a.has("audio_path"))
 	
-	var voice_assets = cache_assets.filter(func(a): return typeof(a['audio_path']) == TYPE_ARRAY)
-	for animation in voice_assets:
-		var new_asset_node = editor_voice_asset_prefab.instantiate() as Control
-		voices_grid.add_child(new_asset_node) 
-		new_asset_node.setup(animation)
+	var bank_assets = cache_assets.filter(func(a): return typeof(a['audio_path']) == TYPE_ARRAY)
+	for bank in bank_assets:
+		var new_asset_node = editor_bank_asset_prefab.instantiate() as Control
+		banks_grid.add_child(new_asset_node) 
+		new_asset_node.setup(bank)

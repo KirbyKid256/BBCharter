@@ -33,7 +33,7 @@ extends Control
 @onready var file_assets: Control = $'../Assets/Files'
 @onready var music: AudioStreamPlayer = $'../Music'
 
-var replacement_data: Dictionary = {}
+var replacement_data: Dictionary
 
 var pending_image_file: String
 var pending_image_type: int = -1
@@ -72,7 +72,7 @@ func import_image(file: String):
 
 func create_image_keyframe(data: Dictionary, type: int, replace: bool = false):
 	if create_audio_menu.visible: return # Dont show if importing audio
-	if replace: replacement_data = data
+	if replace: replacement_data = data.duplicate(true)
 	
 	if data.has("sheet_data"):
 		h_frames.value = data.sheet_data.h
@@ -181,7 +181,7 @@ func import_audio(file: String):
 
 func create_audio_keyframe(data: Dictionary, replace: bool = false):
 	if create_image_menu.visible: return # Dont show if importing image
-	if replace: replacement_data = data
+	if replace: replacement_data = data.duplicate(true)
 	
 	pending_audio_data = data
 	

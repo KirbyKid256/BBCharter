@@ -30,8 +30,6 @@ func _input(event):
 			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.AUTO)
 		elif event.is_action_pressed("ui_editor_note_voice"):
 			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.VOICE)
-		elif event.is_action_pressed("ui_editor_note_hold"):
-			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.HOLD)
 		elif event.is_action_pressed("ui_editor_note_bomb"):
 			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.BOMB)
 	

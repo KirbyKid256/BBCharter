@@ -32,6 +32,7 @@ func _on_play_button_mouse_exited():
 
 func _on_panel_gui_input(event):
 	if EventManager.right_mouse_clicked(event):
+		file_drop.pending_audio_data['audio_path'].remove_at(get_index())
 		Util.free_node(self)
 
 func _on_up_button_up():
@@ -39,7 +40,7 @@ func _on_up_button_up():
 
 func _on_down_button_up():
 	button_up(clampi(get_index()+1,0,file_drop.pending_audio_data['audio_path'].size()-1))
-	
+
 func button_up(idx: int):
 	file_drop.pending_audio_data['audio_path'].remove_at(get_index())
 	file_drop.pending_audio_data['audio_path'].insert(idx, path)
