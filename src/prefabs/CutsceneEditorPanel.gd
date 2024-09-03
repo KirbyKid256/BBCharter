@@ -43,7 +43,7 @@ func _on_right_button_up():
 	button_up(clampi(get_index()+1,0,CutsceneEditor.data[Cutscene.type].lines.size()-1))
 
 func button_up(idx: int):
-	if idx == 0: return
+	if idx == get_index(): return
 	var data = CutsceneEditor.data[Cutscene.type].lines[get_index()]
 	
 	CutsceneEditor.data[Cutscene.type].lines.remove_at(get_index())

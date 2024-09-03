@@ -8,7 +8,6 @@ var loop_trigger_index: int
 func _ready():
 	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	EventManager.editor_note_hit.connect(_on_editor_note_hit)
-	EventManager.editor_note_miss.connect(_on_editor_note_miss)
 	
 	tsevent.callback = change_loop_sound
 	tsevent.config_key = "sound_loop"
@@ -32,12 +31,8 @@ func change_loop_sound(idx: int):
 	else: for path in sound:
 		current_bank.append(Assets.get_asset(path))
 
-func _on_editor_note_hit(_data):
-	if current_bank.size() > 0:
-		loop_trigger_index = wrapi(loop_trigger_index + 1, 0, current_bank.size())
-		stream = current_bank[loop_trigger_index]
+func _on_editor_note_hit(data):
+	if current_bank.size() > 0 and data.note_modifier != LevelEditor.NOTETYPE.GHOST:
+		var current_bank_index = wrapi(loop_trigger_index, 0, current_bank.size())
+		stream = current_bank[current_bank_index]
 		play()
-
-func _on_editor_note_miss(_data):
-	if current_bank.size() > 0:
-		loop_trigger_index = wrapi(loop_trigger_index - 1, 0, current_bank.size())

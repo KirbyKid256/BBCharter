@@ -42,9 +42,9 @@ func close_submenu():
 func _on_save_level_button_up():
 	LevelEditor.save_level() 
 	Global.save_indicator.show_saved_succes()
-	hide()
+	toggle()
 
 func _on_save_project_button_up():
 	Editor.save_project() 
 	Global.save_indicator.show_saved_succes()
-	hide()
+	toggle()

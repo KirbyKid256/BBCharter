@@ -47,36 +47,28 @@ text_overrun_behavior = 3
 
 [node name="ContextMenuImage" type="PopupMenu" parent="."]
 size = Vector2i(113, 100)
-item_count = 5
+item_count = 3
 item_0/text = "Animation"
 item_1/text = "Effect"
 item_1/id = 1
 item_2/text = "Background"
 item_2/id = 2
-item_3/id = 4
-item_3/separator = true
-item_4/text = "Delete"
-item_4/id = 3
 
 [node name="ContextMenuAudio" type="PopupMenu" parent="."]
 auto_translate_mode = 1
 size = Vector2i(219, 178)
-item_count = 8
+item_count = 6
 item_0/text = "OneShot Audio"
 item_1/text = "Sound Loop"
 item_1/id = 1
 item_2/text = "Sound Bank"
 item_2/id = 2
-item_3/id = 6
+item_3/id = 5
 item_3/separator = true
 item_4/text = "Set as Music"
 item_4/id = 3
 item_5/text = "Set as Horny Mode Sound"
 item_5/id = 4
-item_6/id = 7
-item_6/separator = true
-item_7/text = "Delete"
-item_7/id = 5
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
