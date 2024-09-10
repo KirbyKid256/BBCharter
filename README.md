@@ -1,6 +1,9 @@
 # BB Charter
 
 A modified version of the Beat Banger Level Editor, Cutscene Editor coming eventually...
+Download the latest builds [here](https://mega.nz/folder/KHhDhB5I#OP6ufDzOscwsbFnCZttBSw)!
+
+Why didn't I just add the builds to GitHub instead of Mega? I don't know.
 
 ### Engine Shortcuts
 | Hotkey | Function |
