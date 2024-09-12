@@ -6,7 +6,8 @@ extends Control
 @onready var difficulty_select: OptionButton = $"../../TimelineInfo/DifficultySelect"
 @onready var add_button: Button = $Difficulties/VBoxContainer/AddButton
 
-@onready var name_field: LineEdit = $Settings/NameField
+@onready var name_field: LineEdit = $Settings/HBoxContainer2/NameField
+@onready var speed_field: OptionButton = $Settings/HBoxContainer2/SpeedField
 @onready var file_selection: ScrollContainer = $Settings/FileSelection
 
 var total_data: Array
@@ -48,6 +49,7 @@ func _on_difficulty_selected(idx: int):
 	if selected >= 0:
 		difficulties.get_child(selected).outline.show()
 		name_field.text = total_data[selected].name
+		speed_field.selected = total_data[selected].get('speed', 0)
 
 func _on_add_button_up():
 	var new_data = {"name": "Normal", "notes": []}
@@ -70,21 +72,33 @@ func _on_name_field_mouse_exited():
 
 func _on_name_field_text_submitted(new_text):
 	total_data[selected].name = new_text
-	difficulties.get_child(selected).data['name'] = new_text
 	difficulties.get_child(selected).difficulty_name.text = new_text
+
+func _on_speed_field_item_selected(index):
+	if index > 0:
+		total_data[selected].speed = index
+	else:
+		total_data[selected].erase('speed')
 
 func _on_file_button_up(text):
 	total_data[selected].icon = text
-	difficulties.get_child(selected).data['icon'] = text
 	difficulties.get_child(selected).icon.texture = Assets.get_asset(text)
 
 func _on_save_button_up():
-	for i in total_data.size():
-		if total_data[i].get("rating", 0) == Difficulty.get_current_chart_value("rating", 0):
-			LevelEditor.difficulty_index = i
-		total_data[i].rating = i
-	Config.notes['charts'] = total_data
+	for data in total_data:
+		var arr: Array = total_data.filter(func(a): return a.name == data.name)
+		if arr.size() > 1:
+			Console.log({"message": "Difficulty names can't match!", "type": 2})
+			return
 	
+	for i in total_data.size():
+		if total_data[i].name == Difficulty.get_current_chart_value("name"):
+			LevelEditor.difficulty_index = i
+			break
+	for i in total_data.size():
+		total_data[i].rating = i
+	
+	Config.notes['charts'] = total_data
 	difficulty_select.reload_items()
 	
 	Editor.level_changed = true

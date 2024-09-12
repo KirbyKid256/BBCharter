@@ -3,7 +3,7 @@ class_name NoteSelector
 
 @onready var selection_area: Area2D = $SelectionArea
 @onready var selection_shape: CollisionShape2D = $SelectionArea/SelectionShape
-@onready var editor_notes: Node2D = $'../NoteTimeline/TimelineRoot/Notes'
+@onready var note_track: Node2D = $'../NoteTimeline/TimelineRoot/Notes'
 
 var dragging_area: bool
 var drag_start_pos: Vector2
@@ -35,7 +35,7 @@ func _input(event: InputEvent):
 
 func _draw():
 	if dragging_area:
-		draw_rect(Rect2(drag_start_pos, get_global_mouse_position() - drag_start_pos), Color(0,1,0.6,1), false, 2.0)
+		draw_rect(Rect2(drag_start_pos, get_global_mouse_position() - drag_start_pos), Color(0,1,0.6), false, 2.0)
 
 func get_notes_in_selection():
 	var distance = (drag_end_pos - drag_start_pos)
@@ -67,7 +67,7 @@ func get_notes_in_selection():
 func select_notes():
 	# Clear other selected notes, if not holding shift
 	if not Input.is_action_pressed("ui_shift"):
-		for note: EditorNote in editor_notes.get_children():
+		for note: EditorNote in note_track.get_children():
 			if note.selected: 
 				note.selected = false
 				note.check_selected()

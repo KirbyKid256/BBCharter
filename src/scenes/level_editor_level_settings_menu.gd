@@ -102,12 +102,11 @@ func _on_save_button_up():
 	var color = Color.from_string(character_color_field.text, Color(0.5, 0.5, 0.5))
 	Config.meta['color'] = [color.r, color.g, color.b]
 	
-	if not Config.mod.is_empty():
-		Config.mod['creator'] = creator_field.text
-		Config.mod['description'] = description_field.text
-		Config.mod['song_title'] = song_title_field.text
-		Config.mod['song_author'] = song_author_field.text
-		Config.mod['preview_timestamp'] = preview_timestamp_field.value
+	Config.mod['creator'] = creator_field.text
+	Config.mod['description'] = description_field.text
+	Config.mod['song_title'] = song_title_field.text
+	Config.mod['song_author'] = song_author_field.text
+	Config.mod['preview_timestamp'] = preview_timestamp_field.value
 	
 	Editor.level_changed = true
 	Editor.controls_enabled = true

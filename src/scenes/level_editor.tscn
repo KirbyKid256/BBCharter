@@ -324,7 +324,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_kxf78")
 alignment = 1
 item_count = 6
 popup/item_0/text = "Beat"
-popup/item_0/id = 0
 popup/item_1/text = "1/2"
 popup/item_1/id = 1
 popup/item_2/text = "1/3"
@@ -523,7 +522,6 @@ script = ExtResource("10_7ahkl")
 size = Vector2i(121, 100)
 item_count = 3
 item_0/text = "New Project"
-item_0/id = 0
 item_1/text = "Open Project"
 item_1/id = 1
 item_2/text = "Save Project"
@@ -534,11 +532,8 @@ item_2/disabled = true
 auto_translate_mode = 1
 item_count = 6
 item_0/text = "Undo"
-item_0/id = 0
-item_0/disabled = true
 item_1/text = "Redo"
 item_1/id = 1
-item_1/disabled = true
 item_2/id = 5
 item_2/separator = true
 item_3/text = "Cut"
@@ -552,7 +547,6 @@ item_5/id = 4
 size = Vector2i(125, 62)
 item_count = 6
 item_0/text = "Shutter"
-item_0/id = 0
 item_1/text = "BPM Change"
 item_1/id = 1
 item_2/id = 5
@@ -568,7 +562,6 @@ item_5/id = 4
 system_menu_id = 4
 item_count = 3
 item_0/text = "Controls"
-item_0/id = 0
 item_1/text = "Documentation"
 item_1/id = 1
 item_2/text = "Discord"
@@ -838,7 +831,7 @@ z_index = -1
 custom_minimum_size = Vector2(1920, 48)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
+theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 
 [node name="Track" type="Node2D" parent="ScrollContainer/Keyframes/LoopSounds"]
 z_index = 1
@@ -1222,7 +1215,6 @@ alignment = 1
 selected = 1
 item_count = 6
 popup/item_0/text = "Keep Size"
-popup/item_0/id = 0
 popup/item_1/text = "Ignore Size"
 popup/item_1/id = 1
 popup/item_2/text = "Fit Width"
@@ -1250,7 +1242,6 @@ alignment = 1
 selected = 6
 item_count = 7
 popup/item_0/text = "Scale"
-popup/item_0/id = 0
 popup/item_1/text = "Tile"
 popup/item_1/id = 1
 popup/item_2/text = "Keep"
@@ -1956,14 +1947,47 @@ offset_right = 1696.0
 offset_bottom = 864.0
 metadata/_edit_group_ = true
 
-[node name="Label" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
 layout_mode = 2
-size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Name"
 label_settings = SubResource("LabelSettings_irclh")
 
-[node name="NameField" type="LineEdit" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+[node name="Label2" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "Default Speed Multiplier"
+label_settings = SubResource("LabelSettings_irclh")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+layout_mode = 2
+
+[node name="NameField" type="LineEdit" parent="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedField" type="OptionButton" parent="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 8
+popup/item_0/text = "1.0x Speed"
+popup/item_1/text = "1.5x Speed"
+popup/item_1/id = 1
+popup/item_2/text = "2.0x Speed"
+popup/item_2/id = 2
+popup/item_3/text = "2.5x Speed"
+popup/item_3/id = 3
+popup/item_4/text = "3.0x Speed"
+popup/item_4/id = 4
+popup/item_5/text = "4.0x Speed"
+popup/item_5/id = 5
+popup/item_6/text = "5.0x Speed"
+popup/item_6/id = 6
+popup/item_7/text = "6.0x Speed"
+popup/item_7/id = 7
 
 [node name="Label2" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
 layout_mode = 2
@@ -2231,7 +2255,8 @@ script = ExtResource("40_x5fle")
 [connection signal="file_selected" from="MenuOverlays/FileDialog" to="MenuOverlays/ActSettingsMenu" method="_on_file_dialog_file_selected"]
 [connection signal="file_selected" from="MenuOverlays/FileDialog" to="MenuOverlays/LevelSettingsMenu" method="_on_file_dialog_file_selected"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Difficulties/VBoxContainer/AddButton" to="MenuOverlays/DifficultySettingsMenu" method="_on_add_button_up"]
-[connection signal="text_submitted" from="MenuOverlays/DifficultySettingsMenu/Settings/NameField" to="MenuOverlays/DifficultySettingsMenu" method="_on_name_field_text_submitted"]
+[connection signal="text_submitted" from="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer2/NameField" to="MenuOverlays/DifficultySettingsMenu" method="_on_name_field_text_submitted"]
+[connection signal="item_selected" from="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer2/SpeedField" to="MenuOverlays/DifficultySettingsMenu" method="_on_speed_field_item_selected"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Save" to="MenuOverlays/DifficultySettingsMenu" method="_on_save_button_up"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/DifficultySettingsMenu" method="hide"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]

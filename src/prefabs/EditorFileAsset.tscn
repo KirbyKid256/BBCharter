@@ -56,7 +56,7 @@ item_2/id = 2
 
 [node name="ContextMenuAudio" type="PopupMenu" parent="."]
 auto_translate_mode = 1
-size = Vector2i(219, 178)
+size = Vector2i(219, 147)
 item_count = 6
 item_0/text = "OneShot Audio"
 item_1/text = "Sound Loop"

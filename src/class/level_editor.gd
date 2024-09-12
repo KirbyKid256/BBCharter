@@ -80,7 +80,8 @@ static func append_asset_cache(cache_data: Dictionary) -> void:
 	
 	# Check if asset exists
 	if editor_asset_cache.has(cache_data):
-		return Console.log({"message": "Asset already exists in cache...", "type": 1})
+		Console.log({"message": "Asset already exists in cache...", "type": 1})
+		return
 	
 	editor_asset_cache.append(cache_data)
 	var asset_config: ConfigFile = ConfigFile.new()
@@ -91,7 +92,8 @@ static func append_asset_cache(cache_data: Dictionary) -> void:
 static func remove_asset_cache(cache_data: Dictionary) -> void:
 	editor_asset_cache = get_asset_cache()
 	if not editor_asset_cache.has(cache_data):
-		return Console.log({"message": "Asset does not exist in cache...", "type": 1})
+		Console.log({"message": "Asset does not exist in cache...", "type": 1})
+		return
 	
 	editor_asset_cache.remove_at(editor_asset_cache.find(cache_data))
 	var asset_config: ConfigFile = ConfigFile.new()
@@ -108,14 +110,15 @@ static func replace_asset_cache(old_data: Dictionary, new_data: Dictionary) -> v
 		editor_asset_cache.remove_at(index)
 		editor_asset_cache.insert(index, new_data)
 	else:
-		return Console.log({"message": "Asset does not exist in cache...", "type": 1})
+		Console.log({"message": "Asset does not exist in cache...", "type": 1})
+		return
 	
 	var asset_config: ConfigFile = ConfigFile.new()
 	asset_config.set_value("main","data",editor_asset_cache)
 	asset_config.save(Editor.project_path + "editor_cache.cfg")
 #endregion
 
-# Place all keyframes founc in config
+# Place all keyframes found in config
 static func place_init_keyframes(key: String, root_note: Node2D, prefab: PackedScene):
 	for keyframe_data in Config.keyframes.get(key, []):
 		var new_keyframe = prefab.instantiate() as Node2D

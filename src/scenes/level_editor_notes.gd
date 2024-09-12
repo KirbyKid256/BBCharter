@@ -52,7 +52,7 @@ func paste_selected_notes():
 
 func create_note(input_type: int = 0):
 	# Batch Replace Note Types
-	if LevelEditor.selected_notes.size() >= 1:
+	if LevelEditor.selected_notes.size() > 0:
 		for note: EditorNote in LevelEditor.selected_notes: 
 			if note == null: return
 			note.data['input_type'] = input_type

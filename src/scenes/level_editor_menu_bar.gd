@@ -51,6 +51,7 @@ func _on_file_id_pressed(id):
 
 func _on_edit_id_pressed(id):
 	match id:
+		EDIT.CUT: notes.cut_selected_notes()
 		EDIT.COPY: notes.copy_selected_notes()
 		EDIT.PASTE: notes.paste_selected_notes()
 

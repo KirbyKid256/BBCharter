@@ -268,7 +268,9 @@ static func load_legacy_notes(legacy_chart: Dictionary):
 ## Saves current chart as a Release chart, use after load_chart()
 static func convert(path: String = Editor.project_path):
 	var mod_type = Editor.get_modtype(path)
-	if mod_type == Editor.MODTYPE.RELEASE: return Console.log({"message": "Chart is already in RELEASE format", "verbose": true, "type": 1})
+	if mod_type == Editor.MODTYPE.RELEASE:
+		Console.log({"message": "Chart is already in RELEASE format", "verbose": true, "type": 1})
+		return
 	
 	if mod_type == Editor.MODTYPE.LEGACY:
 		var path_backup: String = path.get_base_dir() + " backup"
