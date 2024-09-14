@@ -16,7 +16,7 @@ enum AUDIO {ONESHOT,LOOP,BANK,MUSIC,HORNY}
 
 # General
 static var editor_asset_cache: Array
-static var difficulty_index: int
+static var difficulty_index: int = -1
 static var current_tool: int
 
 # Snapping
@@ -147,6 +147,8 @@ static func add_single_keyframe(data: Dictionary, root_note: Node2D, prefab: Pac
 	new_keyframe.setup(data)
 
 static func save_level():
+	Console.log({"message": "Saving Project"})
+	
 	Config.save_config_data("asset.cfg", Config.asset)
 	Config.save_config_data("keyframes.cfg", Config.keyframes)
 	Config.save_config_data("meta.cfg", Config.meta)
@@ -161,5 +163,5 @@ static func save_level():
 		config.set_value('main', 'data', Config.act)
 		config.save(Editor.project_path.get_base_dir().get_base_dir().path_join("act.cfg"))
 	
-	Console.log({"message": "Saving Project"})
+	Editor.saved_version = Global.undo_redo.get_version()
 	Editor.level_changed = false

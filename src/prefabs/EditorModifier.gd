@@ -56,7 +56,6 @@ func set_bpm(value: float):
 	# Reinit the editor music and indicator elements
 	LevelEditor.calculate_song_info(music.stream)
 	EventManager.editor_update_bpm.emit()
-	Editor.level_changed = true
 	Console.log({"message": "Bpm set to %s" % value})
 
 func _on_input_handler_gui_input(event: InputEvent):

@@ -39,10 +39,10 @@ func _on_editor_project_loaded():
 	#File
 	file_popup_menu.set_item_disabled(2, false)
 	#Edit
-	_on_undo_or_redo()
 	set_menu_disabled(1, false)
 	for i in edit_popup_menu.item_count:
 		edit_popup_menu.set_item_disabled(i, false)
+	_on_undo_or_redo()
 	#Add
 	set_menu_disabled(2, false)
 	for i in add_popup_menu.item_count:
@@ -83,7 +83,6 @@ func _on_add_id_pressed(id):
 		2: backgrounds.create_keyframe({'sprite_sheet': ""})
 		3: loopsounds.create_keyframe({'audio_path': ""})
 		4: voices.create_keyframe({'audio_path': []})
-	Editor.level_changed = true
 
 func _on_help_id_pressed(id):
 	match id:

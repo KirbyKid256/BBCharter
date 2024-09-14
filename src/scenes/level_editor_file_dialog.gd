@@ -1,5 +1,6 @@
 extends FileDialog
 
+@onready var confirm_menu = $"../MenuOverlays/ConfirmMenu"
 @onready var timeline = $"../NoteTimeline/TimelineRoot"
 @onready var music = $"../Music"
 
@@ -15,7 +16,6 @@ extends FileDialog
 @onready var modifiers = $"../ScrollContainer/Keyframes/Modifiers/Track"
 
 var create_level: bool
-var asset_paths: Array
 
 func _ready():
 	current_dir = Editor.project_path if Editor.project_loaded else Global.get_executable_path()
@@ -33,6 +33,15 @@ func new_project():
 	popup()
 
 func _on_dir_selected(new_path: String):
+	if Editor.project_changed():
+		confirm_menu.open()
+		confirm_menu.close_signal = func():
+			Editor.level_changed = false
+			Global.undo_redo.clear_history()
+			Editor.saved_version = Global.undo_redo.get_version()
+			_on_dir_selected(new_path)
+		return
+	
 	var old_path = Editor.project_path
 	Editor.project_path = new_path + "/"
 	
@@ -43,7 +52,6 @@ func _on_dir_selected(new_path: String):
 	
 	if Config.store_config_data():
 		Editor.project_loaded = false
-		Global.undo_redo.clear_history()
 		Config.validate_ids()
 		
 		Util.clear_children(notes)
@@ -117,10 +125,9 @@ func load_game_assets():
 	Console.log({"message": "Loading Game Assets..."})
 	
 	# Change Folder Paths if Legacy
+	var asset_paths: Array = ["images","audio","video"]
 	if Editor.get_modtype() == Editor.MODTYPE.LEGACY:
 		asset_paths = ["anims","anims/fx","sfx","songs","textures","voice"]
-	else:
-		asset_paths = ["images","audio","video"]
 	
 	# Clear Old Assets
 	Assets.lib.clear()

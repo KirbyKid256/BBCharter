@@ -19,6 +19,8 @@ func _input(event):
 	if event.is_action_pressed("ui_editor_open"):
 		Global.file_dialog.open_project()
 	
+	if not Editor.project_loaded: return
+	
 	if event.is_action_pressed("ui_editor_save"):
 		LevelEditor.save_level() 
 		Global.save_indicator.show_saved_succes()

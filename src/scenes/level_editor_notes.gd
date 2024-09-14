@@ -132,14 +132,12 @@ func add_note(data: Dictionary):
 	
 	var note = editor_note_prefab.instantiate() as EditorNote
 	add_child(note); note.setup(data)
-	Editor.level_changed = true
 
 func remove_note(data: Dictionary):
 	var idx = Difficulty.get_chart_notes().find(data)
 	Difficulty.get_chart_notes().remove_at(idx)
 	note_selector.deselect_notes()
 	Util.free_node(get_child(idx))
-	Editor.level_changed = true
 
 func move_note(data: Dictionary, time: float):
 	var old_time: float = data.timestamp
@@ -176,8 +174,6 @@ func move_note(data: Dictionary, time: float):
 		else:
 			do_move.call(data, old_time))
 	Global.undo_redo.commit_action()
-	
-	Editor.level_changed = true
 
 func modify_note(data: Dictionary, modifier: int):
 	var selected_data: Array

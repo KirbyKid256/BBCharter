@@ -41,7 +41,6 @@ func create_keyframe(keyframe_data: Dictionary):
 		Global.undo_redo.add_do_method(_add_voice.bind(new_keyframe_data))
 		Global.undo_redo.add_undo_method(_remove_voice.bind(new_keyframe_data))
 		Global.undo_redo.commit_action()
-		Editor.level_changed = true
 
 func remove_keyframe(data: Dictionary):
 	Console.log({"message": 'Deleting voice bank at "%s"' % data['timestamp']})
@@ -49,4 +48,3 @@ func remove_keyframe(data: Dictionary):
 	Global.undo_redo.add_do_method(_remove_voice.bind(data))
 	Global.undo_redo.add_undo_method(_add_voice.bind(data))
 	Global.undo_redo.commit_action()
-	Editor.level_changed = true

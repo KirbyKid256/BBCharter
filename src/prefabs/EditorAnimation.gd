@@ -21,8 +21,6 @@ func setup(keyframe_data: Dictionary):
 	
 	var tooltip_data = data.duplicate()
 	tooltip_data.erase('animations')
-	tooltip_data.erase('sheet_data')
-	tooltip_data.erase('scale_multiplier')
 	
 	input_handler.tooltip_text = str(tooltip_data).replace(", ", "\r\n")\
 	.replace("{", "").replace("}", "").replace("\"", "")

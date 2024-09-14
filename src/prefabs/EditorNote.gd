@@ -266,4 +266,3 @@ func set_note_type(note_type_enum: int):
 	else: 
 		data['note_modifier'] = note_type_enum
 	update_visual()
-	Editor.level_changed = true

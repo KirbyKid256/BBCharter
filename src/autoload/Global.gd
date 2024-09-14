@@ -14,6 +14,8 @@ func _ready():
 
 func _input(event):
 	if not Editor.controls_enabled: return
+	if not Editor.project_loaded: return
+	
 	if event.is_action_pressed("ui_redo") and undo_redo.has_redo():
 		undo_redo.redo()
 	elif not event.is_action_pressed("ui_redo") and event.is_action_pressed("ui_undo") and undo_redo.has_undo():

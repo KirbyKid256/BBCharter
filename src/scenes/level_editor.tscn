@@ -734,14 +734,12 @@ horizontal_scroll_mode = 0
 
 [node name="Keyframes" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
-mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="Animations" type="Panel" parent="ScrollContainer/Keyframes"]
 z_index = -1
 custom_minimum_size = Vector2(1920, 48)
 layout_mode = 2
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 
 [node name="Track" type="Node2D" parent="ScrollContainer/Keyframes/Animations"]
@@ -764,7 +762,6 @@ vertical_alignment = 1
 z_index = -1
 custom_minimum_size = Vector2(1920, 48)
 layout_mode = 2
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
 
 [node name="Track" type="Node2D" parent="ScrollContainer/Keyframes/Effects"]
@@ -787,7 +784,6 @@ vertical_alignment = 1
 z_index = -1
 custom_minimum_size = Vector2(1920, 48)
 layout_mode = 2
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 
 [node name="Track" type="Node2D" parent="ScrollContainer/Keyframes/Backgrounds"]
@@ -832,7 +828,6 @@ vertical_alignment = 1
 z_index = -1
 custom_minimum_size = Vector2(1920, 48)
 layout_mode = 2
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 
 [node name="Track" type="Node2D" parent="ScrollContainer/Keyframes/LoopSounds"]
@@ -855,7 +850,6 @@ vertical_alignment = 1
 z_index = -1
 custom_minimum_size = Vector2(1920, 48)
 layout_mode = 2
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
 
 [node name="Track" type="Node2D" parent="ScrollContainer/Keyframes/VoiceBanks"]

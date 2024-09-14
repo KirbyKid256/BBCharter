@@ -8,10 +8,11 @@ static var project_loaded: bool
 static var controls_enabled: bool = true
 
 static var level_changed: bool
+static var saved_version: int = 1
 static var cutscene_changed: bool
 
 static func project_changed() -> bool:
-	return level_changed or cutscene_changed
+	return level_changed or saved_version != Global.undo_redo.get_version() or cutscene_changed
 
 static func save_project():
 	LevelEditor.save_level()

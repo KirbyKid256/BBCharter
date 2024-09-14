@@ -65,7 +65,7 @@ offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 64
-text = "Save and Quit?"
+text = "Are You Sure?"
 horizontal_alignment = 1
 
 [node name="Subheader" type="Label" parent="."]
@@ -147,7 +147,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/hover = SubResource("StyleBoxFlat_fb576")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_i1upk")
 theme_override_styles/normal = SubResource("StyleBoxFlat_sof5g")
-text = "Save & Quit"
+text = "Save"
 
 [node name="ColorRect" type="ColorRect" parent="Buttons/Save"]
 show_behind_parent = true

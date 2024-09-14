@@ -63,9 +63,4 @@ func _on_context_menu_audio_id_pressed(id):
 			if Config.asset["horny_mode_sound"] == filename.text: return
 			Config.asset["horny_mode_sound"] = filename.text
 	
-	if id == 5:
-		DirAccess.remove_absolute(Editor.project_path + "audio/" + filename.text)
-		file_drop.reload_file_list_audio()
-		Util.free_node(self)
-	
 	Editor.level_changed = true
