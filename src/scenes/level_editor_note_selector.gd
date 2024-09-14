@@ -16,7 +16,7 @@ func _input(event: InputEvent):
 	
 	# Selected Note Handling
 	if event.is_action_pressed("ui_delete"):
-		if not LevelEditor.selected_notes.is_empty(): group_delete_notes()
+		if not LevelEditor.selected_notes.is_empty(): group_remove_notes()
 	
 	# Note Selection
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -77,10 +77,19 @@ func select_notes():
 		note.selected = true
 		note.check_selected()
 
-func group_delete_notes():
+func group_remove_notes():
+	var selected_data: Array
 	for i in range(LevelEditor.selected_notes.size()-1, -1, -1):
-		LevelEditor.selected_notes[i].delete_note()
-	LevelEditor.selected_notes.clear()
+		selected_data.append(LevelEditor.selected_notes[i].data)
+	
+	Global.undo_redo.create_action("Remove Notes")
+	Global.undo_redo.add_do_method(func():
+		for note in selected_data: note_track.remove_note(note))
+	Global.undo_redo.add_undo_method(func():
+		for note in selected_data: note_track.add_note(note))
+	Global.undo_redo.commit_action()
+	
+	deselect_notes()
 
 func deselect_notes():
 	for note: EditorNote in LevelEditor.selected_notes:

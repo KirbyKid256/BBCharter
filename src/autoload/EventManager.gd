@@ -11,7 +11,6 @@ signal cutscene_ended()
 
 # Level Signals
 signal editor_note_hit(note_object: Dictionary)
-signal editor_note_created(new_editor_note_data: Dictionary)
 signal editor_update_snapping(snap_index: int)
 signal editor_update_notespeed()
 signal editor_update_bpm()

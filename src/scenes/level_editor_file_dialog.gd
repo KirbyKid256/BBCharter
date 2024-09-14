@@ -43,6 +43,7 @@ func _on_dir_selected(new_path: String):
 	
 	if Config.store_config_data():
 		Editor.project_loaded = false
+		Global.undo_redo.clear_history()
 		Config.validate_ids()
 		
 		Util.clear_children(notes)

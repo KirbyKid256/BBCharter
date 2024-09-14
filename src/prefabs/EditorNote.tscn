@@ -90,4 +90,4 @@ item_6/id = 5
 
 [connection signal="gui_input" from="InputHandler" to="." method="_on_input_handler_gui_input"]
 [connection signal="gui_input" from="TailInputHandler" to="." method="_on_input_handler_gui_input"]
-[connection signal="id_pressed" from="ContextMenu" to="." method="_on_context_menu_id_pressed"]
+[connection signal="id_pressed" from="ContextMenu" to="." method="run_action"]

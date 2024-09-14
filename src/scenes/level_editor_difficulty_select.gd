@@ -25,6 +25,14 @@ func reload_items():
 	_on_item_selected(selected)
 
 func _on_item_selected(index):
-	Util.clear_children_node_2d(notes)
-	LevelEditor.difficulty_index = index
-	notes.load_notes()
+	var old_index: int = LevelEditor.difficulty_index
+	Global.undo_redo.create_action("Change Difficulty")
+	Global.undo_redo.add_do_method(func():
+		Util.clear_children_node_2d(notes)
+		LevelEditor.difficulty_index = index
+		select(index); notes.load_notes())
+	Global.undo_redo.add_undo_method(func():
+		Util.clear_children_node_2d(notes)
+		LevelEditor.difficulty_index = old_index
+		select(old_index); notes.load_notes())
+	Global.undo_redo.commit_action()

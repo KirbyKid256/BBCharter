@@ -64,28 +64,30 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT:
-			Editor.controls_enabled = false
-			modifier_icon.hide()
-			input_handler.hide()
-			bpm_field.show()
+			if event.double_click:
+				Editor.controls_enabled = false
+				modifier_icon.hide()
+				input_handler.hide()
+				bpm_field.show()
 		MOUSE_BUTTON_RIGHT:
 			if data['timestamp'] == 0:
 				Console.log({"message": "You can't delete this BPM modifier", "type": 2})
 				return
 			else:
-				var idx = Config.keyframes['modifiers'].find(data)
-				Console.log({"message": "Deleting BPM Change at %s (index %s)" % [data['timestamp'],idx]})
-				Config.keyframes['modifiers'].remove_at(idx)
-				Editor.level_changed = true
-				Util.free_node(self)
-				
+				get_parent().remove_keyframe(data)
 				LevelEditor.calculate_song_info(music.stream)
 				EventManager.editor_update_bpm.emit()
 
 func _on_bpm_field_text_submitted(new_text: String):
-	set_bpm(float(new_text))
 	Editor.controls_enabled = true
-	
 	modifier_icon.show()
 	input_handler.show()
 	bpm_field.hide()
+	
+	if float(new_text) == data.bpm: return
+	
+	var old_data: Dictionary = data.duplicate()
+	Global.undo_redo.create_action("Change BPM")
+	Global.undo_redo.add_do_method(set_bpm.bind(float(new_text)))
+	Global.undo_redo.add_undo_method(set_bpm.bind(old_data.bpm))
+	Global.undo_redo.commit_action()

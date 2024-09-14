@@ -74,6 +74,8 @@ static var cutscene_script_template = [{
 
 static func create_act_config():
 	Console.log({"message": "Creating Modpack Config"})
+	Config.act = act_template.duplicate()
+	
 	var act_config = ConfigFile.new()
 	act_config.set_value("main", "data", act_template)
 	act_config.save(Editor.project_path.get_base_dir().get_base_dir().path_join("act.cfg"))

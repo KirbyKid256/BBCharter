@@ -26,9 +26,4 @@ func _on_input_handler_gui_input(event: InputEvent):
 	match event.button_index:
 		MOUSE_BUTTON_LEFT:
 			if sound_test.stream: sound_test.play()
-		MOUSE_BUTTON_RIGHT:
-			var idx = Config.keyframes['sound_loop'].find(data)
-			Console.log({"message": "Deleting Sound Loop at %s (index %s)" % [data['timestamp'],idx]})
-			Config.keyframes['sound_loop'].remove_at(idx)
-			Editor.level_changed = true
-			Util.free_node(self)
+		MOUSE_BUTTON_RIGHT: get_parent().remove_keyframe(data)

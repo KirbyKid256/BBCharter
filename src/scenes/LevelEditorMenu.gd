@@ -29,7 +29,7 @@ func toggle():
 		act_settings.text = "Act Settings"
 	
 	visible = !visible
-	if visible: music.pause()
+	if visible: music.stop()
 
 func open_submenu():
 	in_submenu = true

@@ -23,15 +23,19 @@ func _input(event):
 		LevelEditor.save_level() 
 		Global.save_indicator.show_saved_succes()
 	
-	if LevelEditor.selected_notes.size() >= 1:
+	if LevelEditor.selected_notes.size() > 0:
 		if event.is_action_pressed("ui_editor_note_ghost"):
-			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.GHOST)
+			var note = LevelEditor.selected_notes[0]
+			note.run_action(note.GHOST)
 		elif event.is_action_pressed("ui_editor_note_auto"):
-			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.AUTO)
+			var note = LevelEditor.selected_notes[0]
+			note.run_action(note.AUTO)
 		elif event.is_action_pressed("ui_editor_note_voice"):
-			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.VOICE)
+			var note = LevelEditor.selected_notes[0]
+			note.run_action(note.VOICE)
 		elif event.is_action_pressed("ui_editor_note_bomb"):
-			for note: EditorNote in LevelEditor.selected_notes: note.run_action(note.BOMB)
+			var note = LevelEditor.selected_notes[0]
+			note.run_action(note.BOMB)
 	
 	if event.is_action_pressed("editor_view_files"):
 		OS.shell_open(Editor.project_path)

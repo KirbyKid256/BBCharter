@@ -27,12 +27,4 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT: pass
-		MOUSE_BUTTON_RIGHT:
-			var idx = Config.keyframes['background'].find(data)
-			Console.log({"message": "Deleting Background at %s (index %s)" % [data['timestamp'],idx]})
-			Config.keyframes['background'].remove_at(idx)
-			Editor.level_changed = true
-			Util.free_node(self)
-			
-			if Config.keyframes['background'].is_empty():
-				background.change_background(idx)
+		MOUSE_BUTTON_RIGHT: get_parent().remove_keyframe(data)

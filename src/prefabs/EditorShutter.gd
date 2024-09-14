@@ -22,9 +22,4 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT: pass
-		MOUSE_BUTTON_RIGHT:
-			var idx = Config.keyframes['shutter'].find(data)
-			Console.log({"message": "Deleting Shutter at %s (index %s)" % [data['timestamp'],idx]})
-			Config.keyframes['shutter'].remove_at(idx)
-			Editor.level_changed = true
-			Util.free_node(self)
+		MOUSE_BUTTON_RIGHT: get_parent().remove_keyframe(data)

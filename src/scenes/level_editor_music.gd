@@ -18,16 +18,8 @@ func _input(event):
 	if not Editor.controls_enabled: return
 	
 	if event.is_action_pressed("ui_accept"):
-		if playing: pause()
-		else: unpause()
-
-func pause():
-	_set_playing(false)
-	LevelEditor.pause_position = LevelEditor.song_position_raw
-
-func unpause():
-	_set_playing(true)
-	seek(LevelEditor.pause_position)
+		if playing: stop()
+		else: play(LevelEditor.song_position_raw)
 
 func _process(_delta):
 	if not Editor.project_loaded: return

@@ -61,12 +61,4 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT: pass
-		MOUSE_BUTTON_RIGHT:
-			var idx = Config.keyframes['loops'].find(data)
-			Console.log({"message": "Deleting animation %s at %s (index %s)" % [self,data['timestamp'],idx]})
-			Config.keyframes['loops'].remove_at(idx)
-			Editor.level_changed = true
-			Util.free_node(self)
-			
-			if Config.keyframes['loops'].is_empty() or LevelEditor.song_position_offset <= data['timestamp']:
-				character.change_animation(idx)
+		MOUSE_BUTTON_RIGHT: get_parent().remove_keyframe(data)

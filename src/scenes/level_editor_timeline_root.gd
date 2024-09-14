@@ -88,10 +88,8 @@ func _input(event):
 
 func timeline_translate(value):
 	LevelEditor.song_position_raw = clampf(LevelEditor.song_position_raw + value, 0.0, LevelEditor.song_length)
-	music.seek(LevelEditor.song_position_raw)
-	LevelEditor.pause_position = LevelEditor.song_position_raw
+	if music.playing: music.seek(LevelEditor.song_position_raw)
 
 func timeline_seek(value):
 	LevelEditor.song_position_raw = clampf(value, 0.0, LevelEditor.song_length)
-	music.seek(LevelEditor.song_position_raw)
-	LevelEditor.pause_position = LevelEditor.song_position_raw
+	if music.playing: music.seek(LevelEditor.song_position_raw)

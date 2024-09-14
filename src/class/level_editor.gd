@@ -27,7 +27,6 @@ static var snapping_index: int
 # Music
 static var song_position_raw: float
 static var song_position_offset: float
-static var pause_position: float
 static var song_beats_total: int
 static var song_beats_per_second: float
 static var song_length: float
@@ -44,22 +43,22 @@ static func calculate_song_info(stream: AudioStream):
 	song_beats_per_second = float(60.0/Config.keyframes['modifiers'][0]['bpm'])
 	song_beats_total = ceil(Math.secs_to_beat_dynamic(song_length - Config.settings['song_offset']))
 
-static func get_timestamp() -> float:
+static func get_timestamp(snap: bool = snapping_allowed) -> float:
 	var song_length_offset = snappedf(song_length - Config.settings['song_offset'], 0.001)
 	var time = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(song_position_offset), 1.0 / snapping_factor)
-	if snapping_allowed else Math.secs_to_beat_dynamic(song_position_offset)))
+	if snap else Math.secs_to_beat_dynamic(song_position_offset)))
 	
 	return song_length_offset if time > song_length_offset\
 	else -Config.settings['song_offset'] if time < -Config.settings['song_offset']\
 	else snappedf(time, 0.001)
 
-static func get_mouse_timestamp(mouse_pos) -> float:
+static func get_mouse_timestamp(mouse_pos, snap: bool = snapping_allowed) -> float:
 	mouse_pos -= 960
 	# Need to grab mouse pos calculations externally
 	var song_length_offset = snappedf(song_length - Config.settings['song_offset'], 0.001)
 	var time = ((song_position_offset * note_speed_mod) - mouse_pos) / note_speed_mod
 	time = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(time), 1.0 / snapping_factor)
-	if snapping_allowed else Math.secs_to_beat_dynamic(time)))
+	if snap else Math.secs_to_beat_dynamic(time)))
 	
 	return song_length_offset if time > song_length_offset\
 	else -Config.settings['song_offset'] if time < -Config.settings['song_offset']\

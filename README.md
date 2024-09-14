@@ -11,7 +11,8 @@ Why didn't I just add the builds to GitHub instead of Mega? I don't know.
 |Ctrl/Cmd + S|Save the current mod.|
 |Ctrl/Cmd + O|Open an existing mod.|
 |Ctrl/Cmd + N|Creating an new mod.|
-|Alt/Opt + S|Toggle snapping|
+|Ctrl/Cmd + Z|Undo|
+|Shift + Ctrl/Cmd + Z or Ctrl/Cmd + Y|Redo|
 ### Directory Shortcuts
 | Hotkey | Function |
 | ------ | ------ |

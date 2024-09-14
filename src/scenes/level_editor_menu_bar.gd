@@ -4,6 +4,7 @@ enum FILE {NEW,OPEN,SAVE}
 @onready var file_popup_menu: PopupMenu = $File
 
 enum EDIT {UNDO,REDO,CUT,COPY,PASTE}
+@onready var edit_popup_menu: PopupMenu = $Edit
 @onready var notes: Node2D = $"../NoteTimeline/TimelineRoot/Notes"
 
 enum ADD {SHUTTER,MODIFIER}
@@ -18,9 +19,18 @@ enum HELP {CONTROLS,WIKI,DISCORD}
 
 func _ready():
 	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
+	Global.undo_redo.version_changed.connect(_on_undo_or_redo)
 	
+	for i in edit_popup_menu.item_count:
+		edit_popup_menu.set_item_disabled(i, true)
 	set_menu_disabled(1, true)
+	
+	for i in add_popup_menu.item_count:
+		add_popup_menu.set_item_disabled(i, true)
 	set_menu_disabled(2, true)
+	
+	if OS.get_name() == "macOS":
+		set_menu_hidden(3, true)
 	
 	if is_native_menu(): position.y -= size.y
 	if Editor.project_loaded: _on_editor_project_loaded()
@@ -29,9 +39,18 @@ func _on_editor_project_loaded():
 	#File
 	file_popup_menu.set_item_disabled(2, false)
 	#Edit
+	_on_undo_or_redo()
 	set_menu_disabled(1, false)
+	for i in edit_popup_menu.item_count:
+		edit_popup_menu.set_item_disabled(i, false)
 	#Add
 	set_menu_disabled(2, false)
+	for i in add_popup_menu.item_count:
+		add_popup_menu.set_item_disabled(i, false)
+
+func _on_undo_or_redo():
+	edit_popup_menu.set_item_disabled(0, not Global.undo_redo.has_undo())
+	edit_popup_menu.set_item_disabled(1, not Global.undo_redo.has_redo())
 
 func _input(event: InputEvent):
 	if not Editor.project_loaded: return
@@ -51,6 +70,8 @@ func _on_file_id_pressed(id):
 
 func _on_edit_id_pressed(id):
 	match id:
+		EDIT.UNDO: Global.undo_redo.undo()
+		EDIT.REDO: Global.undo_redo.redo()
 		EDIT.CUT: notes.cut_selected_notes()
 		EDIT.COPY: notes.copy_selected_notes()
 		EDIT.PASTE: notes.paste_selected_notes()

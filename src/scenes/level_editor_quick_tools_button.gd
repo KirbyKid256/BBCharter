@@ -5,11 +5,14 @@ extends Button
 @onready var hold_icon: CompressedTexture2D = preload("res://assets/ui/tool_hold.png")
 @onready var voice_icon: CompressedTexture2D = preload("res://assets/ui/level_editor_icon_audio.png")
 
+@onready var note_selector = $"../../NoteSelector"
+
 func _ready():
 	set_tool()
 
 func set_tool(change: int = 0):
 	LevelEditor.current_tool = wrapi(LevelEditor.current_tool+change,0,LevelEditor.TOOL.keys().size())
+	note_selector.deselect_notes()
 	
 	match LevelEditor.current_tool:
 		LevelEditor.TOOL.POINT:
