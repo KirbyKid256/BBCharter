@@ -330,21 +330,6 @@ static func convert(path: String = Editor.project_path):
 		Editor.project_path = path
 		Global.file_dialog.current_dir = path
 	
-	for key: String in ["loops", "effects", "background", "voice_bank"]:
-		for data: Dictionary in keyframes[key]:
-			if data.is_empty(): continue
-			
-			data = data.duplicate(true)
-			data.erase("timestamp")
-			
-			if key == "loops":
-				data["sprite_sheet"] = data.animations.normal
-				data.erase("animations")
-			else:
-				data["audio_path" if key == "voice_bank" else "sprite_sheet"] = data.path
-				data.erase("path")
-			LevelEditor.append_asset_cache(data)
-	
 	var config = ConfigFile.new()
 	config.set_value("main", "data", notes); config.save(path + "config/notes.cfg")
 	config.set_value("main", "data", asset); config.save(path + "config/asset.cfg")

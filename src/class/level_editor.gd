@@ -90,6 +90,8 @@ static func append_asset_cache(cache_data: Dictionary) -> void:
 # Remove an asset from the cache
 static func remove_asset_cache(cache_data: Dictionary) -> void:
 	editor_asset_cache = get_asset_cache()
+	
+	# Check if asset exists
 	if not editor_asset_cache.has(cache_data):
 		Console.log({"message": "Asset does not exist in cache...", "type": 1})
 		return

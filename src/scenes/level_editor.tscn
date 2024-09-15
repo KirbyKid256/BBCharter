@@ -589,12 +589,10 @@ item_13/id = 11
 
 [node name="Help" type="PopupMenu" parent="MenuBar"]
 system_menu_id = 4
-item_count = 3
-item_0/text = "Controls"
-item_1/text = "Documentation"
+item_count = 2
+item_0/text = "GitHub"
+item_1/text = "Discord"
 item_1/id = 1
-item_2/text = "Discord"
-item_2/id = 2
 
 [node name="Preview" type="Control" parent="."]
 clip_contents = true
@@ -1984,7 +1982,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Name"
+text = "Difficulty Name"
 label_settings = SubResource("LabelSettings_irclh")
 
 [node name="Label2" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer"]
@@ -2020,10 +2018,21 @@ popup/item_6/id = 6
 popup/item_7/text = "6.0x Speed"
 popup/item_7/id = 7
 
+[node name="Label" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Duplicate Difficulty"
+label_settings = SubResource("LabelSettings_irclh")
+
+[node name="DuplicateField" type="OptionButton" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+
 [node name="Label2" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Icon"
+text = "Difficulty Icon"
 label_settings = SubResource("LabelSettings_irclh")
 
 [node name="FileSelection" parent="MenuOverlays/DifficultySettingsMenu/Settings" instance=ExtResource("47_bq5k6")]
@@ -2289,6 +2298,7 @@ script = ExtResource("40_x5fle")
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Difficulties/VBoxContainer/AddButton" to="MenuOverlays/DifficultySettingsMenu" method="_on_add_button_up"]
 [connection signal="text_submitted" from="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer2/NameField" to="MenuOverlays/DifficultySettingsMenu" method="_on_name_field_text_submitted"]
 [connection signal="item_selected" from="MenuOverlays/DifficultySettingsMenu/Settings/HBoxContainer2/SpeedField" to="MenuOverlays/DifficultySettingsMenu" method="_on_speed_field_item_selected"]
+[connection signal="item_selected" from="MenuOverlays/DifficultySettingsMenu/Settings/DuplicateField" to="MenuOverlays/DifficultySettingsMenu" method="_on_duplicate_field_item_selected"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Save" to="MenuOverlays/DifficultySettingsMenu" method="_on_save_button_up"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/DifficultySettingsMenu" method="hide"]
 [connection signal="button_up" from="MenuOverlays/DifficultySettingsMenu/Buttons/Cancel" to="MenuOverlays/LevelEditorMenu" method="close_submenu"]

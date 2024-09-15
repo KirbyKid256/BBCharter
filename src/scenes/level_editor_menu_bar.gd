@@ -19,7 +19,8 @@ enum CLEAR {ALL,OOB,NOTE,KEYS}
 @onready var clear_popup_menu: PopupMenu = $Clear
 @onready var keyframes: VBoxContainer = $"../ScrollContainer/Keyframes"
 
-enum HELP {CONTROLS,WIKI,DISCORD}
+enum HELP {GITHUB,DISCORD}
+@onready var help_popup_menu: PopupMenu = $Help
 
 func _ready():
 	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
@@ -53,6 +54,8 @@ func _ready():
 	set_menu_disabled(3, true)
 	
 	#Help
+	help_popup_menu.set_item_icon(HELP.GITHUB, preload("res://assets/ui/help_github_icon.png"))
+	help_popup_menu.set_item_icon(HELP.DISCORD, preload("res://assets/ui/help_discord_icon.png"))
 	if OS.get_name() == "macOS":
 		set_menu_hidden(4, true)
 	
@@ -75,8 +78,8 @@ func _on_editor_project_loaded():
 		clear_popup_menu.set_item_disabled(i, false)
 
 func _on_undo_or_redo():
-	edit_popup_menu.set_item_disabled(0, not Global.undo_redo.has_undo())
-	edit_popup_menu.set_item_disabled(1, not Global.undo_redo.has_redo())
+	edit_popup_menu.set_item_disabled(EDIT.UNDO, not Global.undo_redo.has_undo())
+	edit_popup_menu.set_item_disabled(EDIT.REDO, not Global.undo_redo.has_redo())
 
 func _input(event: InputEvent):
 	if not Editor.project_loaded: return
@@ -118,8 +121,7 @@ func _on_add_id_pressed(id):
 
 func _on_help_id_pressed(id):
 	match id:
-		HELP.CONTROLS: OS.shell_open("https://github.com/KirbyKid256/BBCharter?tab=readme-ov-file#bb-charter")
-		HELP.WIKI: OS.shell_open("https://github.com/KirbyKid256/BBCharter/wiki")
+		HELP.GITHUB: OS.shell_open("https://github.com/KirbyKid256/BBCharter")
 		HELP.DISCORD: OS.shell_open("https://discord.gg/beatbanger")
 
 func _on_clear_id_pressed(id):

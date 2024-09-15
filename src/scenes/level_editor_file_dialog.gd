@@ -54,10 +54,40 @@ func _on_dir_selected(new_path: String):
 		Editor.project_loaded = false
 		Config.validate_ids()
 		
+		# Don't need to do this twice
 		if not confirm_menu.visible:
 			Global.undo_redo.clear_history(Global.undo_redo.get_version() != Editor.saved_version)
 			Editor.saved_version = Global.undo_redo.get_version()
 		
+		# Auto-Generate Asset Cache if possible
+		if LevelEditor.get_asset_cache().is_empty():
+			for key in ["loops", "effects", "background", "sound_loop", "voice_bank"]: for data in Config.keyframes[key]:
+				if data.is_empty(): continue
+				
+				data = data.duplicate(true)
+				data.erase("timestamp")
+				
+				match key:
+					"loops":
+						if data.animations.normal.is_empty(): continue
+						data["sprite_sheet"] = data.animations.normal
+						data.erase("animations")
+					"sound_loop":
+						if typeof(data.path) != TYPE_ARRAY: continue
+						data.audio_path = data.path
+						data.erase("path")
+					"voice_bank":
+						if data.voice_paths.is_empty(): continue
+						data.audio_path = data.voice_paths
+						data.erase("voice_paths")
+					_:
+						if data.path.is_empty(): continue
+						data.sprite_sheet = data.path
+						data.erase("path")
+				
+				LevelEditor.append_asset_cache(data)
+		
+		# Clear everything and start fresh
 		Util.clear_children(notes)
 		Util.clear_children(animations)
 		Util.clear_children(effects)

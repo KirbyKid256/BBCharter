@@ -44,7 +44,7 @@ label_settings = SubResource("LabelSettings_memg6")
 text_overrun_behavior = 3
 
 [node name="ContextMenu" type="PopupMenu" parent="."]
-size = Vector2i(133, 62)
+size = Vector2i(117, 62)
 hide_on_state_item_selection = true
 item_count = 2
 item_0/text = "Edit Asset"

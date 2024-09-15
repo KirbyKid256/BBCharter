@@ -8,6 +8,8 @@ extends Control
 
 @onready var name_field: LineEdit = $Settings/HBoxContainer2/NameField
 @onready var speed_field: OptionButton = $Settings/HBoxContainer2/SpeedField
+@onready var duplicate_label: Label = $Settings/Label
+@onready var duplicate_field: OptionButton = $Settings/DuplicateField
 @onready var file_selection: ScrollContainer = $Settings/FileSelection
 
 var total_data: Array
@@ -22,6 +24,8 @@ func _input(event):
 
 func _on_difficulty_settings_button_up():
 	file_selection.reload_list()
+	duplicate_field.clear()
+	duplicate_field.add_item("- Don't Copy Notes -")
 	
 	for child: Control in difficulties.get_children():
 		if child is Button: continue # Don't touch the Add button
@@ -36,6 +40,9 @@ func _on_difficulty_settings_button_up():
 		difficulties.add_child(difficulty)
 		difficulty.setup(data)
 		difficulty.selected.connect(_on_difficulty_selected)
+		
+		if not data.notes.is_empty():
+			duplicate_field.add_item(data.name, data.rating)
 	
 	difficulties.move_child(add_button, total_data.size())
 	_on_difficulty_selected(LevelEditor.difficulty_index)
@@ -50,6 +57,9 @@ func _on_difficulty_selected(idx: int):
 		difficulties.get_child(selected).outline.show()
 		name_field.text = total_data[selected].name
 		speed_field.selected = total_data[selected].get('speed', 0)
+	
+	duplicate_label.set_visible(total_data[selected].notes.is_empty())
+	duplicate_field.set_visible(total_data[selected].notes.is_empty())
 
 func _on_add_button_up():
 	var new_data = {"name": "Normal", "notes": []}
@@ -74,6 +84,12 @@ func _on_name_field_text_submitted(new_text):
 	total_data[selected].name = new_text
 	difficulties.get_child(selected).difficulty_name.text = new_text
 
+func _on_duplicate_field_item_selected(index):
+	if index > 0:
+		total_data[selected].duplicate = duplicate_field.get_item_id(index)
+	else:
+		total_data[selected].erase('duplicate')
+
 func _on_speed_field_item_selected(index):
 	if index > 0:
 		total_data[selected].speed = index
@@ -97,9 +113,14 @@ func _on_save_button_up():
 			break
 	for i in total_data.size():
 		total_data[i].rating = i
+		if total_data[i].has('duplicate'):
+			total_data[i].notes = Config.notes['charts'][total_data[i].duplicate].notes.duplicate(true)
+			total_data[i].erase('duplicate')
 	
 	Config.notes['charts'] = total_data
+	difficulty_select.disabled = true
 	difficulty_select.reload_items()
+	difficulty_select.disabled = false
 	
 	Editor.level_changed = true
 	Editor.controls_enabled = true
