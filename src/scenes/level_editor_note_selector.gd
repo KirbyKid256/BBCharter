@@ -4,6 +4,7 @@ class_name NoteSelector
 @onready var selection_area: Area2D = $SelectionArea
 @onready var selection_shape: CollisionShape2D = $SelectionArea/SelectionShape
 @onready var note_track: Node2D = $'../NoteTimeline/TimelineRoot/Notes'
+@onready var menu_bar: MenuBar = $'../MenuBar'
 
 var dragging_area: bool
 var drag_start_pos: Vector2
@@ -72,10 +73,19 @@ func select_notes():
 				note.selected = false
 				note.check_selected()
 	
+	# Don't continue if no notes are selected
+	if LevelEditor.selected_notes.is_empty():
+		menu_bar.edit_popup_menu.set_item_disabled(3, true)
+		menu_bar.edit_popup_menu.set_item_disabled(4, true)
+		return
+	
 	# Highlight selected notes
 	for note: EditorNote in LevelEditor.selected_notes:
 		note.selected = true
 		note.check_selected()
+	
+	menu_bar.edit_popup_menu.set_item_disabled(3, false)
+	menu_bar.edit_popup_menu.set_item_disabled(4, false)
 
 func group_remove_notes():
 	var selected_data: Array
@@ -96,3 +106,6 @@ func deselect_notes():
 		note.selected = false
 		note.check_selected()
 	LevelEditor.selected_notes.clear()
+	
+	menu_bar.edit_popup_menu.set_item_disabled(3, true)
+	menu_bar.edit_popup_menu.set_item_disabled(4, true)

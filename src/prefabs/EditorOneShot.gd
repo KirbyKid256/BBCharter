@@ -26,4 +26,4 @@ func _on_input_handler_gui_input(event: InputEvent):
 	match event.button_index:
 		MOUSE_BUTTON_LEFT:
 			if sound_test.stream: sound_test.play()
-		MOUSE_BUTTON_RIGHT: get_parent().remove_keyframe(data)
+		MOUSE_BUTTON_RIGHT: get_parent().delete_keyframe(data)

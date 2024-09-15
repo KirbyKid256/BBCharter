@@ -12,15 +12,6 @@ func _ready():
 	Console.log({"message": "OS Name : %s" % OS.get_name()})
 	Console.log({"message": "Screen Resolution : %s" % DisplayServer.screen_get_size()})
 
-func _input(event):
-	if not Editor.controls_enabled: return
-	if not Editor.project_loaded: return
-	
-	if event.is_action_pressed("ui_redo") and undo_redo.has_redo():
-		undo_redo.redo()
-	elif not event.is_action_pressed("ui_redo") and event.is_action_pressed("ui_undo") and undo_redo.has_undo():
-		undo_redo.undo()
-
 func get_executable_path() -> String:
 	if OS.is_debug_build():
 		return ProjectSettings.globalize_path("res://")

@@ -118,11 +118,14 @@ static func replace_asset_cache(old_data: Dictionary, new_data: Dictionary) -> v
 #endregion
 
 # Place all keyframes found in config
-static func place_init_keyframes(key: String, root_note: Node2D, prefab: PackedScene):
+static func place_init_keyframes(key: String, root_node: Node2D, prefab: PackedScene):
 	for keyframe_data in Config.keyframes.get(key, []):
-		var new_keyframe = prefab.instantiate() as Node2D
-		root_note.add_child(new_keyframe)
-		new_keyframe.setup(keyframe_data)
+		if Editor.project_loaded:
+			root_node.add_keyframe(keyframe_data)
+		else:
+			var new_keyframe = prefab.instantiate() as Node2D
+			root_node.add_child(new_keyframe)
+			new_keyframe.setup(keyframe_data)
 
 # Create a new keyframe from an asset
 static func create_new_keyframe(key: String, data: Dictionary, timestamp: float) -> bool:

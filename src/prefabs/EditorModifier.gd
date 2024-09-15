@@ -73,7 +73,7 @@ func _on_input_handler_gui_input(event: InputEvent):
 				Console.log({"message": "You can't delete this BPM modifier", "type": 2})
 				return
 			else:
-				get_parent().remove_keyframe(data)
+				get_parent().delete_keyframe(data)
 				LevelEditor.calculate_song_info(music.stream)
 				EventManager.editor_update_bpm.emit()
 

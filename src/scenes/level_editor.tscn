@@ -519,7 +519,6 @@ flat = true
 script = ExtResource("10_7ahkl")
 
 [node name="File" type="PopupMenu" parent="MenuBar"]
-size = Vector2i(121, 100)
 item_count = 3
 item_0/text = "New Project"
 item_1/text = "Open Project"
@@ -532,10 +531,8 @@ item_2/disabled = true
 auto_translate_mode = 1
 item_count = 6
 item_0/text = "Undo"
-item_0/disabled = true
 item_1/text = "Redo"
 item_1/id = 1
-item_1/disabled = true
 item_2/id = 5
 item_2/separator = true
 item_3/text = "Cut"
@@ -546,7 +543,6 @@ item_5/text = "Paste"
 item_5/id = 4
 
 [node name="Add" type="PopupMenu" parent="MenuBar"]
-size = Vector2i(125, 62)
 item_count = 6
 item_0/text = "Shutter"
 item_1/text = "BPM Change"
@@ -559,6 +555,37 @@ item_4/text = "Empty Sound Loop"
 item_4/id = 3
 item_5/text = "Empty Voice Bank"
 item_5/id = 4
+
+[node name="Clear" type="PopupMenu" parent="MenuBar"]
+auto_translate_mode = 1
+item_count = 14
+item_0/text = "Everything"
+item_1/text = "Out of Bounds Only"
+item_1/id = 1
+item_2/id = 12
+item_2/separator = true
+item_3/text = "Notes"
+item_3/id = 2
+item_4/text = "Keyframes"
+item_4/id = 3
+item_5/id = 13
+item_5/separator = true
+item_6/text = "Animations"
+item_6/id = 4
+item_7/text = "Effects"
+item_7/id = 5
+item_8/text = "Backgrounds"
+item_8/id = 6
+item_9/text = "One-Shot Sounds"
+item_9/id = 7
+item_10/text = "Sound Loops"
+item_10/id = 8
+item_11/text = "Voice Banks"
+item_11/id = 9
+item_12/text = "Shutters"
+item_12/id = 10
+item_13/text = "Modifiers"
+item_13/id = 11
 
 [node name="Help" type="PopupMenu" parent="MenuBar"]
 system_menu_id = 4
@@ -746,7 +773,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 z_index = 1
 position = Vector2(960, 24)
 script = ExtResource("12_2jjhh")
-editor_keyframe_prefab = ExtResource("15_givjm")
+key = "loops"
+prefab = ExtResource("15_givjm")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/Animations"]
 z_index = 1
@@ -768,7 +796,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
 z_index = 1
 position = Vector2(960, 24)
 script = ExtResource("25_aiond")
-editor_keyframe_prefab = ExtResource("26_gjg1p")
+key = "effects"
+prefab = ExtResource("26_gjg1p")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/Effects"]
 z_index = 1
@@ -790,7 +819,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 z_index = 1
 position = Vector2(960, 24)
 script = ExtResource("26_l0b8o")
-editor_keyframe_prefab = ExtResource("28_30bac")
+key = "background"
+prefab = ExtResource("28_30bac")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/Backgrounds"]
 z_index = 1
@@ -812,7 +842,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
 z_index = 1
 position = Vector2(960, 24)
 script = ExtResource("23_bh826")
-editor_keyframe_prefab = ExtResource("24_eghhy")
+key = "sound_oneshot"
+prefab = ExtResource("24_eghhy")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/OneShotAudios"]
 z_index = 1
@@ -834,7 +865,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 z_index = 1
 position = Vector2(960, 24)
 script = ExtResource("29_7jeuk")
-editor_keyframe_prefab = ExtResource("30_sfied")
+key = "sound_loop"
+prefab = ExtResource("30_sfied")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/LoopSounds"]
 z_index = 1
@@ -856,7 +888,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
 z_index = 1
 position = Vector2(960, 24)
 script = ExtResource("33_yuy35")
-editor_keyframe_prefab = ExtResource("35_ltv3x")
+key = "voice_bank"
+prefab = ExtResource("35_ltv3x")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/VoiceBanks"]
 z_index = 1
@@ -878,7 +911,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_toj1b")
 z_index = 1
 position = Vector2(960, 20)
 script = ExtResource("17_otbon")
-editor_shutter_prefab = ExtResource("18_s8cfp")
+key = "shutter"
+prefab = ExtResource("18_s8cfp")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/Shutters"]
 z_index = 1
@@ -900,7 +934,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dv17x")
 z_index = 1
 position = Vector2(960, 20)
 script = ExtResource("19_fo15r")
-editor_keyframe_prefab = ExtResource("20_vhcng")
+key = "modifiers"
+prefab = ExtResource("20_vhcng")
 
 [node name="Label" type="Label" parent="ScrollContainer/Keyframes/Modifiers"]
 z_index = 1
@@ -2228,6 +2263,7 @@ script = ExtResource("40_x5fle")
 [connection signal="id_pressed" from="MenuBar/File" to="MenuBar" method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Edit" to="MenuBar" method="_on_edit_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Add" to="MenuBar" method="_on_add_id_pressed"]
+[connection signal="id_pressed" from="MenuBar/Clear" to="MenuBar" method="_on_clear_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Help" to="MenuBar" method="_on_help_id_pressed"]
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Create" to="FileDrop" method="_on_audio_create_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Cancel" to="FileDrop" method="_on_audio_cancel_button_up"]

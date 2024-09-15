@@ -1,6 +1,7 @@
 extends Node2D
 
-@export var editor_keyframe_prefab: PackedScene
+@export var key: String
+@export var prefab: PackedScene
 
 @onready var character = $"../../../../Preview/Character"
 
@@ -9,39 +10,43 @@ func _ready():
 	if Editor.project_loaded: load_keyframes()
 
 func load_keyframes():
-	LevelEditor.place_init_keyframes("loops", self, editor_keyframe_prefab)
+	LevelEditor.place_init_keyframes(key, self, prefab)
+
+func clear_keyframes():
+	for i in range(get_child_count()-1, -1, -1):
+		remove_keyframe(get_child(i).data)
 
 func _process(_delta):
 	position.x = (LevelEditor.song_position_offset * LevelEditor.note_speed_mod) + 960
 
 func _update_child_order():
 	for child in get_children():
-		var idx: int = Config.keyframes['loops'].find(child.data)
+		var idx: int = Config.keyframes[key].find(child.data)
 		if child.get_index() != idx: move_child(child, idx)
 
-func _add_animation(data: Dictionary):
-	LevelEditor.add_single_keyframe(data, self, editor_keyframe_prefab)
-	if Config.keyframes['loops'].find(data) < 0:
-		Config.keyframes['loops'].append(data)
-		Config.keyframes['loops'].sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
+func add_keyframe(data: Dictionary):
+	LevelEditor.add_single_keyframe(data, self, prefab)
+	if Config.keyframes[key].find(data) < 0:
+		Config.keyframes[key].append(data)
+		Config.keyframes[key].sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
 	
-	if Config.keyframes['loops'].is_empty() or LevelEditor.song_position_offset > data['timestamp']:
-		character.change_animation(Config.keyframes['loops'].find(data))
-	elif LevelEditor.song_position_offset <= Config.keyframes['loops'][0].timestamp:
+	if Config.keyframes[key].is_empty() or LevelEditor.song_position_offset > data['timestamp']:
+		character.change_animation(Config.keyframes[key].find(data))
+	elif LevelEditor.song_position_offset <= Config.keyframes[key][0].timestamp:
 		character.change_animation(0)
 	
 	_update_child_order()
 
-func _remove_animation(data: Dictionary):
+func remove_keyframe(data: Dictionary):
 	_update_child_order()
 	
-	var idx: int = Config.keyframes['loops'].find(data)
+	var idx: int = Config.keyframes[key].find(data)
 	Util.free_node(get_child(idx))
-	Config.keyframes['loops'].remove_at(idx)
+	Config.keyframes[key].remove_at(idx)
 	
-	if Config.keyframes['loops'].is_empty() or LevelEditor.song_position_offset > data['timestamp']:
-		character.change_animation(idx)
-	elif LevelEditor.song_position_offset <= Config.keyframes['loops'][0].timestamp:
+	if Config.keyframes[key].is_empty() or LevelEditor.song_position_offset > data['timestamp']:
+		character.change_animation(clampi(idx, 0, Config.keyframes[key].size() - 1))
+	elif LevelEditor.song_position_offset <= Config.keyframes[key][0].timestamp:
 		character.change_animation(0)
 
 func create_keyframe(keyframe_data: Dictionary):
@@ -55,15 +60,15 @@ func create_keyframe(keyframe_data: Dictionary):
 	if keyframe_data.has("scale_multiplier"):
 		new_keyframe_data.merge({"scale_multiplier": keyframe_data["scale_multiplier"]})
 	
-	if LevelEditor.create_new_keyframe("loops", new_keyframe_data, timestamp):
+	if LevelEditor.create_new_keyframe(key, new_keyframe_data, timestamp):
 		Global.undo_redo.create_action("Add Animation")
-		Global.undo_redo.add_do_method(_add_animation.bind(new_keyframe_data))
-		Global.undo_redo.add_undo_method(_remove_animation.bind(new_keyframe_data))
+		Global.undo_redo.add_do_method(add_keyframe.bind(new_keyframe_data))
+		Global.undo_redo.add_undo_method(remove_keyframe.bind(new_keyframe_data))
 		Global.undo_redo.commit_action()
 
-func remove_keyframe(data: Dictionary):
+func delete_keyframe(data: Dictionary):
 	Console.log({"message": 'Deleting animation at "%s"' % data['timestamp']})
 	Global.undo_redo.create_action("Remove Animation")
-	Global.undo_redo.add_do_method(_remove_animation.bind(data))
-	Global.undo_redo.add_undo_method(_add_animation.bind(data))
+	Global.undo_redo.add_do_method(remove_keyframe.bind(data))
+	Global.undo_redo.add_undo_method(add_keyframe.bind(data))
 	Global.undo_redo.commit_action()

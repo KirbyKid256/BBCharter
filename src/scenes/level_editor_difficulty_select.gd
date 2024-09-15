@@ -21,6 +21,7 @@ func reload_items():
 		add_item(Config.notes['charts'][i]['name'], i)
 	
 	select(LevelEditor.difficulty_index)
+	_on_item_selected(selected)
 
 func _on_item_selected(index):
 	var old_index: int = LevelEditor.difficulty_index

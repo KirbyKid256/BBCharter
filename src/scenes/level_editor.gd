@@ -12,18 +12,7 @@ func _input(event):
 		Global.editor_menu.toggle()
 	
 	if not Editor.controls_enabled: return
-	
-	if event.is_action_pressed("ui_editor_new"):
-		Global.file_dialog.new_project()
-	
-	if event.is_action_pressed("ui_editor_open"):
-		Global.file_dialog.open_project()
-	
 	if not Editor.project_loaded: return
-	
-	if event.is_action_pressed("ui_editor_save"):
-		LevelEditor.save_level() 
-		Global.save_indicator.show_saved_succes()
 	
 	if LevelEditor.selected_notes.size() > 0:
 		if event.is_action_pressed("ui_editor_note_ghost"):

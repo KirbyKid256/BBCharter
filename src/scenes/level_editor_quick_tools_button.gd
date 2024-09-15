@@ -12,7 +12,7 @@ func _ready():
 
 func set_tool(change: int = 0):
 	LevelEditor.current_tool = wrapi(LevelEditor.current_tool+change,0,LevelEditor.TOOL.keys().size())
-	note_selector.deselect_notes()
+	if change != 0: note_selector.deselect_notes()
 	
 	match LevelEditor.current_tool:
 		LevelEditor.TOOL.POINT:

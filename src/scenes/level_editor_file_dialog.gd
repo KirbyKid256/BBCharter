@@ -37,7 +37,7 @@ func _on_dir_selected(new_path: String):
 		confirm_menu.open()
 		confirm_menu.close_signal = func():
 			Editor.level_changed = false
-			Global.undo_redo.clear_history()
+			Global.undo_redo.clear_history(Global.undo_redo.get_version() != Editor.saved_version)
 			Editor.saved_version = Global.undo_redo.get_version()
 			_on_dir_selected(new_path)
 		return
@@ -53,6 +53,10 @@ func _on_dir_selected(new_path: String):
 	if Config.store_config_data():
 		Editor.project_loaded = false
 		Config.validate_ids()
+		
+		if not confirm_menu.visible:
+			Global.undo_redo.clear_history(Global.undo_redo.get_version() != Editor.saved_version)
+			Editor.saved_version = Global.undo_redo.get_version()
 		
 		Util.clear_children(notes)
 		Util.clear_children(animations)

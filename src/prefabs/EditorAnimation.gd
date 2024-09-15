@@ -59,4 +59,4 @@ func _on_input_handler_gui_input(event: InputEvent):
 	if not event.pressed: return
 	match event.button_index:
 		MOUSE_BUTTON_LEFT: pass
-		MOUSE_BUTTON_RIGHT: get_parent().remove_keyframe(data)
+		MOUSE_BUTTON_RIGHT: get_parent().delete_keyframe(data)

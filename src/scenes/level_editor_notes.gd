@@ -1,27 +1,51 @@
 extends Node2D
 
 @export var editor_note_prefab: PackedScene
+
 @onready var note_selector: NoteSelector = $'../../../NoteSelector'
+@onready var menu_bar: MenuBar = $'../../../MenuBar'
 
 var note_clipboard: Array
 
 func _ready():
 	if Editor.project_loaded: load_notes()
+	
+	LevelEditor.selected_notes.clear()
+	note_clipboard.clear()
 
 func load_notes():
-	LevelEditor.selected_notes.clear()
+	note_selector.deselect_notes()
+	
 	for editor_note in Difficulty.get_chart_notes():
 		var new_editor_note = editor_note_prefab.instantiate() as EditorNote
 		add_child(new_editor_note)
 		new_editor_note.setup(editor_note)
 
+func clear_notes():
+	note_selector.deselect_notes()
+	if Difficulty.get_chart_notes().is_empty(): return
+	
+	Difficulty.get_chart_notes().clear()
+	Util.clear_children_node_2d(self)
+
+func clear_notes_oob():
+	note_selector.deselect_notes()
+	
+	var song_length_offset = snappedf(LevelEditor.song_length - Config.settings['song_offset'], 0.001)
+	var outer_notes = Difficulty.get_chart_notes().filter(func(note): return note.timestamp > song_length_offset or note.timestamp < -Config.settings['song_offset']).duplicate(true)
+	
+	if outer_notes.is_empty(): return
+	
+	Global.undo_redo.create_action("Clear Notes")
+	Global.undo_redo.add_do_method(func():
+		for note: Dictionary in outer_notes: remove_note(note))
+	Global.undo_redo.add_undo_method(func():
+		for note: Dictionary in outer_notes: add_note(note))
+	Global.undo_redo.commit_action()
+
 func _input(event):
 	if not Editor.project_loaded: return
 	if not Editor.controls_enabled: return
-	
-	if event.is_action_pressed("ui_cut"): cut_selected_notes()
-	if event.is_action_pressed("ui_copy"): copy_selected_notes()
-	if event.is_action_pressed("ui_paste"): paste_selected_notes()
 	
 	if event is InputEventKey and event.alt_pressed: return
 	if event is InputEventKey and event.is_command_or_control_pressed(): return
@@ -35,12 +59,14 @@ func cut_selected_notes():
 	for note: EditorNote in LevelEditor.selected_notes:
 		note_clipboard.append(note.data)
 	note_selector.group_remove_notes()
+	menu_bar.edit_popup_menu.set_item_disabled(5, false)
 
 func copy_selected_notes():
 	if LevelEditor.selected_notes.is_empty(): Console.log({"message": "No Notes to copy..."}); return
 	note_clipboard.clear()
 	for note: EditorNote in LevelEditor.selected_notes:
 		note_clipboard.append(note.data)
+	menu_bar.edit_popup_menu.set_item_disabled(5, false)
  
 func paste_selected_notes():
 	if note_clipboard.is_empty(): Console.log({"message": "No Notes to paste..."}); return
