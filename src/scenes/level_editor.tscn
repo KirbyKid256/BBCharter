@@ -519,13 +519,18 @@ flat = true
 script = ExtResource("10_7ahkl")
 
 [node name="File" type="PopupMenu" parent="MenuBar"]
-item_count = 3
+item_count = 5
 item_0/text = "New Project"
 item_1/text = "Open Project"
 item_1/id = 1
-item_2/text = "Save Project"
-item_2/id = 2
-item_2/disabled = true
+item_2/id = 4
+item_2/separator = true
+item_3/text = "Save Project"
+item_3/id = 2
+item_3/disabled = true
+item_4/text = "Reload Project"
+item_4/id = 3
+item_4/disabled = true
 
 [node name="Edit" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
@@ -2027,7 +2032,6 @@ label_settings = SubResource("LabelSettings_irclh")
 [node name="DuplicateField" type="OptionButton" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
 layout_mode = 2
 size_flags_horizontal = 3
-selected = 0
 
 [node name="Label2" type="Label" parent="MenuOverlays/DifficultySettingsMenu/Settings"]
 layout_mode = 2

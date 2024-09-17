@@ -1,6 +1,6 @@
 extends MenuBar
 
-enum FILE {NEW,OPEN,SAVE}
+enum FILE {NEW,OPEN,SAVE,RELOAD}
 @onready var file_popup_menu: PopupMenu = $File
 
 enum EDIT {UNDO,REDO,CUT,COPY,PASTE}
@@ -27,16 +27,18 @@ func _ready():
 	Global.undo_redo.version_changed.connect(_on_undo_or_redo)
 	
 	#File
+	var skip: int = 0
 	for key in FILE.keys():
+		if key == "SAVE": skip += 1
 		var shortcut: Shortcut = Shortcut.new()
 		shortcut.events = InputMap.action_get_events("ui_" + key.to_lower())
-		file_popup_menu.set_item_shortcut(FILE[key], shortcut)
+		file_popup_menu.set_item_shortcut(FILE[key] + skip, shortcut)
 	
 	#Edit
 	for i in edit_popup_menu.item_count:
 		edit_popup_menu.set_item_disabled(i, true)
 	set_menu_disabled(1, true)
-	var skip: int = 0
+	skip = 0
 	for key in EDIT.keys():
 		if key == "CUT": skip += 1
 		var shortcut: Shortcut = Shortcut.new()
@@ -64,7 +66,8 @@ func _ready():
 
 func _on_editor_project_loaded():
 	#File
-	file_popup_menu.set_item_disabled(2, false)
+	file_popup_menu.set_item_disabled(3, false)
+	file_popup_menu.set_item_disabled(4, false)
 	#Edit
 	set_menu_disabled(1, false)
 	_on_undo_or_redo()
@@ -99,6 +102,7 @@ func _on_file_id_pressed(id):
 			if not Editor.project_loaded: return
 			LevelEditor.save_level() 
 			Global.save_indicator.show_saved_succes()
+		FILE.RELOAD: Global.file_dialog._on_dir_selected(Editor.project_path.get_base_dir())
 
 func _on_edit_id_pressed(id):
 	if not Editor.controls_enabled: return
