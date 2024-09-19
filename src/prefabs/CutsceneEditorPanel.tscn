@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://das7s0vbarfpr"]
+[gd_scene load_steps=7 format=3 uid="uid://das7s0vbarfpr"]
 
 [ext_resource type="Texture2D" uid="uid://d26s07qyxxmec" path="res://assets/images/placeholder_misc.png" id="1_an6un"]
 [ext_resource type="Script" path="res://src/prefabs/CutsceneEditorPanel.gd" id="1_bl5vd"]
 [ext_resource type="FontFile" uid="uid://d23w6chkropfb" path="res://assets/font/noto/NotoSansJP-Bold.ttf" id="2_odmfs"]
 [ext_resource type="Texture2D" uid="uid://dbsmygu8s8chd" path="res://assets/ui/arrow_left.png" id="4_ulb4o"]
+[ext_resource type="Texture2D" uid="uid://dfu4wkrohcgqq" path="res://assets/ui/plus_add.png" id="5_ddk4p"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_erer2"]
 font = ExtResource("2_odmfs")
@@ -77,9 +78,20 @@ ignore_texture_size = true
 stretch_mode = 0
 flip_h = true
 
+[node name="DeleteButton" type="TextureButton" parent="."]
+offset_left = 203.0
+offset_top = -194.0
+offset_right = 235.0
+offset_bottom = -162.0
+rotation = 0.785398
+texture_normal = ExtResource("5_ddk4p")
+
 [connection signal="button_up" from="LeftButton" to="." method="_on_left_button_up"]
 [connection signal="mouse_entered" from="LeftButton" to="." method="_on_left_button_mouse_entered"]
 [connection signal="mouse_exited" from="LeftButton" to="." method="_on_left_button_mouse_exited"]
 [connection signal="button_up" from="RightButton" to="." method="_on_right_button_up"]
 [connection signal="mouse_entered" from="RightButton" to="." method="_on_right_button_mouse_entered"]
 [connection signal="mouse_exited" from="RightButton" to="." method="_on_right_button_mouse_exited"]
+[connection signal="button_up" from="DeleteButton" to="." method="_on_delete_button_button_up"]
+[connection signal="mouse_entered" from="DeleteButton" to="." method="_on_delete_button_mouse_entered"]
+[connection signal="mouse_exited" from="DeleteButton" to="." method="_on_delete_button_mouse_exited"]
