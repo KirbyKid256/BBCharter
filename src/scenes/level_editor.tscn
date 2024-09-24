@@ -1,4 +1,4 @@
-[gd_scene load_steps=94 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=100 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -29,13 +29,18 @@
 [ext_resource type="Script" path="res://src/scenes/level_editor_oneshot_sound.gd" id="12_fn1t5"]
 [ext_resource type="PackedScene" uid="uid://li22phhjdnut" path="res://src/prefabs/EditorNote.tscn" id="12_huos4"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_effects.gd" id="14_s51mf"]
+[ext_resource type="Texture2D" uid="uid://d26s07qyxxmec" path="res://assets/images/placeholder_misc.png" id="14_x6g8p"]
+[ext_resource type="Texture2D" uid="uid://gjb6pcr3lgrm" path="res://assets/ui/level_editor_icon_video.png" id="15_7albd"]
 [ext_resource type="PackedScene" uid="uid://cfnesrmhpe52e" path="res://src/prefabs/EditorAnimation.tscn" id="15_givjm"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_note_selector.gd" id="16_3v6vl"]
 [ext_resource type="Texture2D" uid="uid://rn4wt7v8d7dw" path="res://assets/images/level_editor_drag_and_drop.png" id="17_30xl6"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_shutter_track.gd" id="17_otbon"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_file_drop.gd" id="17_q0adn"]
+[ext_resource type="Shader" path="res://src/shaders/checker_pattern.gdshader" id="18_f20r2"]
 [ext_resource type="PackedScene" uid="uid://3crp3omc661c" path="res://src/prefabs/EditorShutter.tscn" id="18_s8cfp"]
+[ext_resource type="Texture2D" uid="uid://b30qosdrst01a" path="res://assets/images/game_default_pattern.png" id="19_23yv2"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_modifiers_track.gd" id="19_fo15r"]
+[ext_resource type="Script" path="res://src/scenes/level_editor_video_final.gd" id="20_7f1ds"]
 [ext_resource type="PackedScene" uid="uid://d1xl0dlt5hodm" path="res://src/prefabs/EditorModifier.tscn" id="20_vhcng"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_oneshot_track.gd" id="23_bh826"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_level_settings_menu.gd" id="24_64ay4"]
@@ -86,6 +91,14 @@ font_size = 32
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phean"]
 bg_color = Color(0.0313726, 0.0313726, 0.0313726, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_irclh"]
+font = ExtResource("29_15ypu")
+font_size = 24
+font_color = Color(1, 1, 1, 0.662745)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_11ldj"]
+shader = ExtResource("18_f20r2")
 
 [sub_resource type="Animation" id="Animation_gd72k"]
 length = 0.001
@@ -259,11 +272,6 @@ corner_radius_bottom_left = 4
 [sub_resource type="LabelSettings" id="LabelSettings_mgc4n"]
 font_size = 28
 font_color = Color(1, 1, 1, 0.431373)
-
-[sub_resource type="LabelSettings" id="LabelSettings_irclh"]
-font = ExtResource("29_15ypu")
-font_size = 24
-font_color = Color(1, 1, 1, 0.662745)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knufd"]
 bg_color = Color(0, 0, 0, 0.901961)
@@ -484,6 +492,66 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
+[node name="Misc" type="ScrollContainer" parent="Assets/Cache"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_324m6")
+metadata/_tab_index = 4
+
+[node name="Grid" type="VBoxContainer" parent="Assets/Cache/Misc"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Assets/Cache/Misc/Grid"]
+layout_mode = 2
+text = "Climax Control"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 1
+
+[node name="Climax" type="Control" parent="Assets/Cache/Misc/Grid"]
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+
+[node name="Placeholder" type="TextureRect" parent="Assets/Cache/Misc/Grid/Climax"]
+layout_mode = 0
+offset_left = 16.0
+offset_right = 1296.0
+offset_bottom = 720.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("14_x6g8p")
+stretch_mode = 6
+
+[node name="Thumbnail" type="TextureRect" parent="Assets/Cache/Misc/Grid/Climax"]
+layout_mode = 0
+offset_left = 16.0
+offset_right = 1296.0
+offset_bottom = 720.0
+scale = Vector2(0.2, 0.2)
+tooltip_text = "Right-click to remove video"
+
+[node name="Preview" type="Button" parent="Assets/Cache/Misc/Grid/Climax"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 40.0
+offset_right = 479.0
+offset_bottom = 80.0
+focus_mode = 0
+disabled = true
+text = "Preview Video"
+icon = ExtResource("15_7albd")
+
+[node name="Check" type="CheckBox" parent="Assets/Cache/Misc/Grid/Climax/Preview"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 199.0
+offset_bottom = 65.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+button_pressed = true
+text = "Play with Audio"
+alignment = 1
+
 [node name="Files" type="Control" parent="Assets"]
 anchors_preset = 0
 offset_left = 496.0
@@ -573,7 +641,7 @@ item_3/text = "Notes"
 item_3/id = 2
 item_4/text = "Keyframes"
 item_4/id = 3
-item_5/id = 13
+item_5/id = 12
 item_5/separator = true
 item_6/text = "Animations"
 item_6/id = 4
@@ -649,6 +717,14 @@ expand_mode = 1
 stretch_mode = 5
 script = ExtResource("12_d5hq7")
 
+[node name="Pattern" type="Sprite2D" parent="Preview/Background"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_11ldj")
+scale = Vector2(40, 22.5)
+texture = ExtResource("19_23yv2")
+centered = false
+
 [node name="Character" type="Sprite2D" parent="Preview"]
 position = Vector2(640, 360)
 hframes = 2
@@ -662,6 +738,16 @@ hframes = 2
 vframes = 3
 frame = 5
 script = ExtResource("14_s51mf")
+
+[node name="FinalVideo" type="VideoStreamPlayer" parent="Preview"]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+autoplay = true
+expand = true
+script = ExtResource("20_7f1ds")
+
+[node name="Audio" type="AudioStreamPlayer" parent="Preview/FinalVideo"]
 
 [node name="Legacy" type="Node2D" parent="Preview"]
 visible = false
@@ -1151,9 +1237,9 @@ vertical_alignment = 1
 [node name="Settings" type="VBoxContainer" parent="MenuOverlays/CreateImageMenu"]
 layout_mode = 2
 offset_left = 256.0
-offset_top = 376.0
+offset_top = 322.0
 offset_right = 768.0
-offset_bottom = 591.0
+offset_bottom = 682.0
 metadata/_edit_group_ = true
 
 [node name="Label" type="Label" parent="MenuOverlays/CreateImageMenu/Settings"]
@@ -2273,6 +2359,8 @@ script = ExtResource("40_x5fle")
 [connection signal="toggled" from="TimelineInfo/Snapping/Toggle" to="TimelineInfo/Snapping" method="_on_snapping_toggled"]
 [connection signal="gui_input" from="TimelineInfo/QuickTools" to="TimelineInfo/QuickTools" method="_on_gui_input"]
 [connection signal="item_selected" from="TimelineInfo/DifficultySelect" to="TimelineInfo/DifficultySelect" method="_on_item_selected"]
+[connection signal="gui_input" from="Assets/Cache/Misc/Grid/Climax/Thumbnail" to="Assets/Cache" method="_on_thumbnail_gui_input"]
+[connection signal="button_up" from="Assets/Cache/Misc/Grid/Climax/Preview" to="Assets/Cache" method="_on_preview_button_up"]
 [connection signal="id_pressed" from="MenuBar/File" to="MenuBar" method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Edit" to="MenuBar" method="_on_edit_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Add" to="MenuBar" method="_on_add_id_pressed"]

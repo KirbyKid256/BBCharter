@@ -13,6 +13,11 @@ extends Control
 @onready var menu_bar: MenuBar = $"../../MenuBar"
 @onready var menu_bar_panel: Panel = $"../MenuBarPanel"
 
+@onready var final_video: VideoStreamPlayer = $"../../Preview/FinalVideo"
+@onready var final_video_thumbnail: TextureRect = $Misc/Grid/Climax/Thumbnail
+@onready var final_video_preview: Button = $Misc/Grid/Climax/Preview
+@onready var final_video_check: CheckBox = $Misc/Grid/Climax/Preview/Check
+
 func _ready():
 	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
 	
@@ -26,6 +31,17 @@ func _ready():
 func _on_editor_project_loaded():
 	get_image_assets()
 	get_audio_assets()
+	
+	final_video_thumbnail.texture = final_video.get_thumbnail()
+	final_video_preview.disabled = false
+
+func _on_preview_button_up():
+	final_video.preview("", final_video_check.button_pressed)
+
+func _on_thumbnail_gui_input(event):
+	if EventManager.right_mouse_clicked(event):
+		Config.asset.erase("final_video")
+		final_video_thumbnail.texture = null
 
 func get_image_assets(type: int = -1):
 	Console.log({"message": "Getting Editor Image Cache..."})

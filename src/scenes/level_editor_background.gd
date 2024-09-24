@@ -1,6 +1,7 @@
 extends TextureRect
 
 @onready var tsevent: TSEvent = TSEvent.new()
+@onready var pattern: Sprite2D = $Pattern
 
 var data: Dictionary
 
@@ -14,13 +15,22 @@ func _ready():
 	if Editor.project_loaded: change_background(tsevent.index)
 
 func _on_editor_project_loaded():
-	set_texture(null)
+	change_background(0)
 
 func change_background(idx: int):
-	if Config.keyframes['background'].is_empty() or idx < 0: set_texture(null); return
+	if Config.keyframes['background'].is_empty():
+		texture = null
+		pattern.hide()
+		return
 	
+	idx = clampi(idx,0,Config.keyframes['background'].size()-1)
 	data = Config.keyframes['background'][idx]
 	
-	set_texture(Assets.get_asset(data['path']))
-	expand_mode = data.get('expand_mode', EXPAND_IGNORE_SIZE)
-	stretch_mode = data.get('stretch_mode', STRETCH_KEEP_ASPECT_COVERED)
+	if data.has("type") and data.type == 2:
+		pattern.texture = Assets.get_asset(data.path)
+		pattern.show()
+	else:
+		pattern.hide()
+		texture = Assets.get_asset(data.path)
+		expand_mode = data.get('expand_mode', EXPAND_IGNORE_SIZE)
+		stretch_mode = data.get('stretch_mode', STRETCH_KEEP_ASPECT_COVERED)

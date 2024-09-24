@@ -19,13 +19,19 @@ func get_files():
 	Console.log({"message": "Getting Files in Level Folder..."})
 	
 	for image in DirAccess.get_files_at(Editor.project_path + "images"):
-		if image.get_extension() == "png" or image.get_extension() == "jpg" or image.get_extension() == "jpeg" or image.get_extension() == "webp":
+		if image.get_extension() == "png"||"jpg"||"jpeg"||"webp":
 			var new_image_asset_node = editor_file_asset_prefab.instantiate() as Control
 			asset_grid.add_child(new_image_asset_node) 
 			new_image_asset_node.setup({"sprite_sheet": image})
 	
 	for audio in DirAccess.get_files_at(Editor.project_path + "audio"):
-		if audio.get_extension() == "ogg" or audio.get_extension() == "mp3":
+		if audio.get_extension() == "ogg"||"mp3":
 			var new_audio_asset_node = editor_file_asset_prefab.instantiate() as Control
 			asset_grid.add_child(new_audio_asset_node) 
 			new_audio_asset_node.setup({"audio_path": audio})
+	
+	for video in DirAccess.get_files_at(Editor.project_path + "video"):
+		if video.get_extension() == "ogv":
+			var new_video_asset_node = editor_file_asset_prefab.instantiate() as Control
+			asset_grid.add_child(new_video_asset_node) 
+			new_video_asset_node.setup({"video_path": video})

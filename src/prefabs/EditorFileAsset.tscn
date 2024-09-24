@@ -56,22 +56,35 @@ item_2/id = 2
 
 [node name="ContextMenuAudio" type="PopupMenu" parent="."]
 auto_translate_mode = 1
-size = Vector2i(219, 147)
-item_count = 6
+size = Vector2i(219, 174)
+item_count = 7
 item_0/text = "OneShot Audio"
 item_1/text = "Sound Loop"
 item_1/id = 1
 item_2/text = "Sound Bank"
 item_2/id = 2
-item_3/id = 5
+item_3/id = 6
 item_3/separator = true
 item_4/text = "Set as Music"
 item_4/id = 3
-item_5/text = "Set as Horny Mode Sound"
+item_5/text = "Set as Final Audio"
 item_5/id = 4
+item_6/text = "Set as Horny Mode Sound"
+item_6/id = 5
+
+[node name="ContextMenuVideo" type="PopupMenu" parent="."]
+auto_translate_mode = 1
+size = Vector2i(155, 66)
+item_count = 3
+item_0/text = "Play Preview"
+item_1/id = 2
+item_1/separator = true
+item_2/text = "Set as Final Video"
+item_2/id = 1
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="id_pressed" from="ContextMenuImage" to="." method="_on_context_menu_image_id_pressed"]
 [connection signal="id_pressed" from="ContextMenuAudio" to="." method="_on_context_menu_audio_id_pressed"]
+[connection signal="id_pressed" from="ContextMenuVideo" to="." method="_on_context_menu_video_id_pressed"]

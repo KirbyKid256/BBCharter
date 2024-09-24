@@ -30,8 +30,10 @@ func add_keyframe(data: Dictionary):
 		Config.keyframes[key].append(data)
 		Config.keyframes[key].sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
 	
-	if LevelEditor.song_position_offset > data['timestamp']:
-		background.change_background(Config.keyframes['background'].find(data))
+	if Config.keyframes[key].is_empty() or LevelEditor.song_position_offset > data['timestamp']:
+		background.change_background(Config.keyframes[key].find(data))
+	elif LevelEditor.song_position_offset <= Config.keyframes[key][0].timestamp:
+		background.change_background(0)
 	
 	_update_child_order()
 
@@ -44,6 +46,8 @@ func remove_keyframe(data: Dictionary):
 	
 	if Config.keyframes[key].is_empty() or LevelEditor.song_position_offset > data['timestamp']:
 		background.change_background(clampi(idx, 0, Config.keyframes[key].size() - 1))
+	elif LevelEditor.song_position_offset <= Config.keyframes[key][0].timestamp:
+		background.change_background(0)
 
 func create_keyframe(keyframe_data: Dictionary):
 	var timestamp = LevelEditor.get_timestamp()
