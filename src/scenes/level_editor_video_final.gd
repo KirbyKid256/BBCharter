@@ -29,3 +29,6 @@ func get_thumbnail(path: String = "") -> Texture2D:
 		stop(); show()
 	
 	return thumbnail
+
+func _on_finished():
+	audio.stop()

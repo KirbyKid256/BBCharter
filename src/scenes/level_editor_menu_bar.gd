@@ -3,7 +3,7 @@ extends MenuBar
 enum FILE {NEW,OPEN,SAVE,RELOAD}
 @onready var file_popup_menu: PopupMenu = $File
 
-enum EDIT {UNDO,REDO,CUT,COPY,PASTE}
+enum EDIT {UNDO,REDO,CUT,COPY,PASTE,SELECT_ALL}
 @onready var edit_popup_menu: PopupMenu = $Edit
 @onready var notes: Node2D = $"../NoteTimeline/TimelineRoot/Notes"
 
@@ -58,8 +58,7 @@ func _ready():
 	#Help
 	help_popup_menu.set_item_icon(HELP.GITHUB, preload("res://assets/ui/help_github_icon.png"))
 	help_popup_menu.set_item_icon(HELP.DISCORD, preload("res://assets/ui/help_discord_icon.png"))
-	if OS.get_name() == "macOS":
-		set_menu_hidden(4, true)
+	if OS.get_name() == "macOS": set_menu_hidden(4, true)
 	
 	if is_native_menu(): position.y -= size.y
 	if Editor.project_loaded: _on_editor_project_loaded()
@@ -71,6 +70,7 @@ func _on_editor_project_loaded():
 	#Edit
 	set_menu_disabled(1, false)
 	_on_undo_or_redo()
+	edit_popup_menu.set_item_disabled(6, false)
 	#Add
 	set_menu_disabled(2, false)
 	for i in add_popup_menu.item_count:
@@ -114,6 +114,9 @@ func _on_edit_id_pressed(id):
 		EDIT.CUT: notes.cut_selected_notes()
 		EDIT.COPY: notes.copy_selected_notes()
 		EDIT.PASTE: notes.paste_selected_notes()
+		EDIT.SELECT_ALL:
+			LevelEditor.selected_notes = notes.get_children()
+			notes.note_selector.select_notes()
 
 func _on_add_id_pressed(id):
 	match id:

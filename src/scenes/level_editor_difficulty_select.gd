@@ -11,16 +11,21 @@ func _ready():
 
 func _on_editor_project_loaded():
 	disabled = true
-	LevelEditor.difficulty_index = 0
+	LevelEditor.difficulty_index = -1
 	reload_items()
 	disabled = false
 
 func reload_items():
+	var current_item: String = get_item_text(selected) if selected >= 0 else ""
+	
 	clear()
 	for i in Config.notes['charts'].size():
 		add_item(Config.notes['charts'][i]['name'], i)
 	
-	_on_item_selected(LevelEditor.difficulty_index)
+	if LevelEditor.difficulty_index < 0 or get_item_text(LevelEditor.difficulty_index) != current_item:
+		_on_item_selected(clampi(LevelEditor.difficulty_index, 0, item_count - 1))
+	else:
+		select(LevelEditor.difficulty_index)
 
 func _on_item_selected(index):
 	var old_index: int = LevelEditor.difficulty_index

@@ -147,9 +147,7 @@ func copy_note(note: Dictionary) -> Dictionary:
 	return copied_note_data
 
 func check_note_exists(note, new_note_timestamp):
-	var snapped_note_check = Math.beat_to_secs_dynamic((snappedf(Math.secs_to_beat_dynamic(note['timestamp']), 1.0 / LevelEditor.snapping_factor)
-	if LevelEditor.snapping_allowed else Math.secs_to_beat_dynamic(note['timestamp'])))
-	return snappedf(snapped_note_check, 0.001) == new_note_timestamp
+	return snappedf(note.timestamp, 0.001) == new_note_timestamp
 
 func add_note(data: Dictionary):
 	Difficulty.get_chart_notes().append(data)
@@ -188,13 +186,13 @@ func move_note(data: Dictionary, time: float):
 	
 	Global.undo_redo.create_action("Move Note")
 	Global.undo_redo.add_do_method(func():
-		if selected_data.size() > 0:
+		if selected_data.has(data):
 			for i in selected_data.size():
 				do_move.call(selected_data[i], new_times[i])
 		else:
 			do_move.call(data, time))
 	Global.undo_redo.add_undo_method(func():
-		if selected_data.size() > 0:
+		if selected_data.has(data):
 			for i in selected_data.size():
 				do_move.call(selected_data[i], old_times[i])
 		else:
@@ -206,7 +204,7 @@ func modify_note(data: Dictionary, modifier: int):
 	for note in LevelEditor.selected_notes:
 		selected_data.append(note.data)
 	
-	if selected_data.size() > 0:
+	if selected_data.has(data):
 		Global.undo_redo.create_action("Modify Notes")
 		Global.undo_redo.add_do_method(func():
 			for note in selected_data:
@@ -230,7 +228,7 @@ func voice_note(data: Dictionary):
 			note['trigger_voice'] = true
 		get_child(Difficulty.get_chart_notes().find(note)).update_visual()
 	
-	if selected_data.size() > 0:
+	if selected_data.has(data):
 		Global.undo_redo.create_action("Voice Notes")
 		Global.undo_redo.add_do_method(func():
 			for note in selected_data:

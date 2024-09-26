@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=3 uid="uid://dum8j3iuhuavd"]
+[gd_scene load_steps=101 format=3 uid="uid://dum8j3iuhuavd"]
 
 [ext_resource type="Script" path="res://src/scenes/level_editor.gd" id="1_e5x3l"]
 [ext_resource type="Texture2D" uid="uid://sa8fvvxopvkh" path="res://assets/images/editor_preview_background.png" id="2_np7hg"]
@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://gjb6pcr3lgrm" path="res://assets/ui/level_editor_icon_video.png" id="15_7albd"]
 [ext_resource type="PackedScene" uid="uid://cfnesrmhpe52e" path="res://src/prefabs/EditorAnimation.tscn" id="15_givjm"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_note_selector.gd" id="16_3v6vl"]
+[ext_resource type="Script" path="res://src/scenes/level_editor_settings.gd" id="16_e75ut"]
 [ext_resource type="Texture2D" uid="uid://rn4wt7v8d7dw" path="res://assets/images/level_editor_drag_and_drop.png" id="17_30xl6"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_shutter_track.gd" id="17_otbon"]
 [ext_resource type="Script" path="res://src/scenes/level_editor_file_drop.gd" id="17_q0adn"]
@@ -552,6 +553,87 @@ button_pressed = true
 text = "Play with Audio"
 alignment = 1
 
+[node name="Label2" type="Label" parent="Assets/Cache/Misc/Grid"]
+layout_mode = 2
+text = "User Settings"
+label_settings = SubResource("LabelSettings_irclh")
+horizontal_alignment = 1
+
+[node name="Settings" type="Control" parent="Assets/Cache/Misc/Grid"]
+custom_minimum_size = Vector2(0, 115)
+layout_mode = 2
+script = ExtResource("16_e75ut")
+
+[node name="Volume" type="HSlider" parent="Assets/Cache/Misc/Grid/Settings"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 28.0
+offset_right = 479.0
+offset_bottom = 52.0
+focus_mode = 0
+max_value = 1.0
+step = 0.1
+
+[node name="Label" type="Label" parent="Assets/Cache/Misc/Grid/Settings/Volume"]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 0
+offset_top = -24.0
+offset_right = 463.0
+theme_override_font_sizes/font_size = 16
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="Screen" type="OptionButton" parent="Assets/Cache/Misc/Grid/Settings"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 84.0
+offset_right = 239.0
+offset_bottom = 115.0
+focus_mode = 0
+item_count = 3
+popup/item_0/text = "Windowed"
+popup/item_1/text = "Borderless"
+popup/item_1/id = 1
+popup/item_2/text = "Fullscreen"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="Assets/Cache/Misc/Grid/Settings/Screen"]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "Window Modes"
+horizontal_alignment = 1
+
+[node name="Resolution" type="OptionButton" parent="Assets/Cache/Misc/Grid/Settings"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 84.0
+offset_right = 479.0
+offset_bottom = 115.0
+focus_mode = 0
+allow_reselect = true
+
+[node name="Label" type="Label" parent="Assets/Cache/Misc/Grid/Settings/Resolution"]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "Window Size Presets"
+horizontal_alignment = 1
+
 [node name="Files" type="Control" parent="Assets"]
 anchors_preset = 0
 offset_left = 496.0
@@ -602,11 +684,11 @@ item_4/disabled = true
 
 [node name="Edit" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
-item_count = 6
+item_count = 7
 item_0/text = "Undo"
 item_1/text = "Redo"
 item_1/id = 1
-item_2/id = 5
+item_2/id = 6
 item_2/separator = true
 item_3/text = "Cut"
 item_3/id = 2
@@ -614,6 +696,8 @@ item_4/text = "Copy"
 item_4/id = 3
 item_5/text = "Paste"
 item_5/id = 4
+item_6/text = "Select All"
+item_6/id = 5
 
 [node name="Add" type="PopupMenu" parent="MenuBar"]
 item_count = 6
@@ -2361,11 +2445,16 @@ script = ExtResource("40_x5fle")
 [connection signal="item_selected" from="TimelineInfo/DifficultySelect" to="TimelineInfo/DifficultySelect" method="_on_item_selected"]
 [connection signal="gui_input" from="Assets/Cache/Misc/Grid/Climax/Thumbnail" to="Assets/Cache" method="_on_thumbnail_gui_input"]
 [connection signal="button_up" from="Assets/Cache/Misc/Grid/Climax/Preview" to="Assets/Cache" method="_on_preview_button_up"]
+[connection signal="drag_ended" from="Assets/Cache/Misc/Grid/Settings/Volume" to="Assets/Cache/Misc/Grid/Settings" method="_on_volume_drag_ended"]
+[connection signal="value_changed" from="Assets/Cache/Misc/Grid/Settings/Volume" to="Assets/Cache/Misc/Grid/Settings" method="_on_volume_value_changed"]
+[connection signal="item_selected" from="Assets/Cache/Misc/Grid/Settings/Screen" to="Assets/Cache/Misc/Grid/Settings" method="_on_screen_item_selected"]
+[connection signal="item_selected" from="Assets/Cache/Misc/Grid/Settings/Resolution" to="Assets/Cache/Misc/Grid/Settings" method="_on_resolution_item_selected"]
 [connection signal="id_pressed" from="MenuBar/File" to="MenuBar" method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Edit" to="MenuBar" method="_on_edit_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Add" to="MenuBar" method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Clear" to="MenuBar" method="_on_clear_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/Help" to="MenuBar" method="_on_help_id_pressed"]
+[connection signal="finished" from="Preview/FinalVideo" to="Preview/FinalVideo" method="_on_finished"]
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Create" to="FileDrop" method="_on_audio_create_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateAudioMenu/Buttons/Cancel" to="FileDrop" method="_on_audio_cancel_button_up"]
 [connection signal="button_up" from="MenuOverlays/CreateImageMenu/Buttons/Create" to="FileDrop" method="_on_image_import_button_up"]

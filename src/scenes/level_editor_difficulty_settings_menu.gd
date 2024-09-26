@@ -118,6 +118,7 @@ func _on_save_button_up():
 			total_data[i].erase('duplicate')
 	
 	Config.notes['charts'] = total_data
+	difficulty_select.selected = -1
 	difficulty_select.disabled = true
 	difficulty_select.reload_items()
 	difficulty_select.disabled = false
