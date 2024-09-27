@@ -8,10 +8,13 @@ extends Node2D
 var note_clipboard: Array
 
 func _ready():
-	if Editor.project_loaded: load_notes()
-	
+	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
+	if Editor.project_loaded: _on_editor_project_loaded()
+
+func _on_editor_project_loaded():
 	LevelEditor.selected_notes.clear()
 	note_clipboard.clear()
+	load_notes()
 
 func load_notes():
 	note_selector.deselect_notes()
@@ -171,9 +174,9 @@ func move_note(data: Dictionary, time: float):
 	var do_move = func(d, t):
 		var note = get_child(Difficulty.get_chart_notes().find(d))
 		
-		var difference = note.data.get('hold_end_timestamp', note.data['timestamp']) - note.data['timestamp']
-		if note.data.has('hold_end_timestamp'): note.data['hold_end_timestamp'] = t + difference
-		note.data['timestamp'] = t
+		var difference = note.data.get('hold_end_timestamp', note.data.timestamp) - note.data.timestamp
+		if note.data.has('hold_end_timestamp'): note.data.hold_end_timestamp = t + difference
+		note.data.timestamp = t
 		
 		note.update_position()
 		note.input_handler.tooltip_text = str(note.data).replace(", ", "\r\n")\

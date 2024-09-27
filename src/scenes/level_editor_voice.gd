@@ -24,7 +24,7 @@ func _on_editor_project_loaded():
 func _process(_delta):
 	if not Editor.project_loaded: return
 	
-	var arr = Difficulty.get_chart_notes().filter(func(note): return LevelEditor.song_position_offset >= note['timestamp'] and note.get('trigger_voice', false))
+	var arr = Difficulty.get_chart_notes().filter(func(note): return LevelEditor.song_position_offset >= note.timestamp and note.get('trigger_voice', false))
 	voice_trigger_index = arr.size()
 	if voice_trigger_index != last_voice_trigger_index:
 		last_voice_trigger_index = voice_trigger_index

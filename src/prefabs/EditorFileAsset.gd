@@ -49,7 +49,7 @@ func _on_gui_input(event: InputEvent):
 			context_menu_audio.popup()
 	elif data.has("video_path"):
 		if EventManager.left_mouse_clicked(event):
-			final_video.preview(filename.text)
+			final_video.preview(filename.text, false)
 		elif EventManager.right_mouse_clicked(event):
 			context_menu_video.set_position(global_position + event.position)
 			context_menu_video.popup()

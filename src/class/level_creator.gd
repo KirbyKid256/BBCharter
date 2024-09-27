@@ -108,6 +108,9 @@ static func create_level_placeholders():
 	
 	var splash: Image = preload("res://assets/images/placeholder_splash.png").get_image()
 	splash.save_png(Editor.project_path + "splash.png")
+	
+	var song: String = Global.get_executable_path().path_join("data/_template/template_song.ogg")
+	if FileAccess.file_exists(song): DirAccess.copy_absolute(song, Editor.project_path + "audio/template_song.ogg")
 
 static func create_cutscene():
 	var type: String

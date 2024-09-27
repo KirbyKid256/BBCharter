@@ -115,23 +115,21 @@ func _on_input_handler_gui_input(event):
 							for note: EditorNote in LevelEditor.selected_notes:
 								arr.erase(note.data)
 							
+							for note: EditorNote in LevelEditor.selected_notes: note.update_position()
+							
 							if arr.is_empty():
-								for note: EditorNote in LevelEditor.selected_notes: note.update_position()
-								get_parent().move_note(data, mouse_drag_time)
+								for note: EditorNote in LevelEditor.selected_notes: get_parent().move_note(note.data, note.mouse_drag_time)
 							else:
 								Console.log({"message": "Notes already exist..."})
-								for note: EditorNote in LevelEditor.selected_notes: note.update_position()
 						else:
 							mouse_drag = false
 							var arr = Difficulty.get_chart_notes().filter(check_note_exists_drag.bind(mouse_drag_time))
 							
+							update_position()
 							if arr.is_empty():
-								update_position()
 								get_parent().move_note(data, mouse_drag_time)
 							else:
-								if arr[0].timestamp != data.timestamp:
-									Console.log({"message": "Note already exists..."})
-									update_position()
+								if arr[0].timestamp != data.timestamp: Console.log({"message": "Note already exists..."})
 				
 				elif event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 					# Context Menu

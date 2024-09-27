@@ -2383,6 +2383,7 @@ focus_mode = 0
 theme_override_fonts/font = ExtResource("29_15ypu")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2p4bo")
+disabled = true
 text = "Go to Cutscene Editor"
 alignment = 0
 text_overrun_behavior = 3

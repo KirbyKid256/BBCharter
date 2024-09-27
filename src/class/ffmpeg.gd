@@ -49,7 +49,7 @@ static func create_sprite_sheet_from_gif(input_file: String) -> Dictionary:
 	var total_frames = get_gif_framecount(input_file)
 	var h_frames = calculate_sheet_dimensions(total_frames).h
 	var v_frames = calculate_sheet_dimensions(total_frames).v
-
+	
 	var output_dir = Editor.project_path.path_join("images")
 	var output_file_format: String = "sheet_%s" % input_file.get_file().replace(input_file.get_file().get_extension(), "png")
 	var output_file: String = output_dir.path_join(output_file_format)
@@ -69,7 +69,7 @@ static func calculate_sheet_dimensions(total_frames: float):
 	var h_frames = ceil(sqrt(total_frames))
 	var v_frames = round(sqrt(total_frames)) # Nearest square number
 	return {"h": h_frames, "v": v_frames}
-	
+
 static func ffprobe_frame_count_meta(input_file: String): # Deprecated: Only works for GIFs and some MP4s since it fetches info from meta
 	return ["-v", "error", "-select_streams", "v:0", "-show_entries", "stream=nb_frames", "-of", "default=noprint_wrappers=1:nokey=1", input_file]
 
