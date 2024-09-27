@@ -1407,6 +1407,21 @@ custom_arrow_step = 0.1
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
+text = "Background Type"
+label_settings = SubResource("LabelSettings_irclh")
+
+[node name="Type" type="CheckButton" parent="MenuOverlays/CreateImageMenu/Settings"]
+visible = false
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pattern (There's only one type and it broke everything)"
+alignment = 1
+
+[node name="Label5" type="Label" parent="MenuOverlays/CreateImageMenu/Settings"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
 text = "Expand Mode"
 label_settings = SubResource("LabelSettings_irclh")
 
@@ -1430,7 +1445,7 @@ popup/item_4/id = 4
 popup/item_5/text = "Fit Height Proportional"
 popup/item_5/id = 5
 
-[node name="Label5" type="Label" parent="MenuOverlays/CreateImageMenu/Settings"]
+[node name="Label6" type="Label" parent="MenuOverlays/CreateImageMenu/Settings"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0

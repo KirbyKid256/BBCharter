@@ -18,19 +18,23 @@ func _on_editor_project_loaded():
 	change_background(0)
 
 func change_background(idx: int):
-	if Config.keyframes['background'].is_empty():
+	if Config.keyframes.background.is_empty():
 		texture = null
 		pattern.hide()
 		return
 	
-	idx = clampi(idx,0,Config.keyframes['background'].size()-1)
-	data = Config.keyframes['background'][idx]
+	idx = clampi(idx,0,Config.keyframes.background.size()-1)
+	data = Config.keyframes.background[idx]
 	
-	if data.has("type") and data.type == 2:
-		pattern.texture = Assets.get_asset(data.path)
-		pattern.show()
+	if data.has("type") and (data.type == 1 or data.type == 2):
+		if data.type == 1:
+			pattern.hide()
+			texture = null
+		elif data.type == 2:
+			pattern.texture = Assets.get_asset(data.path)
+			pattern.show()
 	else:
 		pattern.hide()
 		texture = Assets.get_asset(data.path)
-		expand_mode = data.get('expand_mode', EXPAND_IGNORE_SIZE)
-		stretch_mode = data.get('stretch_mode', STRETCH_KEEP_ASPECT_COVERED)
+		expand_mode = EXPAND_KEEP_SIZE
+		stretch_mode = STRETCH_SCALE

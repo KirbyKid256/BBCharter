@@ -13,12 +13,12 @@ func _ready():
 
 func setup(keyframe_data: Dictionary):
 	data = keyframe_data
-	var filename: String = data['sprite_sheet']
+	var filename: String = data.sprite_sheet
 	filename_label.text = filename
 	
 	texture_rect.texture = Assets.get_asset(filename)
-	texture_rect.expand_mode = data.get('expand_mode', TextureRect.EXPAND_IGNORE_SIZE)
-	texture_rect.stretch_mode = data.get('stretch_mode', TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+	texture_rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	texture_rect.stretch_mode = TextureRect.STRETCH_SCALE
 	
 	tooltip_text = str(data).replace(", ", "\r\n")\
 	.replace("{", "").replace("}", "").replace("\"", "")

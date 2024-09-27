@@ -20,14 +20,16 @@ extends Control
 @onready var total_frames: SpinBox = $'../MenuOverlays/CreateImageMenu/Settings/SheetData/TotalFrames'
 @onready var scale_multiplier: SpinBox = $'../MenuOverlays/CreateImageMenu/Settings/Scale'
 @onready var duration: SpinBox = $'../MenuOverlays/CreateImageMenu/Settings/Duration'
+@onready var bg_type: CheckButton = $'../MenuOverlays/CreateImageMenu/Settings/Type'
 @onready var expand_mode: OptionButton = $'../MenuOverlays/CreateImageMenu/Settings/Expand'
 @onready var stretch_mode: OptionButton = $'../MenuOverlays/CreateImageMenu/Settings/Stretch'
 
 @onready var sheet_data_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label'
 @onready var scale_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label2'
 @onready var duration_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label3'
-@onready var expand_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label4'
-@onready var stretch_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label5'
+@onready var bg_type_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label4'
+@onready var expand_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label5'
+@onready var stretch_label: Label = $'../MenuOverlays/CreateImageMenu/Settings/Label6'
 
 @onready var cache_assets: Control = $'../Assets/Cache'
 @onready var file_assets: Control = $'../Assets/Files'
@@ -82,6 +84,8 @@ func create_image_keyframe(data: Dictionary, type: int, replace: bool = false):
 		scale_multiplier.value = data.scale_multiplier
 	if data.has("duration"):
 		scale_multiplier.value = data.scale_multiplier
+	if data.has("type"):
+		bg_type.set_pressed(data.type == 2)
 	if data.has("expand_mode"):
 		expand_mode.selected = data.expand_mode
 	if data.has("stretch_mode"):
@@ -99,10 +103,8 @@ func create_image_keyframe(data: Dictionary, type: int, replace: bool = false):
 			
 			duration.hide()
 			duration_label.hide()
-			expand_mode.hide()
-			expand_label.hide()
-			stretch_mode.hide()
-			stretch_label.hide()
+			bg_type.hide()
+			bg_type_label.hide()
 		LevelEditor.IMAGE.EFFECT:
 			sheet_data.show()
 			sheet_data_label.show()
@@ -111,24 +113,20 @@ func create_image_keyframe(data: Dictionary, type: int, replace: bool = false):
 			
 			scale_multiplier.hide()
 			scale_label.hide()
-			expand_mode.hide()
-			expand_label.hide()
-			stretch_mode.hide()
-			stretch_label.hide()
+			bg_type.hide()
+			bg_type_label.hide()
 		LevelEditor.IMAGE.BACKGROUND:
+			bg_type.show()
+			bg_type_label.show()
+			
 			sheet_data.hide()
 			sheet_data_label.hide()
 			scale_multiplier.hide()
 			scale_label.hide()
 			duration.hide()
 			duration_label.hide()
-			
-			expand_mode.show()
-			expand_label.show()
-			stretch_mode.show()
-			stretch_label.show()
 	
-	pending_image_file = data["sprite_sheet"]
+	pending_image_file = data.sprite_sheet
 	pending_image_type = type
 	create_image_menu.show()
 	create_image_label.text = pending_image_file
@@ -152,6 +150,8 @@ func _on_image_import_button_up():
 		data.merge({"scale_multiplier": scale_multiplier.value})
 	if duration.visible:
 		data.merge({"duration": duration.value})
+	if bg_type.visible and bg_type.is_pressed():
+		data.merge({"type": 2})
 	if expand_mode.visible and expand_mode.selected != TextureRect.EXPAND_IGNORE_SIZE:
 		data.merge({"expand_mode": expand_mode.selected})
 	if stretch_mode.visible and stretch_mode.selected != TextureRect.STRETCH_KEEP_ASPECT_COVERED:

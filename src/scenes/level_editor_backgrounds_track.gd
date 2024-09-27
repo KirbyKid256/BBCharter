@@ -56,10 +56,12 @@ func create_keyframe(keyframe_data: Dictionary):
 		"timestamp": timestamp
 	}
 	
+	if keyframe_data.has("type"):
+		new_keyframe_data.merge ({"type": keyframe_data.type})
 	if keyframe_data.has("expand_mode"):
-		new_keyframe_data.merge ({"expand_mode": keyframe_data["expand_mode"]})
+		new_keyframe_data.merge ({"expand_mode": keyframe_data.expand_mode})
 	if keyframe_data.has("stretch_mode"):
-		new_keyframe_data.merge ({"stretch_mode": keyframe_data["stretch_mode"]})
+		new_keyframe_data.merge ({"stretch_mode": keyframe_data.stretch_mode})
 	
 	if LevelEditor.create_new_keyframe(key, new_keyframe_data, timestamp):
 		Global.undo_redo.create_action("Add Background")

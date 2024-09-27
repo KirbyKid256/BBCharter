@@ -14,7 +14,6 @@ func _ready():
 func _on_editor_project_loaded():
 	LevelEditor.selected_notes.clear()
 	note_clipboard.clear()
-	load_notes()
 
 func load_notes():
 	note_selector.deselect_notes()
@@ -90,10 +89,14 @@ func paste_selected_notes():
 func create_note(input_type: int = 0):
 	# Batch Replace Note Types
 	if LevelEditor.selected_notes.size() > 0:
+		var change_notes: bool
 		var selected_notes: Array; var selected_data: Array
 		for note: EditorNote in LevelEditor.selected_notes:
+			if note.data.input_type != input_type: change_notes = true
 			selected_notes.append(note)
 			selected_data.append(note.data.duplicate(true))
+		
+		if not change_notes: return
 		
 		Global.undo_redo.create_action("Change Notes")
 		Global.undo_redo.add_do_method(func():
@@ -104,7 +107,7 @@ func create_note(input_type: int = 0):
 				
 				var note: EditorNote = selected_notes[i]
 				if note == null: continue
-				note.data['input_type'] = input_type
+				note.data.input_type = input_type
 				note.update_visual())
 		Global.undo_redo.add_undo_method(func():
 			for i in selected_notes.size():
@@ -114,7 +117,7 @@ func create_note(input_type: int = 0):
 				
 				var note: EditorNote = selected_notes[i]
 				if note == null: continue
-				note.data['input_type'] = selected_data[i].input_type
+				note.data.input_type = selected_data[i].input_type
 				note.update_visual())
 		Global.undo_redo.commit_action()
 		

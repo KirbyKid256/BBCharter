@@ -40,8 +40,8 @@ static func save_config_data(path: String, data: Dictionary):
 static func validate_ids():
 	Console.log({"message": "Validating IDs"})
 	
-	if not meta.has("level_id"): meta["level_id"] = create_new_id(meta, meta.get("level_name"))
-	if not act.is_empty() and not act.has("act_id"): act["act_id"] = create_new_id(act, act.get("act_name"))
+	if not meta.has("level_id"): meta.level_id = create_new_id(meta, meta.get("level_name"))
+	if not act.is_empty() and not act.has("act_id"): act.act_id = create_new_id(act, act.get("act_name"))
 
 ## Create a new ID
 static func create_new_id(dict: Dictionary, hash_string: String) -> String:
@@ -77,73 +77,92 @@ static func load_chart(path: String = Editor.project_path):
 			var chart: Dictionary = load_legacy_data(path + "chart.cfg")
 			asset = {}; keyframes = {}; meta = {}; notes = {}; settings = {}
 			
+			var bg: Array; var last_bg: Array
+			
 			# Asset
-			asset["song_path"] = chart.get("song_path", "")
-			if chart.has("last_transition"): asset["final_audio"] = chart["last_transition"]["climax_sound"]
+			asset.song_path = chart.get("song_path", "")
+			if chart.has("last_transition"): asset.final_audio = chart.last_transition.climax_sound
 			
 			# Keyframes
-			keyframes["background"] = []
-			keyframes["effects"] = []
-			keyframes["loops"] = []
-			keyframes["sound_loop"] = []
-			keyframes["sound_oneshot"] = []
-			keyframes["voice_bank"] = []
-			keyframes["modifiers"] = [{"bpm": chart.get_or_add("bpm", 120.0), "timestamp": 0.0}]
+			keyframes.background = []
+			keyframes.effects = []
+			keyframes.loops = []
+			keyframes.sound_loop = []
+			keyframes.sound_oneshot = []
+			keyframes.voice_bank = []
+			keyframes.modifiers = [{"bpm": chart.get_or_add("bpm", 120.0), "timestamp": 0.0}]
 			
-			var last_beat = chart["last_beat"][0] if chart.has("last_beat") else chart["transitions"].keys()[chart["transitions"].size()-1]
-			for beat in [0] + chart["transitions"].keys() + chart.get("last_beat", []):
+			var last_beat = chart.last_beat[0] if chart.has("last_beat") else chart.transitions.keys()[chart.transitions.size()-1]
+			for beat in [0] + chart.transitions.keys() + chart.get("last_beat", []):
 				var cum = beat == last_beat
-				var transition = chart["initial_data"] if beat == 0 else chart["last_transition"] if cum and chart.has("last_beat") else chart["transitions"][beat]
-				var timestamp = Math.beats_to_secs(beat, chart["bpm"]*2) if beat > 0 else 0.0
+				var transition = chart.initial_data if beat == 0 else chart.last_transition if cum and chart.has("last_beat") else chart.transitions[beat]
+				var timestamp = Math.beats_to_secs(beat, chart.bpm*2) if beat > 0 else 0.0
 				var legacy_sheet = {"h": 3, "v": 2, "total": 6}
 				
+				bg = transition.background if transition.has("background") and typeof(transition.background) == TYPE_ARRAY else []
+				
 				var loop = {
-					"animations": {"normal": transition["animation"]},
+					"animations": {"normal": transition.animation},
 					"sheet_data": legacy_sheet,
 					"timestamp": timestamp
 				}
 				
-				loop["scale_multiplier"] = 0.9
-				keyframes["loops"].append(loop)
+				loop.scale_multiplier = 0.9
+				keyframes.loops.append(loop)
 				
+				if !bg.is_empty() and (last_bg.is_empty() or bg[0] != last_bg[0]):
+					var background = {
+						"path": bg[0],
+						#"scale_multiplier": 1.35 if bg[1].get("static", false) else 1.0,
+						"timestamp": timestamp
+					}
+					if not bg[1].get("static", false): background.type = 2
+					keyframes.background.append(background)
+					last_bg = bg
+				if !transition.has("background"):
+					var textures = DirAccess.get_files_at(path + "textures")
+					if textures.size() > 0:
+						keyframes.background.append({
+							"path": textures[0],
+							"timestamp": timestamp
+						})
 				if transition.has("sound_fx"):
-					keyframes["sound_loop"].append({
-						"path": transition["sound_fx"],
+					keyframes.sound_loop.append({
+						"path": transition.sound_fx,
 						"timestamp": timestamp
 					})
 				
 				if beat > 0:
-					if transition["effects"].is_valid_filename():
+					if transition.effects.is_valid_filename():
 						var effect = {
-							"duration": (2.0 / 0.5 if cum else 1.0 / 1.2) * chart["loop_speed"],
-							"path": transition["effects"],
+							"duration": (2.0 / 0.5 if cum else 1.0 / 1.2) * chart.loop_speed,
+							"path": transition.effects,
 							"sheet_data": {"h": 6, "v": 4, "total": 24} if cum else legacy_sheet,
 							"timestamp": timestamp
 						}
-						if cum: effect["keep"] = true
-						keyframes["effects"].append(effect)
+						keyframes.effects.append(effect)
 					
 					if transition.has("transition_sound"):
-						keyframes["sound_oneshot"].append({
+						keyframes.sound_oneshot.append({
 							"path": transition["transition_sound"],
 							"timestamp": timestamp
 						})
 			
 			# Meta
-			meta["level_index"] = load_legacy_data(path + "meta.cfg").get("level_index", 0)
-			meta["level_name"] = load_legacy_data(path + "meta.cfg").get("mod_title", chart.get_or_add("name", "Legacy Mod"))
-			meta["level_id"] = chart.get("level_id", create_new_id(meta, chart["name"]))
+			meta.level_index = load_legacy_data(path + "meta.cfg").get("level_index", 0)
+			meta.level_name = load_legacy_data(path + "meta.cfg").get("mod_title", chart.get_or_add("name", "Legacy Mod"))
+			meta.level_id = chart.get("level_id", create_new_id(meta, meta.level_name))
 			
 			# Notes
-			notes["charts"] = [{
+			notes.charts = [{
 				"name": "Normal",
 				"notes": load_legacy_notes(chart),
 				"rating": 0
 				}]
 			
 			# Settings
-			settings["song_offset"] = -chart.get("note_offset", 0.0)
-			settings["post_song_delay"] = chart.get("post_song_delay", 5.0)
+			settings.song_offset = -chart.get("note_offset", 0.0)
+			settings.post_song_delay = chart.get("post_song_delay", 5.0)
 			
 			Config.convert()
 		Editor.MODTYPE.DEMO:
@@ -161,31 +180,31 @@ static func load_chart(path: String = Editor.project_path):
 			for key in keyframes.keys():
 				if keyframes[key].is_empty(): continue
 				if key == "effects":
-					for dict in keyframes[key]: if dict['beat'] <= 0:
+					for dict in keyframes[key]: if dict.beat <= 0:
 						keyframes[key].remove_at(keyframes[key].find(dict))
 					
 					for dict in keyframes[key]:
-						dict["duration"] = dict["playback_speed"]
+						dict.duration = dict.playback_speed
 						dict.erase("playback_speed")
-						dict["timestamp"] = Math.beats_to_secs(dict["beat"], settings["bpm"]*2)
+						dict.timestamp = Math.beats_to_secs(dict.beat, settings.bpm*2)
 						dict.erase("beat")
 				else:
 					for dict in keyframes[key]:
-						dict['timestamp'] = Math.beats_to_secs(dict["beat"], settings["bpm"]*2)
+						dict.timestamp = Math.beats_to_secs(dict.beat, settings.bpm*2)
 						dict.erase("beat")
-			keyframes["modifiers"] = [{"bpm": settings["bpm"], "timestamp": 0.0}]
+			keyframes.modifiers = [{"bpm": settings.bpm, "timestamp": 0.0}]
 			
 			# Notes
-			notes["charts"] = [{
+			notes.charts = [{
 				"name": "Normal",
-				"notes": load_demo_notes(notes["chart"]),
+				"notes": load_demo_notes(notes.chart),
 				"rating": 0
 				}]
 			notes.erase("chart")
 			notes.erase("colors")
 			
 			# Settings
-			settings["song_offset"] = -settings["note_offset"]
+			settings.song_offset = -settings.note_offset
 			settings.erase("bpm")
 			settings.erase("note_beat_delay")
 			settings.erase("song_length_in_beats")
@@ -203,7 +222,7 @@ static func load_chart(path: String = Editor.project_path):
 			var config: ConfigFile = ConfigFile.new()
 			if config.load(act_path) == OK: Config.act = config.get_value("main", "data")
 			
-			notes['charts'].sort_custom(func(a, b): return a.get('rating', 0) < b.get('rating', 0))
+			notes.charts.sort_custom(func(a, b): return a.get('rating', 0) < b.get('rating', 0))
 		_:
 			Console.log({"message": "Invalid Level Path: %s" % path, "verbose": true, "type": 2})
 
@@ -211,25 +230,25 @@ static func load_demo_notes(demo_chart: Array):
 	var new_notes: Array = []
 	for note in demo_chart:
 		var new_note = {
-			"input_type": note["input_type"],
-			"note_modifier": LevelEditor.NOTETYPE.GHOST if note["ghost"] else LevelEditor.NOTETYPE.NORMAL,
-			"timestamp": Math.beats_to_secs(note["beat"], settings["bpm"]*2)
+			"input_type": note.input_type,
+			"note_modifier": LevelEditor.NOTETYPE.GHOST if note.ghost else LevelEditor.NOTETYPE.NORMAL,
+			"timestamp": Math.beats_to_secs(note.beat, settings.bpm*2)
 		}
-		if note.has("horny"): new_note["horny"] = note["horny"]
+		if note.has("horny"): new_note.horny = note.horny
 		new_notes.append(new_note)
 	return new_notes
 
 static func load_legacy_notes(legacy_chart: Dictionary):
 	var new_notes: Array = []
 	
-	var init_note = legacy_chart['initial_data']['note_type'] if legacy_chart.has('initial_data') else 0
-	var no_spawn = legacy_chart['no_spawn']
-	var half_spawn = legacy_chart['half_spawn']
-	var quarter_spawn = legacy_chart['quarter_spawn']
-	var eighth_spawn = legacy_chart['eighth_spawn']
-	var last_beat = (legacy_chart['last_beat'][0] if legacy_chart.has('last_beat')
-	else legacy_chart['lastBeat'][0] if legacy_chart['lastBeat'][0] < legacy_chart['transitions'].keys()[legacy_chart['transitions'].size()-1]
-	else legacy_chart['transitions'].keys()[legacy_chart['transitions'].size()-1])
+	var init_note = legacy_chart.initial_data.note_type if legacy_chart.has('initial_data') else 0
+	var no_spawn = legacy_chart.no_spawn
+	var half_spawn = legacy_chart.half_spawn
+	var quarter_spawn = legacy_chart.quarter_spawn
+	var eighth_spawn = legacy_chart.eighth_spawn
+	var last_beat = (legacy_chart.last_beat[0] if legacy_chart.has('last_beat')
+	else legacy_chart.lastBeat[0] if legacy_chart.lastBeat[0] < legacy_chart.transitions.keys()[legacy_chart.transitions.size()-1]
+	else legacy_chart.transitions.keys()[legacy_chart.transitions.size()-1])
 	
 	var input_type = init_note + 1
 	var beat = 4 if input_type == 0 else 2 if input_type == 1 else 1
@@ -260,7 +279,7 @@ static func load_legacy_notes(legacy_chart: Dictionary):
 			new_notes.append({
 				"input_type": input_type,
 				"note_modifier": LevelEditor.NOTETYPE.NORMAL,
-				"timestamp": Math.beats_to_secs(i, legacy_chart["bpm"]*2)
+				"timestamp": Math.beats_to_secs(i, legacy_chart.bpm*2)
 			})
 	
 	return new_notes
