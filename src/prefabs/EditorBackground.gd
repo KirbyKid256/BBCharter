@@ -16,11 +16,11 @@ func setup(background_data: Dictionary):
 	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
 	.replace("{", "").replace("}", "").replace("\"", "")
 	
-	if Config.keyframes['background'].is_empty() and LevelEditor.song_position_offset > data['timestamp']:
+	if Config.keyframes.background.is_empty() and LevelEditor.song_position_offset > data.timestamp:
 		background.change_background(background.tsevent.index)
 
 func update_position():
-	position.x = -(data['timestamp'] * LevelEditor.note_speed_mod)
+	position.x = -(data.timestamp * LevelEditor.note_speed_mod)
 
 func _on_input_handler_gui_input(event: InputEvent):
 	if not event is InputEventMouseButton: return

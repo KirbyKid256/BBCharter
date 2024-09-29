@@ -62,7 +62,7 @@ func get_notes_in_selection():
 	else:
 		LevelEditor.selected_notes = area_notes # Replace notes
 	
-	LevelEditor.selected_notes.sort_custom(func(a, b): return a.data['timestamp'] < b.data['timestamp'])
+	LevelEditor.selected_notes.sort_custom(func(a, b): return a.data.timestamp < b.data.timestamp)
 	select_notes()
 
 func select_notes():
@@ -102,7 +102,8 @@ func group_remove_notes():
 	deselect_notes()
 
 func deselect_notes():
-	for note: EditorNote in LevelEditor.selected_notes:
+	for note in LevelEditor.selected_notes:
+		if note == null: continue
 		note.selected = false
 		note.check_selected()
 	LevelEditor.selected_notes.clear()

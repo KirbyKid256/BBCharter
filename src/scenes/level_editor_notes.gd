@@ -8,16 +8,10 @@ extends Node2D
 var note_clipboard: Array
 
 func _ready():
-	EventManager.editor_project_loaded.connect(_on_editor_project_loaded)
-	if Editor.project_loaded: _on_editor_project_loaded()
-
-func _on_editor_project_loaded():
-	LevelEditor.selected_notes.clear()
-	note_clipboard.clear()
+	EventManager.editor_project_loaded.connect(note_selector.deselect_notes)
+	if Editor.project_loaded: note_selector.deselect_notes()
 
 func load_notes():
-	note_selector.deselect_notes()
-	
 	for editor_note in Difficulty.get_chart_notes():
 		var new_editor_note = editor_note_prefab.instantiate() as EditorNote
 		add_child(new_editor_note)
@@ -89,35 +83,28 @@ func paste_selected_notes():
 func create_note(input_type: int = 0):
 	# Batch Replace Note Types
 	if LevelEditor.selected_notes.size() > 0:
+		var selected_data: Array
+		var old_input_types: Array; var new_input_types: Array
 		var change_notes: bool
-		var selected_notes: Array; var selected_data: Array
-		for note: EditorNote in LevelEditor.selected_notes:
+		
+		for note in LevelEditor.selected_notes:
 			if note.data.input_type != input_type: change_notes = true
-			selected_notes.append(note)
-			selected_data.append(note.data.duplicate(true))
+			selected_data.append(note.data)
+			old_input_types.append(note.data.input_type)
+			new_input_types.append(input_type)
 		
 		if not change_notes: return
 		
 		Global.undo_redo.create_action("Change Notes")
 		Global.undo_redo.add_do_method(func():
-			for i in selected_notes.size():
-				if selected_notes[i] == null:
-					selected_notes[i] = get_child(Difficulty.get_chart_notes().find(selected_data[i]))
-					selected_data[i] = selected_notes[i].data
-				
-				var note: EditorNote = selected_notes[i]
-				if note == null: continue
-				note.data.input_type = input_type
+			for i in selected_data.size():
+				var note: EditorNote = get_child(Difficulty.get_chart_notes().find(selected_data[i]))
+				note.data.input_type = new_input_types[i]
 				note.update_visual())
 		Global.undo_redo.add_undo_method(func():
-			for i in selected_notes.size():
-				if selected_notes[i] == null:
-					selected_notes[i] = get_child(Difficulty.get_chart_notes().find(selected_data[i]))
-					selected_data[i] = selected_notes[i].data
-				
-				var note: EditorNote = selected_notes[i]
-				if note == null: continue
-				note.data.input_type = selected_data[i].input_type
+			for i in selected_data.size():
+				var note: EditorNote = get_child(Difficulty.get_chart_notes().find(selected_data[i]))
+				note.data.input_type = old_input_types[i]
 				note.update_visual())
 		Global.undo_redo.commit_action()
 		
@@ -139,21 +126,21 @@ func copy_note(note: Dictionary) -> Dictionary:
 	var copied_note_data = note.duplicate(true)
 	
 	# Get first notes offset
-	copied_note_data['timestamp'] = note['timestamp'] + LevelEditor.get_timestamp() - note_clipboard[0]['timestamp'] 
+	copied_note_data.timestamp = note.timestamp + LevelEditor.get_timestamp() - note_clipboard[0].timestamp 
 	
 	# Check if note already exists there
-	if not Difficulty.get_chart_notes().filter(check_note_exists.bind(copied_note_data['timestamp'])).is_empty():
+	if not Difficulty.get_chart_notes().filter(check_note_exists.bind(copied_note_data.timestamp)).is_empty():
 		Console.log({"message": "Note already exists..."}); return {}
 	
 	# Offset hold notes
-	if copied_note_data['note_modifier'] == LevelEditor.NOTETYPE.HOLD:
-		var hold_time = note['hold_end_timestamp'] - note['timestamp'] 
-		copied_note_data['hold_end_timestamp'] = copied_note_data['timestamp'] + hold_time
+	if copied_note_data.note_modifier == LevelEditor.NOTETYPE.HOLD:
+		var hold_time = note.hold_end_timestamp - note.timestamp 
+		copied_note_data.hold_end_timestamp = copied_note_data.timestamp + hold_time
 	
 	return copied_note_data
 
 func check_note_exists(note, new_note_timestamp):
-	return snappedf(note.timestamp, 0.001) == new_note_timestamp
+	return snappedf(note.timestamp, 0.001) == snappedf(new_note_timestamp, 0.001)
 
 func add_note(data: Dictionary):
 	Difficulty.get_chart_notes().append(data)

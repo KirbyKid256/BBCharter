@@ -143,7 +143,7 @@ static func create_new_keyframe(key: String, data: Dictionary, timestamp: float)
 
 # Check if there's already a keyframe at the desired time
 static func check_keyframe_exists(keyframe: Dictionary, timestamp: float):
-	return snappedf(keyframe.timestamp, 0.001) == timestamp
+	return snappedf(keyframe.timestamp, 0.001) == snappedf(timestamp, 0.001)
 
 static func add_single_keyframe(data: Dictionary, root_node: Node2D, prefab: PackedScene):
 	var new_keyframe = prefab.instantiate() as Node2D

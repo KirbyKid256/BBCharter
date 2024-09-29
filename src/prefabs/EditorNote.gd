@@ -30,22 +30,22 @@ func _ready():
 
 func setup(editor_note_data):
 	data = editor_note_data
-	mouse_drag_time = data['timestamp']
-	mouse_drag_hold_time = data.get('hold_end_timestamp', mouse_drag_time)
+	mouse_drag_time = data.timestamp
+	mouse_drag_hold_time = data.get('hold_end_timestamp', data.timestamp)
 	
 	update_visual()
 	update_position()
 	if global_position.x >= 960: hit = true
 
 func update_position():
-	var hold_end_timestamp = (mouse_drag_hold_time if mouse_drag_hold else data.get('hold_end_timestamp', data['timestamp'])) - data['timestamp']
+	var hold_end_timestamp = (mouse_drag_hold_time if mouse_drag_hold else data.get('hold_end_timestamp', data.timestamp)) - data.timestamp
 	note_tail.points[1].x = -(hold_end_timestamp * LevelEditor.note_speed_mod)
 	
 	if mouse_drag:
 		position.x = -(mouse_drag_time * LevelEditor.note_speed_mod)
 		note_tail.points[1].x = -(hold_end_timestamp * LevelEditor.note_speed_mod)
 	else:
-		position.x = -(data['timestamp'] * LevelEditor.note_speed_mod)
+		position.x = -(data.timestamp * LevelEditor.note_speed_mod)
 		note_tail.points[1].x = -(hold_end_timestamp * LevelEditor.note_speed_mod)
 	
 	tail_input_handler.size.x = 16 - note_tail.points[1].x
@@ -56,7 +56,7 @@ func update_position():
 		arr.sort_custom(func(a, b): return a.mouse_drag_time < b.mouse_drag_time)
 		move_to_front()
 	else:
-		Difficulty.get_chart_notes().sort_custom(func(a, b): return a['timestamp'] < b['timestamp'])
+		Difficulty.get_chart_notes().sort_custom(func(a, b): return a.timestamp < b.timestamp)
 		var idx: int = Difficulty.get_chart_notes().find(data)
 		if get_index() != idx: get_parent().move_child(self, idx)
 
@@ -64,18 +64,18 @@ func update_visual():
 	voice_icon.set_visible(data.has('trigger_voice'))
 	
 	# Ghost Notes
-	modulate.a = 0.3 if data['note_modifier'] == LevelEditor.NOTETYPE.GHOST else 1.0
+	modulate.a = 0.3 if data.note_modifier == LevelEditor.NOTETYPE.GHOST else 1.0
 	
 	# Auto Notes
-	scale = Vector2(0.5,0.5) if data['note_modifier'] == LevelEditor.NOTETYPE.AUTO else Vector2(1.0,1.0)
-	note_body.self_modulate = Color.LIGHT_GRAY if data['note_modifier'] == LevelEditor.NOTETYPE.AUTO else UI.colors[data['input_type']]
+	scale = Vector2(0.5,0.5) if data.note_modifier == LevelEditor.NOTETYPE.AUTO else Vector2(1.0,1.0)
+	note_body.self_modulate = Color.LIGHT_GRAY if data.note_modifier == LevelEditor.NOTETYPE.AUTO else UI.colors[data.input_type]
 	
 	# Hold Notes
-	note_tail.default_color = UI.colors[data['input_type']]
-	note_tail.set_visible(data['note_modifier'] == LevelEditor.NOTETYPE.HOLD or mouse_drag_hold)
+	note_tail.default_color = UI.colors[data.input_type]
+	note_tail.set_visible(data.note_modifier == LevelEditor.NOTETYPE.HOLD or mouse_drag_hold)
 	
 	# Bomb Notes
-	note_body_bomb.set_visible(data['note_modifier'] == LevelEditor.NOTETYPE.BOMB)
+	note_body_bomb.set_visible(data.note_modifier == LevelEditor.NOTETYPE.BOMB)
 	
 	# Update Tooltip
 	input_handler.tooltip_text = str(data).replace(", ", "\r\n")\
@@ -100,10 +100,10 @@ func _on_input_handler_gui_input(event):
 						if LevelEditor.selected_notes.has(self):
 							for note: EditorNote in LevelEditor.selected_notes:
 								note.mouse_drag = true
-								note.mouse_drag_time = note.data['timestamp']
+								note.mouse_drag_time = note.data.timestamp
 						else:
 							mouse_drag = true
-							mouse_drag_time = data['timestamp']
+							mouse_drag_time = data.timestamp
 					elif mouse_drag:
 						note_selector.show()
 						# Check if notes exist
@@ -151,7 +151,7 @@ func _on_input_handler_gui_input(event):
 					update_position()
 		LevelEditor.TOOL.MODIFY:
 			if event is InputEventMouseButton and event.is_pressed():
-				var modifier: int = 0 if data['note_modifier'] == LevelEditor.NOTETYPE.HOLD else data['note_modifier']
+				var modifier: int = 0 if data.note_modifier == LevelEditor.NOTETYPE.HOLD else data.note_modifier
 				var old_modifier: int = modifier
 				
 				if event.button_index == MOUSE_BUTTON_LEFT:
@@ -174,7 +174,7 @@ func _on_input_handler_gui_input(event):
 				Global.undo_redo.add_undo_method(get_parent().modify_note.bind(data, old_modifier))
 				Global.undo_redo.commit_action()
 		LevelEditor.TOOL.HOLD:
-			if data['note_modifier'] != 0 and data['note_modifier'] != LevelEditor.NOTETYPE.HOLD: return
+			if data.note_modifier != 0 and data.note_modifier != LevelEditor.NOTETYPE.HOLD: return
 			
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 				if event.is_pressed():
@@ -190,7 +190,7 @@ func _on_input_handler_gui_input(event):
 			
 			if event is InputEventMouseMotion and mouse_drag_hold:
 				var difference = LevelEditor.get_mouse_timestamp(event.global_position.x) - mouse_drag_hold_time
-				mouse_drag_hold_time = clampf(mouse_drag_hold_time + difference, data['timestamp'], LevelEditor.song_length - Config.settings['song_offset'])
+				mouse_drag_hold_time = clampf(mouse_drag_hold_time + difference, data.timestamp, LevelEditor.song_length - Config.settings.song_offset)
 				update_position()
 		LevelEditor.TOOL.VOICE:
 			if event is InputEventMouseButton and event.is_pressed():
@@ -203,7 +203,7 @@ func check_selected():
 	selected_visual.set_visible(selected)
 
 func check_note_exists_drag(note, new_note_timestamp):
-	return snappedf(note['timestamp'], 0.001) == new_note_timestamp
+	return snappedf(note.timestamp, 0.001) == snappedf(new_note_timestamp, 0.001)
 
 func run_action(id: int):
 	match id:
@@ -258,9 +258,9 @@ func run_action(id: int):
 			Global.undo_redo.commit_action()
 
 func set_note_type(note_type_enum: int):
-	if data['note_modifier'] == note_type_enum:
-		if data.has('hold_end_timestamp'): data['note_modifier'] = LevelEditor.NOTETYPE.HOLD
-		else: data['note_modifier'] = LevelEditor.NOTETYPE.NORMAL  
+	if data.note_modifier == note_type_enum:
+		if data.has('hold_end_timestamp'): data.note_modifier = LevelEditor.NOTETYPE.HOLD
+		else: data.note_modifier = LevelEditor.NOTETYPE.NORMAL  
 	else: 
-		data['note_modifier'] = note_type_enum
+		data.note_modifier = note_type_enum
 	update_visual()

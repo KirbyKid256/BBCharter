@@ -53,7 +53,7 @@ static func dir_contents(packer: ZIPPacker, path: String):
 				dir_contents(packer, path + "/" + file_name)
 			else:
 				var write_path = path + "/" + file_name
-				var relative_path = write_path.trim_prefix(Editor.project_path.get_base_dir().get_base_dir() + "/")
+				var relative_path = write_path.trim_prefix(Editor.project_path.get_base_dir().get_base_dir().get_base_dir() + "/")
 				packer.start_file(relative_path)
 				packer.write_file(FileAccess.get_file_as_bytes(write_path))
 				packer.close_file()
