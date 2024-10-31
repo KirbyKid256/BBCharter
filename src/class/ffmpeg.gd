@@ -2,6 +2,9 @@ class_name FFmpeg
 
 static var executable_path: String
 
+static func get_exec():
+	return ffmpeg_exec_paths.get(OS.get_name(), "Unknown")
+
 static var ffmpeg_exec_paths: Dictionary = {
 	"Windows": Global.get_executable_path().path_join("bin/win64/ffmpeg.exe"),
 	"macOS": Global.get_executable_path().path_join("bin/macos/ffmpeg"),
@@ -24,12 +27,14 @@ static func convert_file(input_file: String, output_file: String, type: String) 
 	executable_path = ffmpeg_exec_paths.get(OS.get_name(), "Unknown")
 	if executable_path == "Unknown": Console.log({"message": "Unknown OS name: %s" % OS.get_name(), "type": 2}); return ""
 	Console.log({"message": "FFmpeg found at %s..." % executable_path})
+	if not OS.is_debug_build(): executable_path = OS.get_executable_path().get_base_dir().path_join(executable_path)
 	
 	# Convert Video
 	Console.log({"message": "Converting Climax Video..."})
 	var execute_output: Array = []
 	if OS.execute(executable_path, get_command(input_file, output_file), execute_output, true) != 0:
-		Console.log({"message": "Could not convert final video %s with %s" % [output_file, execute_output], "type": 2})
+		Console.log({"message": "could not convert final video \"%s\" to \"%s\"" % [input_file.get_file(), output_file.get_file()], "type": 2})
+		Console.log({"message": "%s" % execute_output, "type": 2})
 		return ""
 	
 	Console.log({"message": "Converted final video: %s" % output_file})
@@ -59,7 +64,7 @@ static func create_sprite_sheet_from_gif(input_file: String) -> Dictionary:
 	
 	var execute_output: Array = []
 	execute_output = []
-	OS.execute(executable_path, ffmpeg_make_sheet("%s" % input_file, h_frames, v_frames, output_file), execute_output, true)
+	OS.execute(get_exec(), ffmpeg_make_sheet("%s" % input_file, h_frames, v_frames, output_file), execute_output, true)
 	# FFMPEG output
 	Console.log({"message": execute_output})
 	
@@ -87,4 +92,9 @@ static func get_gif_framecount(input_file: String) -> int:
 	executable_path = ffprobe_exec_paths.get(OS.get_name(), "Unknown")
 	var execute_output: Array = []
 	if OS.execute(executable_path, ffprobe_frame_count(input_file), execute_output, true) != 0: pass
-	return execute_output[0].replace("\r\n", "").to_int()
+	return execute_output[0].replace("
+\n", "").to_int()
+
+static func ff_execute(args: Array):
+	var execute_output = []
+	OS.execute(get_exec(), args, execute_output, true)

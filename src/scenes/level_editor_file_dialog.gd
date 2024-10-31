@@ -23,7 +23,6 @@ func _ready():
 func open_project():
 	Console.log({'message': 'Opening New Project...'})
 	title = "Select Project Directory"
-	create_level = false
 	popup()
 
 func new_project():
@@ -50,6 +49,7 @@ func _on_dir_selected(new_path: String):
 		LevelCreator.create_level_directories()
 		LevelCreator.create_level_placeholders()
 		LevelCreator.create_level_config()
+		create_level = false
 	
 	if Config.store_config_data():
 		Editor.project_loaded = false

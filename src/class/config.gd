@@ -124,7 +124,8 @@ static func load_chart(path: String = Editor.project_path):
 					if textures.size() > 0:
 						keyframes.background.append({
 							"path": textures[0],
-							"timestamp": timestamp
+							"timestamp": timestamp,
+							"type": 2
 						})
 				if transition.has("sound_fx"):
 					keyframes.sound_loop.append({
@@ -150,7 +151,7 @@ static func load_chart(path: String = Editor.project_path):
 			
 			# Meta
 			meta.level_index = load_legacy_data(path + "meta.cfg").get("level_index", 0)
-			meta.level_name = load_legacy_data(path + "meta.cfg").get("mod_title", chart.get_or_add("name", "Legacy Mod"))
+			meta.level_name = load_legacy_data(path + "meta.cfg").get("mod_title", chart.get("name", "Legacy Mod"))
 			meta.level_id = chart.get("level_id", create_new_id(meta, meta.level_name))
 			
 			# Notes
@@ -220,7 +221,7 @@ static func load_chart(path: String = Editor.project_path):
 			
 			var act_path: String = path.get_base_dir().get_base_dir().path_join("act.cfg")
 			var config: ConfigFile = ConfigFile.new()
-			if config.load(act_path) == OK: Config.act = config.get_value("main", "data")
+			if config.load(act_path) == OK: act = config.get_value("main", "data")
 			
 			notes.charts.sort_custom(func(a, b): return a.get('rating', 0) < b.get('rating', 0))
 		_:

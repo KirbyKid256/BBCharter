@@ -19,6 +19,11 @@ static func load_asset(file: String):
 			var stream: VideoStreamTheora = VideoStreamTheora.new()
 			stream.set_file(file)
 			lib[file.get_file().to_lower()] = stream
+		"webm","mp4","mov":
+			if ClassDB.class_exists("VideoStreamFFmpeg"):
+				var stream = ClassDB.instantiate("VideoStreamFFmpeg")
+				stream.set_file(file)
+				lib[file.get_file().to_lower()] = stream
 		_:
 			Console.log({"message": "Unknown Asset: %s" % file, "verbose": true, "type": 1})
 

@@ -1,4 +1,5 @@
 extends Control
+class_name LevelEditorFileDrop
 
 @export var voice_asset: PackedScene
 
@@ -34,6 +35,7 @@ extends Control
 @onready var cache_assets: Control = $'../Assets/Cache'
 @onready var file_assets: Control = $'../Assets/Files'
 @onready var music: AudioStreamPlayer = $'../Music'
+@onready var image_trimmer: ImageTrimmer = $"../ImageTrimmer"
 
 var replacement_data: Dictionary
 
@@ -51,7 +53,7 @@ func _ready():
 
 func _on_files_dropped(files: PackedStringArray):
 	for file in files:
-		if ['gif','mp4','webm'].has(file.get_extension()): make_spritesheet(file); continue
+		if ['gif','mp4','webm'].has(file.get_extension()): image_trimmer.split_to_frames(file); continue
 		if ['png','jpg','jpeg','webp'].has(file.get_extension()): import_image(file); continue
 		if ['ogg','mp3'].has(file.get_extension()): import_audio(file); continue
 	

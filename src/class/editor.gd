@@ -18,13 +18,7 @@ static func save_project():
 	LevelEditor.save_level()
 	CutsceneEditor.save_scripts()
 
-static func get_modtype(override_path: String = "") -> MODTYPE:
-	var path: String
-	if override_path != "":
-		path = override_path
-	else:
-		path = Editor.project_path
-	
+static func get_modtype(path: String = Editor.project_path) -> MODTYPE:
 	var config = ConfigFile.new()
 	if config.load(path + "config/notes.cfg") == OK:
 		var config_data: Dictionary = config.get_value("main", "data", {})

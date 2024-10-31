@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=4]
+
+[ext_resource type="Script" path="res://src/scenes/LevelEditor/image_trim_frame.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bf6hb14ga15e4" path="res://assets/images/placeholder_album_cover.png" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.589844, 0.131332, 0.131332, 1)
+script = null
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.078125, 0.078125, 0.078125, 1)
+script = null
+
+[sub_resource type="LabelSettings" id="3"]
+font_size = 30
+script = null
+
+[node name="ImageTrimFrame" type="Control"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DeleteButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 223.0
+offset_right = 249.0
+offset_bottom = 249.0
+theme_override_styles/normal = SubResource("1")
+text = "DELETE"
+
+[node name="MoveButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 223.0
+offset_right = 123.0
+offset_bottom = 249.0
+theme_override_styles/normal = SubResource("2")
+text = "MOVE"
+
+[node name="IndexLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 11.0
+offset_right = 47.0
+offset_bottom = 54.0
+text = "0"
+label_settings = SubResource("3")
+vertical_alignment = 1
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+size = Vector2i(239, 100)
+item_count = 4
+item_0/id = 1
+item_0/disabled = true
+item_1/text = "Set Frame As Starting Frame"
+item_1/id = 1
+item_2/text = "Delete all PREVIOUS frames"
+item_2/id = 2
+item_3/text = "Delete all FOLLOWING frames"
+item_3/id = 3
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="button_up" from="DeleteButton" to="." method="trim_frame_delete"]
+[connection signal="id_pressed" from="ContextMenu" to="." method="_on_context_menu_id_pressed"]

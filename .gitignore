@@ -1,5 +1,5 @@
 .godot/
 .DS_Store
-bin/
-data/
-export/
+bin
+data
+export
