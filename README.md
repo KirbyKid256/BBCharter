@@ -8,6 +8,7 @@ Why didn't I just add the builds to GitHub instead of Mega? I don't know.
 ### Engine Shortcuts
 | Hotkey | Function |
 | ------ | ------ |
+|Esc|Toggle the Level Editor Menu|
 |Ctrl/Cmd + S|Save the current mod.|
 |Ctrl/Cmd + O|Open an existing mod.|
 |Ctrl/Cmd + N|Creating an new mod.|
