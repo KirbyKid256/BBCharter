@@ -4,6 +4,7 @@ extends Control
 @onready var subheader: Label = $Subheader
 
 @onready var act_settings: Button = $Groups/VBoxContainer/ActSettingsButton
+@onready var export_mod: Button = $Groups/VBoxContainer2/ExportModButton
 
 var in_submenu: bool
 
@@ -25,8 +26,10 @@ func toggle():
 	
 	if Config.act.is_empty():
 		act_settings.text = "Create Act"
+		export_mod.disabled = true
 	else:
 		act_settings.text = "Act Settings"
+		export_mod.disabled = false
 	
 	visible = !visible
 	if visible: music.stop()

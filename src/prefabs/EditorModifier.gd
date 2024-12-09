@@ -83,7 +83,7 @@ func _on_bpm_field_text_submitted(new_text: String):
 	input_handler.show()
 	bpm_field.hide()
 	
-	if float(new_text) == data.bpm: return
+	if float(new_text) == data.bpm or float(new_text) == 0: return
 	
 	var old_data: Dictionary = data.duplicate()
 	Global.undo_redo.create_action("Change BPM")

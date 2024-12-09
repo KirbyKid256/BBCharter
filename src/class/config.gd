@@ -219,9 +219,11 @@ static func load_chart(path: String = Editor.project_path):
 			settings = load_config_data("settings.cfg")
 			mod = load_config_data("mod.cfg")
 			
-			var act_path: String = path.get_base_dir().get_base_dir().path_join("act.cfg")
 			var config: ConfigFile = ConfigFile.new()
-			if config.load(act_path) == OK: act = config.get_value("main", "data")
+			if config.load(path.get_base_dir().get_base_dir().path_join("act.cfg")) == OK:
+				act = config.get_value("main", "data")
+			else:
+				act.clear()
 			
 			notes.charts.sort_custom(func(a, b): return a.get('rating', 0) < b.get('rating', 0))
 		_:

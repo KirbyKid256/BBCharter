@@ -8,8 +8,8 @@ static var act_template = { # act.cfg
 
 static var config_templates = [
 	{ # asset.cfg
-		"song_path":"template_song.ogg",
-		"horny_mode_sound":"",
+		"song_path": "template_song.ogg",
+		"horny_mode_sound": "",
 		"final_video": "",
 		"final_audio": ""
 	},
@@ -21,13 +21,13 @@ static var config_templates = [
 		"shutter": [],
 		"sound_loop": [],
 		"sound_oneshot": [],
-		"voice_bank": [],
+		"voice_bank": []
 	},
 	{ # meta.cfg
-		"level_index":0,
+		"level_index": 0,
 		"character": "My Character",
 		"color": [0.5, 0.5, 0.5],
-		"level_name":"My Level",
+		"level_name": "My Level"
 	},
 	{ # mod.cfg
 		"description": "This is my mod!",
@@ -62,8 +62,8 @@ static var config_templates = [
 	},
 	{ # settings.cfg
 		"song_offset": 2.0,
-		"post_song_delay":5.0,
-		"note_offset":0.0,
+		#"post_song_delay": 5.0,
+		#"note_offset": 0.0,
 	}
 ]
 
