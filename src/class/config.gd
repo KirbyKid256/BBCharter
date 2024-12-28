@@ -95,7 +95,7 @@ static func load_chart(path: String = Editor.project_path):
 			var last_beat = chart.last_beat[0] if chart.has("last_beat") else chart.transitions.keys()[chart.transitions.size()-1]
 			for beat in [0] + chart.transitions.keys() + chart.get("last_beat", []):
 				var cum = beat == last_beat
-				var transition = chart.initial_data if beat == 0 else chart.last_transition if cum and chart.has("last_beat") else chart.transitions[beat]
+				var transition = chart.initial_data if beat == 0 else chart.last_transition if chart.has("last_transition") and cum and chart.has("last_beat") else chart.transitions[beat]
 				var timestamp = Math.beats_to_secs(beat, chart.bpm*2) if beat > 0 else 0.0
 				var legacy_sheet = {"h": 3, "v": 2, "total": 6}
 				
